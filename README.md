@@ -1,4 +1,4 @@
 AtStake
 =======
 
-A mobile version of the desktop game @Stake
+A mobile version of the tabletop game @Stake
