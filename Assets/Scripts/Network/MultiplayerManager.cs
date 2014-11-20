@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// Handles starting a game, hosting and joining
 [RequireComponent (typeof(NetworkView))]
 public class MultiplayerManager : MonoBehaviour {
 
@@ -61,15 +60,10 @@ public class MultiplayerManager : MonoBehaviour {
 					break;
 				}
 				if (GUILayout.Button ("Host")) {
-					player = new GameHost (playerName);
-					networkManager.HostGame (playerName);
-					state = State.Lobby;
+					HostGame ();
 				}
 				if (GUILayout.Button ("Join")) {
-					player = new GameClient (playerName);
-					networkManager.JoinGame ();
-					findingGames = true;
-					noGamesFound = false;
+					JoinGame ();
 				}
 				if (GUILayout.Button ("Back")) {
 					state = State.EnterName;
@@ -78,8 +72,7 @@ public class MultiplayerManager : MonoBehaviour {
 			case State.GamesList:
 				for (int i = 0; i < hosts.Length; i ++) {
 					if (GUILayout.Button (hosts[i].gameName)) {
-						networkManager.ConnectToHost (hosts[i]);
-						state = State.Lobby;
+						ConnectToHost (hosts[i]);
 					}
 				}
 				break;
@@ -99,21 +92,47 @@ public class MultiplayerManager : MonoBehaviour {
 					} else {
 						GUILayout.Label ("waiting for other players to join");
 					}
-					if (GUILayout.Button ("Back")) {
-						networkManager.StopServer ();
-						state = State.HostJoin;
-					}
-				} else {
-					if (GUILayout.Button ("Back")) {
-						networkView.RPC ("UnregisterPlayer", RPCMode.Server, player.playerName);
-						networkManager.DisconnectFromHost ();
-						state = State.HostJoin;
-					}
+				} 
+				if (GUILayout.Button ("Back")) {
+					ExitLobby ();
 				}
 				break;
 		}
 	}
 
+	// Actions
+
+	void HostGame () {
+		player = new GameHost (playerName);
+		networkManager.HostGame (playerName);
+		state = State.Lobby;
+	}
+
+	void JoinGame () {
+		player = new GameClient (playerName);
+		networkManager.JoinGame ();
+		findingGames = true;
+		noGamesFound = false;
+	}
+
+	void ConnectToHost (HostData host) {
+		networkManager.ConnectToHost (host);
+		state = State.Lobby;
+	}
+
+	void ExitLobby () {
+		if (player is GameHost) {
+			networkManager.StopServer ();
+			state = State.HostJoin;
+		} else {
+			networkView.RPC ("UnregisterPlayer", RPCMode.Server, player.playerName);
+			networkManager.DisconnectFromHost ();
+			state = State.HostJoin;
+		}
+	}
+
+	// Messages
+	
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
 		findingGames = false;
 		noGamesFound = true;
@@ -130,15 +149,15 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnDisconnectedFromServer (NetworkDisconnection info) {
-		if (player is GameHost) {
-
-		} else {
+		if (player is GameClient) {
 			networkManager.DisconnectFromHost ();
 			if (state == State.Lobby) {
 				state = State.HostJoin;
 			}
 		}
 	}
+
+	// RPCs
 
 	[RPC]
 	void RegisterPlayer (string clientName) {

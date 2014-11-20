@@ -29,28 +29,6 @@ public class NetworkManager : MonoBehaviour {
 		MasterServer.ClearHostList ();
 	}
 
-	/*void OnGUI () {
-		if (GUILayout.Button ("Host game")) {
-			HostGame ();
-		}
-		if (GUILayout.Button ("Find games")) {
-			RefreshHostList ();
-		}
-		if (hosts.Length > 0) {
-			for (int i = 0; i < hosts.Length; i ++) {
-				if (GUILayout.Button (hosts[i].gameName)) {
-					ConnectToHost (hosts[i]);
-				}
-			}
-		}
-		if (connected) {
-			if (GUILayout.Button ("Send test message")) {
-				networkView.RPC ("TestMessaging", RPCMode.All, "freaking hi");
-			}
-		}
-		GUILayout.Label (testMessage);
-	}*/
-
 	// Hosting
 
 	public void HostGame (string instanceGameName) {
@@ -127,12 +105,5 @@ public class NetworkManager : MonoBehaviour {
 
 	void ResetHosts () {
 		hosts = new HostData[0];
-	}
-	// Testing
-
-	[RPC]
-	void TestMessaging (string message) {
-//		Debug.Log (message);
-		testMessage = message;
 	}
 }
