@@ -11,17 +11,27 @@ public class GameState {
 		get { return screen; }
 	}
 
-	public GameState (string name, GameScreen[] screens) {
+	public GameState (string name) {
 		this.name = name;
-		this.screens = screens;
-		GotoFirstScreen ();
+		this.screens = SetScreens ();
+		screenIndex = 0;
+		screen = screens[0];
+	}
+
+	public virtual GameScreen[] SetScreens () {
+		return new GameScreen[0];
+	}
+	
+	void GotoScreen (int index) {
+		screenIndex = index;
+		screen = screens[index];
+		Events.instance.Raise (new ChangeScreenEvent (screen));
 	}
 
 	public void GotoScreen (string screenName) {
 		for (int i = 0; i < screens.Length; i ++) {
 			if (screens[i].name == screenName) {
-				screenIndex = i;
-				screen = screens[i];
+				GotoScreen (i);
 				return;
 			}
 		}
@@ -29,28 +39,24 @@ public class GameState {
 	}
 
 	public void GotoFirstScreen () {
-		screenIndex = 0;
-		screen = screens[screenIndex];
+		GotoScreen (0);
 	}
 
 	public void GotoLastScreen () {
-		screenIndex = screens.Length - 1;
-		screen = screens[screenIndex];
+		GotoScreen (screens.Length - 1);
 	}
 
 	public bool GotoNextScreen () {
 		if (screenIndex + 1 > screens.Length - 1)
 			return false;
-		screenIndex ++;
-		screen = screens[screenIndex];
+		GotoScreen (screenIndex + 1);
 		return true;
 	}
 
 	public bool GotoPreviousScreen () {
 		if (screenIndex == 0)
 			return false;
-		screenIndex --;
-		screen = screens[screenIndex];
+		GotoScreen (screenIndex - 1);
 		return true;
 	}
 }

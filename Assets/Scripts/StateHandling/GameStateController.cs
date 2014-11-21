@@ -17,9 +17,23 @@ public class GameStateController : MonoBehaviour {
 		get { return State.Screen; }
 	}
 
+	public static GameStateController instance;
+
 	void Awake () {
+		if (instance == null)
+			instance = this;
 		states = new GameStates ();
-		state = states.FirstState ();
+		GotoState (0);
+
+		// Each GameState normally handles this message, but GameStateController is sending it here
+		// so that we don't get a bunch of messages at the start of the game
+		Events.instance.Raise (new ChangeScreenEvent (Screen));
+	}
+
+	void GotoState (int index) {
+		stateIndex = index;
+		state = states.GetState (index);
+		Events.instance.Raise (new ChangeStateEvent (state));
 	}
 
 	public void GotoScreen (string screenName, string stateName = "") {
@@ -29,8 +43,7 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	public void GotoState (string name) {
-		stateIndex = states.GetStateIndex (name);
-		state = states.GetState (stateIndex);
+		GotoState (states.GetStateIndex (name));
 	}
 
 	public void GotoNextScreen () {
@@ -44,7 +57,7 @@ public class GameStateController : MonoBehaviour {
 		} else {
 			stateIndex ++;
 		}
-		state = states.GetState (stateIndex);
+		GotoState (stateIndex);
 		state.GotoFirstScreen ();
 	}
 
@@ -59,18 +72,20 @@ public class GameStateController : MonoBehaviour {
 		} else {
 			stateIndex --;
 		}
-		state = states.GetState (stateIndex);
+		GotoState (stateIndex);
 		state.GotoLastScreen ();
 	}
 
-	void Update () {
+	/*void Update () {
 		// Debugging
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			//GotoNextScreen ();
 			//GotoState ("Round");
 			//GotoScreen ("Pitch", "Round");
 			//GotoPreviousScreen ();
-			//Debug.Log (state.name + ", " + state.Screen.name);
+			//GotoState ("Multiplayer");
+			Debug.Log (state.name + ", " + state.Screen.name);
+			GotoNextScreen ();
 		}
-	}
+	}*/
 }

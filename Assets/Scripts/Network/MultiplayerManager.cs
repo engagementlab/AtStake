@@ -6,22 +6,23 @@ public class MultiplayerManager : MonoBehaviour {
 
 	public NetworkManager networkManager;
 	string playerName = "";
+	public string PlayerName {
+		get { return playerName; }
+		set { playerName = value; }
+	}
 	bool findingGames = false;
 	bool noGamesFound = false;
-	HostData[] hosts;
-
-	enum State {
-		Start,
-		EnterName,
-		HostJoin,
-		GamesList,
-		Lobby
-	}
-
-	State state = State.Start;
+	HostData[] hosts;	
 	GamePlayer player;
 
+	public static MultiplayerManager instance;
+
 	void Awake () {
+
+		if (instance == null)
+			instance = this;
+
+		// Asynchronous events
 		Events.instance.AddListener<JoinTimeoutEvent> (OnJoinTimeoutEvent);
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		Events.instance.AddListener<ConnectedToServerEvent> (OnConnectedToServerEvent);
@@ -32,26 +33,28 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		switch (state) {
-			case State.Start: 
-				if (GUILayout.Button ("Start Game")) {
-					state = State.EnterName;
-				}
-				break;
-			case State.EnterName:
+
+		return;
+
+		if (GameStateController.instance.State.name != "Multiplayer")
+			return;
+		string screen = GameStateController.instance.Screen.name;
+		switch (screen) {
+			case "Enter Name":
+				GUILayout.Label ("Enter your name");
 				playerName = GUILayout.TextField (playerName, 25);
 				if (GUILayout.Button ("Back")) {
 					playerName = "";
-					state = State.Start;
+					GameStateController.instance.GotoState ("Start Screen");
 				}
 				if (playerName != "") {
 					if (GUILayout.Button ("Enter")) {
 						if (playerName != "") 
-							state = State.HostJoin;
+							GotoScreen ("Host or Join");
 					}
 				}
 				break;
-			case State.HostJoin:
+			case "Host or Join":
 				if (noGamesFound) {
 					GUILayout.Label ("no games found :(");
 				}
@@ -66,28 +69,28 @@ public class MultiplayerManager : MonoBehaviour {
 					JoinGame ();
 				}
 				if (GUILayout.Button ("Back")) {
-					state = State.EnterName;
+					GotoPreviousScreen ();
 				}
 				break;
-			case State.GamesList:
+			case "Games List":
 				for (int i = 0; i < hosts.Length; i ++) {
 					if (GUILayout.Button (hosts[i].gameName)) {
 						ConnectToHost (hosts[i]);
 					}
 				}
 				break;
-			case State.Lobby:
-
+			case "Lobby":
+				
 				GUILayout.Label ("Lobby");
 				string[] names = player.GetPlayerNames ();
 				for (int i = 0; i < names.Length; i ++) {
 					GUILayout.Label (names[i]);
 				}
-
+				
 				if (player is GameHost) {
 					if (player.HasOtherPlayers ()) {
 						if (GUILayout.Button ("Start game")) {
-
+							
 						}
 					} else {
 						GUILayout.Label ("waiting for other players to join");
@@ -102,32 +105,44 @@ public class MultiplayerManager : MonoBehaviour {
 
 	// Actions
 
-	void HostGame () {
-		player = new GameHost (playerName);
-		networkManager.HostGame (playerName);
-		state = State.Lobby;
+	void GotoScreen (string screenName) {
+		GameStateController.instance.GotoScreen (screenName);
 	}
 
-	void JoinGame () {
+	void GotoPreviousScreen () {
+		GameStateController.instance.GotoPreviousScreen ();
+	}
+
+	string GetScreen () {
+		return GameStateController.instance.Screen.name;
+	}
+
+	public void HostGame () {
+		player = new GameHost (playerName);
+		networkManager.HostGame (playerName);
+		//GotoScreen ("Lobby");
+	}
+
+	public void JoinGame () {
 		player = new GameClient (playerName);
 		networkManager.JoinGame ();
 		findingGames = true;
 		noGamesFound = false;
 	}
 
-	void ConnectToHost (HostData host) {
+	public void ConnectToHost (HostData host) {
 		networkManager.ConnectToHost (host);
-		state = State.Lobby;
+		GotoScreen ("Lobby");
 	}
 
 	void ExitLobby () {
 		if (player is GameHost) {
 			networkManager.StopServer ();
-			state = State.HostJoin;
+			GotoScreen ("Host or Join");
 		} else {
 			networkView.RPC ("UnregisterPlayer", RPCMode.Server, player.playerName);
 			networkManager.DisconnectFromHost ();
-			state = State.HostJoin;
+			GotoPreviousScreen ();
 		}
 	}
 
@@ -141,7 +156,7 @@ public class MultiplayerManager : MonoBehaviour {
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		findingGames = false;
 		hosts = e.hosts;
-		state = State.GamesList;
+		GotoScreen ("Games List");
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
@@ -151,8 +166,8 @@ public class MultiplayerManager : MonoBehaviour {
 	void OnDisconnectedFromServer (NetworkDisconnection info) {
 		if (player is GameClient) {
 			networkManager.DisconnectFromHost ();
-			if (state == State.Lobby) {
-				state = State.HostJoin;
+			if (GetScreen () == "Lobby") {
+				GotoScreen ("Host or Join");
 			}
 		}
 	}
