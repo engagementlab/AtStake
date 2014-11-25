@@ -4,7 +4,7 @@ using System.Collections;
 public class InstructionsScreen : GameScreen {
 	
 	public InstructionsScreen (string name = "Instructions") : base (name) {
-		SetElements (new ScreenElement[] {
+		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Instructions on how to play the game:\n1) purchase a new microwave and\n2) reconnect with your older sister"),
 			new ButtonElement ("Back-Instructions", "Back")
 		});

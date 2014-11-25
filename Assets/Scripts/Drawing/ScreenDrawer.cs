@@ -19,7 +19,7 @@ public class ScreenDrawer : MonoBehaviour {
 		foreach (ScreenElement e in elements) {
 			if (e is ButtonElement) {
 				ButtonElement b = e as ButtonElement;
-				if (GUILayout.Button (b.content)) {
+				if (GUILayout.Button (b.content, GUILayout.Width (200), GUILayout.Height (75))) {
 					Events.instance.Raise (new ButtonPressEvent (b.id));
 				}
 			}

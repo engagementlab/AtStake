@@ -4,7 +4,7 @@ using System.Collections;
 public class StartScreen : GameScreen {
 
 	public StartScreen (string name = "Start") : base (name) {
-		SetElements (new ScreenElement[] {
+		SetStaticElements (new ScreenElement[] {
 			new ButtonElement ("Play", "Play"),
 			new ButtonElement ("Instructions", "Instructions"),
 			new ButtonElement ("Deck", "New Deck"),

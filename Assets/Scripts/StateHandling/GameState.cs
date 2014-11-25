@@ -25,6 +25,7 @@ public class GameState {
 	void GotoScreen (int index) {
 		screenIndex = index;
 		screen = screens[index];
+		screen.OnScreenStart ();
 		Events.instance.Raise (new ChangeScreenEvent (screen));
 	}
 

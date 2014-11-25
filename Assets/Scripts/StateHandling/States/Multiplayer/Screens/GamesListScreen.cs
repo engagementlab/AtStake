@@ -7,6 +7,10 @@ public class GamesListScreen : GameScreen {
 
 	public GamesListScreen (string name = "Games List") : base (name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
+		SetStaticElements (new ScreenElement[] {
+			new LabelElement ("Choose a game to join"),
+			new ButtonElement ("Back-Games-List", "Back")
+		});
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
@@ -16,11 +20,13 @@ public class GamesListScreen : GameScreen {
 			string gameName = hosts[i].gameName;
 			se[i] = new ButtonElement (i.ToString () + "__" + gameName, gameName);
 		}
-		SetElements (se);
-		Events.instance.Raise (new UpdateDrawerEvent ());
+		SetVariableElements (se);
 	}
 
 	public override void OnButtonPressEvent (ButtonPressEvent e) {
+		switch (e.id) {
+			case "Back-Games-List": GotoScreen ("Host or Join"); break;
+		}
 		char c = e.id[0];
 		char c2 = e.id[1];
 		int n = (int)char.GetNumericValue (c);

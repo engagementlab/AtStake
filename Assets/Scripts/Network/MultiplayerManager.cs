@@ -10,6 +10,11 @@ public class MultiplayerManager : MonoBehaviour {
 		get { return playerName; }
 		set { playerName = value; }
 	}
+
+	public bool Hosting {
+		get { return player is GameHost; }
+	}
+
 	bool findingGames = false;
 	bool noGamesFound = false;
 	HostData[] hosts;	
@@ -120,6 +125,7 @@ public class MultiplayerManager : MonoBehaviour {
 	public void HostGame () {
 		player = new GameHost (playerName);
 		networkManager.HostGame (playerName);
+		SendRefreshListMessage ();
 		//GotoScreen ("Lobby");
 	}
 
@@ -132,17 +138,17 @@ public class MultiplayerManager : MonoBehaviour {
 
 	public void ConnectToHost (HostData host) {
 		networkManager.ConnectToHost (host);
-		GotoScreen ("Lobby");
+		//GotoScreen ("Lobby");
 	}
 
-	void ExitLobby () {
+	public void ExitLobby () {
 		if (player is GameHost) {
 			networkManager.StopServer ();
-			GotoScreen ("Host or Join");
+			//GotoScreen ("Host or Join");
 		} else {
 			networkView.RPC ("UnregisterPlayer", RPCMode.Server, player.playerName);
 			networkManager.DisconnectFromHost ();
-			GotoPreviousScreen ();
+			//GotoPreviousScreen ();
 		}
 	}
 
@@ -193,6 +199,8 @@ public class MultiplayerManager : MonoBehaviour {
 		for (int i = 0; i < names.Length; i ++) {
 			networkView.RPC ("AddPlayer", RPCMode.Others, names[i]);
 		}
+		networkView.RPC ("SendRefreshListMessage", RPCMode.Others);
+		SendRefreshListMessage ();
 	}
 
 	[RPC]
@@ -203,5 +211,10 @@ public class MultiplayerManager : MonoBehaviour {
 	[RPC]
 	void AddPlayer (string clientName) {
 		player.AddPlayer (clientName);
+	}
+
+	[RPC]
+	void SendRefreshListMessage() {
+		Events.instance.Raise (new RefreshPlayerListEvent (player.GetPlayerNames ()));
 	}
 }

@@ -4,10 +4,11 @@ using System.Collections;
 public class HostJoinScreen : GameScreen {
 
 	LabelElement label;
+	string defaultText = "Select host or join";
 
 	public HostJoinScreen (string name = "Host or Join") : base (name) {
-		label = new LabelElement ("Select host or join");
-		SetElements (new ScreenElement[] {
+		label = new LabelElement (defaultText);
+		SetStaticElements (new ScreenElement[] {
 			label,
 			new ButtonElement ("Host", "Host"),
 			new ButtonElement ("Join", "Join"),
@@ -41,5 +42,9 @@ public class HostJoinScreen : GameScreen {
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		label.content = "";
 		GotoScreen ("Games List");
+	}
+
+	public override void OnScreenStart () {
+		label.content = defaultText;
 	}
 }
