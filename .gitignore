@@ -34,3 +34,5 @@ Thumbs.db
 # Custom #
 # ====== #
 Builds/
+*.sublime-project
+*.sublime-workspace
