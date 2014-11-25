@@ -11,10 +11,15 @@ public class Role : System.Object {
 	public Role (string name, string bio) {
 		this.name = name;
 		this.bio = bio;
-		agenda = new Agenda (
-			new AgendaItem[] {
-				new AgendaItem ("description", 1)
-			}
-		);
+	}
+
+	public void SetAgendaItems (AgendaItem[] items) {
+		agenda = new Agenda (items);
+	}
+
+	public void PrintAttributes () {
+		Debug.Log (name);
+		Debug.Log (bio);
+		agenda.PrintAttributes ();
 	}
 }

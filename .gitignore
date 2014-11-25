@@ -34,5 +34,6 @@ Thumbs.db
 # Custom #
 # ====== #
 Builds/
+hosted-decks/
 *.sublime-project
 *.sublime-workspace

@@ -1,0 +1,59 @@
+{
+	"name": "default",
+	"roles": [
+		{
+			"name": "Contractor",
+			"bio": "Employee at a large construction company",
+			"agenda_items": [
+				{
+					"description": "Involves new construction",
+					"bonus": 1
+				},
+				{
+					"description": "Can start work in the next 3 months",
+					"bonus": 1
+				},
+				{
+					"description": "Project will take at least 2 years to complete",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Property Owner",
+			"bio": "Owner of several large apartment buildings",
+			"agenda_items": [
+				{
+					"description": "Is paid for by private investors",
+					"bonus": 1
+				},
+				{
+					"description": "Attracts foreign investors",
+					"bonus": 1
+				},
+				{
+					"description": "Increases property values",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Community Activist",
+			"bio": "Popular activist and community volunteer",
+			"agenda_items": [
+				{
+					"description": "Benefits are local, with no profit for global corporations",
+					"bonus": 1
+				},
+				{
+					"description": "Increase health and welfare for middle and lower class people",
+					"bonus": 1
+				},
+				{
+					"description": "Government funded",
+					"bonus": 2
+				}
+			]
+		}
+	]
+}

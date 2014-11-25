@@ -1,0 +1,23 @@
+{
+	"name": "small",
+	"roles": [
+		{
+			"name": "Contractor",
+			"bio": "Employee at a large construction company",
+			"agenda_items": [
+				{
+					"description": "Involves new construction",
+					"bonus": 1
+				},
+				{
+					"description": "Can start work in the next 3 months",
+					"bonus": 1
+				},
+				{
+					"description": "Project will take at least 2 years to complete",
+					"bonus": 2
+				}
+			]
+		}
+	]
+}

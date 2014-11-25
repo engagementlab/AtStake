@@ -10,4 +10,10 @@ public class Deck {
 		this.name = name;
 		this.roles = roles;
 	}
+
+	public void PrintAttributes () {
+		foreach (Role r in roles) {
+			r.PrintAttributes ();
+		}
+	}
 }
