@@ -18,29 +18,88 @@ public class DeckManager : MonoBehaviour {
 		if (instance == null) instance = this;
 		dataPath = Application.dataPath;
 		//LoadDeck ("default-deck.json");
-		GetLocalDeckNames ();
+		//GetLocalDeckNames ();
+		//StartCoroutine (GetDeckPath ());
+		StartCoroutine (GetHostedDecks ());
+	}
+
+	IEnumerator GetHostedDecks () {
+		WWW www = new WWW ("http://engagementgamelab.org/atstake-mobile-decks/local/default-deck.json");
+		yield return www;
+		debugText = www.text;
+	}
+
+	IEnumerator GetDeckPath () {
+		yield return null;
+		/*string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "Decks/default-deck.json");
+		string result = "";
+
+		string path = "";
+
+		#if UNITY_STANDALONE
+		path = dataPath + "/StreamingAssets/Decks";
+		#endif
+
+		#if UNITY_IPHONE
+		path = dataPath + "/Raw/Decks";
+		#endif
+
+		#if UNITY_ANDROID
+		path = "jar:file://" + dataPath + "!/assets/Decks";
+		#endif
+
+		#if UNITY_EDITOR
+		path = dataPath + "/StreamingAssets/Decks";
+		#endif
+
+		if (filePath.Contains ("://")) {
+			WWW www = new WWW (filePath);
+			yield return www;
+			debugText = www.text;
+		} else {
+			debugText = System.IO.File.ReadAllText (filePath);
+		}*/
+
 	}
 
 	public void GetLocalDeckNames () {
 
-		TextAsset[] obj = Resources.FindObjectsOfTypeAll (typeof(TextAsset)) as TextAsset[];
-		for (int i = 0; i < obj.Length; i ++) {
-			string name = obj[i].name;
-			if (name == "default-deck.json") {
-				Debug.Log (name);
-			}
-		}
+		string path = "";
+
+		#if UNITY_STANDALONE
+		path = dataPath + "/StreamingAssets/Decks";
+		#endif
+
+		#if UNITY_IPHONE
+		path = dataPath + "/Raw/Decks";
+		#endif
+
+		#if UNITY_ANDROID
+		path = "jar:file://" + dataPath + "!/assets/Decks";
+		#endif
+
+		#if UNITY_EDITOR
+		path = dataPath + "/StreamingAssets/Decks";
+		#endif
+
+		/*DirectoryInfo dir = new DirectoryInfo (path);
+
+		FileInfo[] info = dir.GetFiles ("*.json");
+		names = new string[info.Length];
+		for (int i = 0; i < info.Length; i ++) {
+			names[i] = info[i].Name;
+		}*/
 
 		// this will not work for android
 		// http://answers.unity3d.com/questions/569445/does-directoryinfo-getfiles-work-on-android-.html
-		DirectoryInfo dir = new DirectoryInfo (dataPath + deckPath);
+		/*DirectoryInfo dir = new DirectoryInfo (dataPath + deckPath);
 		debugText += dataPath + deckPath;
 
 		FileInfo[] info = dir.GetFiles ("*.json");
 		names = new string[info.Length];
 		for (int i = 0; i < info.Length; i ++) {
 			names[i] = info[i].Name;
-		}
+		}*/
 	}
 
 	public void LoadDeck (string deckName) {
