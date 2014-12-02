@@ -1,128 +1,143 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.IO;
 using System.Collections;
 using SimpleJSON;
 
+[RequireComponent (typeof(NetworkView))]
 public class DeckManager : MonoBehaviour {
 
 	public Deck deck;
-	string dataPath = "";
-	string deckPath = "/Resources/Decks";
 	public static DeckManager instance;
+	DeckList deckList = new DeckList ();
 
-	string[] names = new string[0];
+	// file containing data about each deck in the directory
+	string decksFilename = "_decks.json";
+	
+	// the loaded deck's filename & whether or not it's local
+	string deckFilename = "";
+	bool deckLocal = false;
+
 	string debugText = "";
+
+	string LocalDecksPath {
+		
+		get {
+			#if UNITY_WEBPLAYER
+			return "http://engagementgamelab.org/atstake-mobile-decks/local/";
+			#endif
+
+			#if UNITY_STANDALONE
+			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+			#endif
+
+			#if UNITY_IPHONE
+			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+			#endif
+
+			#if UNITY_ANDROID
+			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+			#endif
+
+			return "";
+		}
+	}
+
+	string HostedDecksPath {
+		get { return "http://engagementgamelab.org/atstake-mobile-decks/"; }
+	}
 
 	void Start () {
 		if (instance == null) instance = this;
-		dataPath = Application.dataPath;
-		//LoadDeck ("default-deck.json");
-		//GetLocalDeckNames ();
-		//StartCoroutine (GetDeckPath ());
-		StartCoroutine (GetHostedDecks ());
+		GetLocalDeckNames ();
+		GetHostedDeckNames ();
 	}
 
-	IEnumerator GetHostedDecks () {
-		WWW www = new WWW ("http://engagementgamelab.org/atstake-mobile-decks/local/default-deck.json");
-		yield return www;
-		debugText = www.text;
-	}
+	void GetLocalDeckNames () {
 
-	IEnumerator GetDeckPath () {
-		yield return null;
-		/*string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "Decks/default-deck.json");
-		string result = "";
+		string path = LocalDecksPath + decksFilename;
 
-		string path = "";
-
-		#if UNITY_STANDALONE
-		path = dataPath + "/StreamingAssets/Decks";
-		#endif
-
-		#if UNITY_IPHONE
-		path = dataPath + "/Raw/Decks";
-		#endif
-
-		#if UNITY_ANDROID
-		path = "jar:file://" + dataPath + "!/assets/Decks";
-		#endif
-
-		#if UNITY_EDITOR
-		path = dataPath + "/StreamingAssets/Decks";
-		#endif
-
-		if (filePath.Contains ("://")) {
-			WWW www = new WWW (filePath);
-			yield return www;
-			debugText = www.text;
-		} else {
-			debugText = System.IO.File.ReadAllText (filePath);
-		}*/
-
-	}
-
-	public void GetLocalDeckNames () {
-
-		string path = "";
-
-		#if UNITY_STANDALONE
-		path = dataPath + "/StreamingAssets/Decks";
-		#endif
-
-		#if UNITY_IPHONE
-		path = dataPath + "/Raw/Decks";
-		#endif
-
-		#if UNITY_ANDROID
-		path = "jar:file://" + dataPath + "!/assets/Decks";
-		#endif
-
-		#if UNITY_EDITOR
-		path = dataPath + "/StreamingAssets/Decks";
-		#endif
-
-		/*DirectoryInfo dir = new DirectoryInfo (path);
-
-		FileInfo[] info = dir.GetFiles ("*.json");
-		names = new string[info.Length];
-		for (int i = 0; i < info.Length; i ++) {
-			names[i] = info[i].Name;
-		}*/
-
-		// this will not work for android
-		// http://answers.unity3d.com/questions/569445/does-directoryinfo-getfiles-work-on-android-.html
-		/*DirectoryInfo dir = new DirectoryInfo (dataPath + deckPath);
-		debugText += dataPath + deckPath;
-
-		FileInfo[] info = dir.GetFiles ("*.json");
-		names = new string[info.Length];
-		for (int i = 0; i < info.Length; i ++) {
-			names[i] = info[i].Name;
-		}*/
-	}
-
-	public void LoadDeck (string deckName) {
-		string path = dataPath + deckPath + "/" + deckName;
+		// the webplayer gets 'local' decks from the server anyways,
+		// but it's only for testing purposes so whatev
 		#if UNITY_WEBPLAYER
-		StartCoroutine (WWWLoadDeck (path));
+		StartCoroutine (WWWLoadJSON (path, false, true));
 		#else
-		ParseJSON (System.IO.File.ReadAllText (path));
+		LoadJSON (path, false);
 		#endif
 	}
 
-	IEnumerator WWWLoadDeck (string path) {
-		WWW www = new WWW ("file:///" + path);
-		yield return www;
-		ParseJSON (www.text);
+	void GetHostedDeckNames () {
+		string path = HostedDecksPath + decksFilename;
+		StartCoroutine (WWWLoadJSON (path, false, false));
 	}
 
-	void ParseJSON (string content) {
+	public void LoadDeck (string filename, bool isLocal) {
+		deckFilename = filename;
+		deckLocal = isLocal;
+		if (isLocal) {
+			GetLocalDeck (filename);
+		} else {
+			GetHostedDeck (filename);
+		}
+	}
+
+	void GetLocalDeck (string filename) {
+		string path = LocalDecksPath + filename;
+		LoadJSON (path, true);
+	}
+
+	void GetHostedDeck (string filename) {
+		string path = HostedDecksPath + filename;
+		StartCoroutine (WWWLoadJSON (path, true, false));
+	}
+
+	public void LoadJSON (string path, bool isDeck) {
+		#if UNITY_WEBPLAYER
+		StartCoroutine (WWWLoadJSON (path, isDeck, true));
+		#else
+		ParseJSON (System.IO.File.ReadAllText (path), isDeck, true);
+		#endif
+	}
+
+	IEnumerator WWWLoadJSON (string path, bool isDeck, bool isLocal) {
+		WWW www = new WWW (path);
+		yield return www;
+		ParseJSON (www.text, isDeck, isLocal);
+	}
+
+	void ParseJSON (string content, bool isDeck, bool isLocal) {
+		if (isDeck) {
+			ParseDeck (content);
+		} else {
+			ParseDecksList (content, isLocal);
+		}
+	}
+
+	void ParseDecksList (string content, bool isLocal) {
+		var json = JSONNode.Parse (content);
+		JSONArray jsonDecks = json["decks"] as JSONArray;
+		if (isLocal) {
+			deckList.ClearLocal ();
+			for (int i = 0; i < jsonDecks.Count; i ++) {
+				deckList.AddLocalDeck (jsonDecks[i]["name"], jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
+			}
+		} else {
+			deckList.ClearHosted ();
+			for (int i = 0; i < jsonDecks.Count; i ++) {
+				deckList.AddHostedDeck (jsonDecks[i]["name"], jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
+			}
+		}
+		deckList.Updated ();
+	}
+
+	void ParseDeck (string content) {
 		var json = JSONNode.Parse (content);
 		JSONArray jsonRoles = json["roles"] as JSONArray;
 		Role[] r = CreateRoles (jsonRoles);
 		deck = new Deck (json["name"], r);
-		Events.instance.Raise (new LoadDeckEvent ());
+		//Events.instance.Raise (new LoadDeckEvent (deckFilename));
+		SendLoadDeck ();
+		deck.PrintAttributes ();
 	}
 
 	Role[] CreateRoles (JSONArray jsonRoles) {
@@ -149,9 +164,17 @@ public class DeckManager : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		for (int i = 0; i < names.Length; i ++) {
-			GUILayout.Label (names[i]);
-		}
 		GUILayout.Label (debugText);
+	}
+
+	void SendLoadDeck () {
+		if (MultiplayerManager.instance.Hosting) {
+			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? "true" : "false");
+		}
+	}
+
+	[RPC]
+	void OnServerLoadDeck (string filename, string isLocal) {
+		LoadDeck (filename, isLocal == "true");
 	}
 }

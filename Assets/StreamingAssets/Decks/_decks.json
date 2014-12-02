@@ -1,0 +1,14 @@
+{
+	"decks": [
+		{
+			"name": "default",
+			"filename": "default-deck.json",
+			"starred": "true"
+		},
+		{
+			"name": "small",
+			"filename": "small-deck.json",
+			"starred": "false"
+		}
+	]
+}

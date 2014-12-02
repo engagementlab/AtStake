@@ -75,17 +75,4 @@ public class GameStateController : MonoBehaviour {
 		GotoState (stateIndex);
 		state.GotoLastScreen ();
 	}
-
-	/*void Update () {
-		// Debugging
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			//GotoNextScreen ();
-			//GotoState ("Round");
-			//GotoScreen ("Pitch", "Round");
-			//GotoPreviousScreen ();
-			//GotoState ("Multiplayer");
-			Debug.Log (state.name + ", " + state.Screen.name);
-			GotoNextScreen ();
-		}
-	}*/
 }

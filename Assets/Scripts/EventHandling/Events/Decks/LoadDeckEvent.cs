@@ -3,7 +3,9 @@ using System.Collections;
 
 public class LoadDeckEvent : GameEvent {
 
-	public LoadDeckEvent () {
+	public string filename;
 
+	public LoadDeckEvent (string filename) {
+		this.filename = filename;
 	}
 }

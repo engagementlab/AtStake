@@ -37,7 +37,7 @@ public class LobbyScreen : GameScreen {
 	public override void OnButtonPressEvent (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Back-Lobby": GoBack (); break;
-			case "Play-Lobby": Debug.Log ("play!"); break;
+			case "Play-Lobby": GotoScreen ("Choose Deck", "Decider"); break;
 		}
 	}
 
