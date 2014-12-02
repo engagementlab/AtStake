@@ -137,7 +137,6 @@ public class DeckManager : MonoBehaviour {
 		deck = new Deck (json["name"], r);
 		//Events.instance.Raise (new LoadDeckEvent (deckFilename));
 		SendLoadDeck ();
-		deck.PrintAttributes ();
 	}
 
 	Role[] CreateRoles (JSONArray jsonRoles) {
@@ -169,12 +168,14 @@ public class DeckManager : MonoBehaviour {
 
 	void SendLoadDeck () {
 		if (MultiplayerManager.instance.Hosting) {
-			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? "true" : "false");
+			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
 		}
+		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
 	}
 
 	[RPC]
-	void OnServerLoadDeck (string filename, string isLocal) {
-		LoadDeck (filename, isLocal == "true");
+	void OnServerLoadDeck (string filename, int isLocal) {
+		LoadDeck (filename, isLocal == 1);
+		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
 	}
 }

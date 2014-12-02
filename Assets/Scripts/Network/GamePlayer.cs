@@ -7,6 +7,10 @@ public class GamePlayer {
 	public string playerName;
 	List<string> players = new List<string>();
 
+	public int PlayerCount {
+		get { return players.Count; }
+	}
+
 	public GamePlayer (string playerName) {
 		this.playerName = playerName;
 	}
@@ -26,7 +30,7 @@ public class GamePlayer {
 	public bool HasOtherPlayers () {
 		return players.Count > 1;
 	}
-	
+
 	public string[] GetPlayerNames () {
 		string[] names = new string[players.Count];
 		int count = 0;

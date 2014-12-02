@@ -53,7 +53,20 @@ public class GameScreen {
 	*	Virtual functions
 	*/
 
-	public virtual void OnScreenStart () {}
+	// Host and clients hear this
+	public virtual void OnScreenStart () {
+		if (MultiplayerManager.instance.Hosting) {
+			OnScreenStartHost ();
+		} else {
+			OnScreenStartClient ();
+		}
+	}
+
+	// Only the host hears this
+	public virtual void OnScreenStartHost () {}
+
+	// Only clients hear this
+	public virtual void OnScreenStartClient () {}
 	public virtual void OnButtonPressEvent (ButtonPressEvent e) {}
 
 	/**

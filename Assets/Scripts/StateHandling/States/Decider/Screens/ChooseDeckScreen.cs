@@ -4,18 +4,20 @@ using System.Collections.Generic;
 
 public class ChooseDeckScreen : GameScreen {
 	
+	LabelElement title;
 	DeckList dl;
 
 	public ChooseDeckScreen (string name = "Choose Deck") : base (name) {
 		Events.instance.AddListener<UpdateDeckListEvent> (OnUpdateDeckListEvent);
+		title = new LabelElement ("Please wait while the host chooses a deck");
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Choose a deck")
+			title	
 		});
 	}
+	
+	public override void OnScreenStartHost () {
 
-	void OnUpdateDeckListEvent (UpdateDeckListEvent e) {
-
-		dl = e.deckList;
+		title.content = "Choose a deck";
 
 		int localDecksCount = dl.LocalDecks.Count;
 		int hostedDecksCount = dl.HostedDecks.Count;
@@ -36,6 +38,10 @@ public class ChooseDeckScreen : GameScreen {
 			se[i] = new ButtonElement ("deck_h_" + name, name);
 		}
 		SetVariableElements (se);
+	}
+
+	void OnUpdateDeckListEvent (UpdateDeckListEvent e) {
+		dl = e.deckList;
 	}
 
 	string GetFilename (string name, bool local) {

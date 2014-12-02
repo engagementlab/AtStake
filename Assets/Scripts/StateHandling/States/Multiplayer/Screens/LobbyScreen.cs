@@ -37,12 +37,17 @@ public class LobbyScreen : GameScreen {
 	public override void OnButtonPressEvent (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Back-Lobby": GoBack (); break;
-			case "Play-Lobby": GotoScreen ("Choose Deck", "Decider"); break;
+			case "Play-Lobby": GotoChooseDeck (); break;
 		}
 	}
 
 	void GoBack () {
 		MultiplayerManager.instance.ExitLobby ();
 		GotoScreen (hosting ? "Host or Join" : "Games List");
+	}
+
+	void GotoChooseDeck () {
+		MultiplayerManager.instance.SendOthersToScreen ("Choose Deck", "Decider");
+		GotoScreen ("Choose Deck", "Decider");
 	}
 }
