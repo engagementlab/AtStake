@@ -5,7 +5,7 @@ public class GamesListScreen : GameScreen {
 
 	HostData[] hosts;
 
-	public GamesListScreen (string name = "Games List") : base (name) {
+	public GamesListScreen (GameState state, string name = "Games List") : base (state, name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Choose a game to join"),

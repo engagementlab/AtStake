@@ -9,8 +9,8 @@ public class DeciderState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			new ChooseDeckScreen (),
-			new ChooseDeciderScreen ()
+			new ChooseDeckScreen (this),
+			new ChooseDeciderScreen (this)
 		};
 	}
 }

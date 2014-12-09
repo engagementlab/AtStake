@@ -9,10 +9,10 @@ public class StartState : GameState {
 
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			new StartScreen (),
-			new InstructionsScreen (),
-			new NewDeckScreen (),
-			new AboutScreen ()
+			new StartScreen (this),
+			new InstructionsScreen (this),
+			new NewDeckScreen (this),
+			new AboutScreen (this)
 		};
 	}
 }

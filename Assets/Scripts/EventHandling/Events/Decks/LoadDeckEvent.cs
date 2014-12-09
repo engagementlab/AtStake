@@ -3,9 +3,9 @@ using System.Collections;
 
 public class LoadDeckEvent : GameEvent {
 
-	public string filename;
+	public readonly Deck deck;
 
-	public LoadDeckEvent (string filename) {
-		this.filename = filename;
+	public LoadDeckEvent (Deck deck) {
+		this.deck = deck;
 	}
 }

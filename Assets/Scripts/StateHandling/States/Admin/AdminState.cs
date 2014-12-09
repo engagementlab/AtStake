@@ -9,7 +9,7 @@ public class AdminState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			new DecksListScreen ()
+			new DecksListScreen (this)
 		};
 	}
 }

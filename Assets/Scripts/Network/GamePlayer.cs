@@ -11,6 +11,10 @@ public class GamePlayer {
 		get { return players.Count; }
 	}
 
+	public List<string> Players {
+		get { return players; }
+	}
+
 	public GamePlayer (string playerName) {
 		this.playerName = playerName;
 	}

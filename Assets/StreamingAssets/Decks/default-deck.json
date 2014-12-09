@@ -1,5 +1,10 @@
 {
 	"name": "default",
+	"questions": [
+			"How do we encourage local businesses in our community?",
+			"How do we improve graduation rates of high schoolers?",
+			"How do we create more positive community events?"
+	],
 	"roles": [
 		{
 			"name": "Contractor",

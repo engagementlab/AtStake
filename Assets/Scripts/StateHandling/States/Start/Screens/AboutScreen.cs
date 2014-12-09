@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AboutScreen : GameScreen {
 	
-	public AboutScreen (string name = "About") : base (name) {
+	public AboutScreen (GameState state, string name = "About") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("@Stake is a game designed by the Engagement Lab at Emerson College"),
 			CreateButton ("Back")

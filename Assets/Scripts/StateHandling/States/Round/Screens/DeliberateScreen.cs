@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DeliberateScreen : GameScreen {
 	
-	public DeliberateScreen (string name = "Deliberate") : base (name) {
+	public DeliberateScreen (GameState state, string name = "Deliberate") : base (state, name) {
 		
 	}
 }

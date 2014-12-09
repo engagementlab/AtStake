@@ -9,8 +9,7 @@ public class EndState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			new FinalScoreboardScreen ()
-
+			new FinalScoreboardScreen (this)
 		};
 	}
 }

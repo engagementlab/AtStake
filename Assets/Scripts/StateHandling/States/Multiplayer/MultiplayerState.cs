@@ -9,10 +9,10 @@ public class MultiplayerState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			new EnterNameScreen (),
-			new HostJoinScreen (),
-			new GamesListScreen (),
-			new LobbyScreen ()
+			new EnterNameScreen (this),
+			new HostJoinScreen (this),
+			new GamesListScreen (this),
+			new LobbyScreen (this)
 		};
 	}
 }

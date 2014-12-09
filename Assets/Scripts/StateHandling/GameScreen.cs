@@ -4,6 +4,7 @@ using System.Collections;
 public class GameScreen {
 
 	public readonly string name = "";
+	public readonly GameState state;
 
 	ScreenElement[] staticElements = new ScreenElement[0];
 	public ScreenElement[] StaticElements {
@@ -20,7 +21,8 @@ public class GameScreen {
 		get { return elements; }
 	}
 
-	public GameScreen (string name) {
+	public GameScreen (GameState state, string name) {
+		this.state = state;
 		this.name = name;
 		Events.instance.AddListener<ButtonPressEvent> (OnButtonPressEvent);
 	}
@@ -28,10 +30,6 @@ public class GameScreen {
 	/**
 	*	Protected functions
 	*/
-
-	protected void GotoScreen (string screenName, string stateName = "") {
-		GameStateController.instance.GotoScreen (screenName, stateName);
-	}
 
 	// Call this in the constructor to create elements that never change
 	protected void SetStaticElements (ScreenElement[] staticElements) {
@@ -47,6 +45,10 @@ public class GameScreen {
 		this.variableElements = variableElements;
 		RefreshElements ();
 		Events.instance.Raise (new UpdateDrawerEvent ());
+	}
+
+	protected void GotoScreen (string screenName, string stateName = "") {
+		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 
 	protected ButtonElement CreateButton (string id, string content="") {

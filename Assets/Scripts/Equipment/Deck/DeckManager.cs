@@ -131,12 +131,29 @@ public class DeckManager : MonoBehaviour {
 	}
 
 	void ParseDeck (string content) {
+		
 		var json = JSONNode.Parse (content);
+		
+		// Questions
+		JSONArray jsonQuestions = json["questions"] as JSONArray;
+		CreateQuestions (jsonQuestions);
+
+		// Role cards
 		JSONArray jsonRoles = json["roles"] as JSONArray;
 		Role[] r = CreateRoles (jsonRoles);
 		deck = new Deck (json["name"], r);
-		//Events.instance.Raise (new LoadDeckEvent (deckFilename));
+
 		SendLoadDeck ();
+		
+		RoleManager.instance.PopulateDeck (deck);
+	}
+
+	void CreateQuestions (JSONArray arr) {
+		string[] qs = new string[arr.Count];
+		for (int i = 0; i < qs.Length; i ++) {
+			qs[i] = arr[i];
+		}
+		QuestionManager.instance.PopulateQuestions (qs);
 	}
 
 	Role[] CreateRoles (JSONArray jsonRoles) {
@@ -176,6 +193,5 @@ public class DeckManager : MonoBehaviour {
 	[RPC]
 	void OnServerLoadDeck (string filename, int isLocal) {
 		LoadDeck (filename, isLocal == 1);
-		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
 	}
 }

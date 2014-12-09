@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DecksListScreen : GameScreen {
 
-	public DecksListScreen (string name = "Decks List") : base (name) {
+	public DecksListScreen (GameState state, string name = "Decks List") : base (state, name) {
 
 	}
 }

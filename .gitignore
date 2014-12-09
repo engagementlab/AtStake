@@ -35,5 +35,4 @@ Thumbs.db
 # ====== #
 Builds/
 hosted-decks/
-*.sublime-project
-*.sublime-workspace
+*.sublime-*

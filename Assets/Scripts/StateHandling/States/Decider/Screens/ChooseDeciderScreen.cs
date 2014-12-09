@@ -6,7 +6,7 @@ public class ChooseDeciderScreen : GameScreen {
 	string decider = "";
 	LabelElement deciderSelection;
 
-	public ChooseDeciderScreen (string name = "Choose Decider") : base (name) {
+	public ChooseDeciderScreen (GameState state, string name = "Choose Decider") : base (state, name) {
 		deciderSelection = new LabelElement ("");
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Choose the first decider"),

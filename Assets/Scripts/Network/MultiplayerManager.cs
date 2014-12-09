@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent (typeof(NetworkView))]
 public class MultiplayerManager : MonoBehaviour {
@@ -17,6 +18,10 @@ public class MultiplayerManager : MonoBehaviour {
 
 	public int PlayerCount {
 		get { return player.PlayerCount; }
+	}
+
+	public List<string> Players {
+		get { return player.Players; }
 	}
 
 	bool findingGames = false;

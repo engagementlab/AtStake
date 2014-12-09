@@ -7,7 +7,7 @@ public class ChooseDeckScreen : GameScreen {
 	LabelElement title;
 	DeckList dl;
 
-	public ChooseDeckScreen (string name = "Choose Deck") : base (name) {
+	public ChooseDeckScreen (GameState state, string name = "Choose Deck") : base (state, name) {
 		Events.instance.AddListener<UpdateDeckListEvent> (OnUpdateDeckListEvent);
 		title = new LabelElement ("Please wait while the host chooses a deck");
 		SetStaticElements (new ScreenElement[] {

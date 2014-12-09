@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : System.Object {
+// throw this out?
+
+public class Player {
 
 	string name;
 	Role role;

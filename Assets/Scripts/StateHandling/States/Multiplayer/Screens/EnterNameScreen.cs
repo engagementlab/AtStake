@@ -5,7 +5,7 @@ public class EnterNameScreen : GameScreen {
 
 	TextFieldElement tfe;
 
-	public EnterNameScreen (string name = "Enter Name") : base (name) {
+	public EnterNameScreen (GameState state, string name = "Enter Name") : base (state, name) {
 		tfe = new TextFieldElement ();
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Please type your name:"),

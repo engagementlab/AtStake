@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AgendaScreen : GameScreen {
 	
-	public AgendaScreen (string name = "Agenda") : base (name) {
+	public AgendaScreen (GameState state, string name = "Agenda") : base (state, name) {
 		
 	}
 }

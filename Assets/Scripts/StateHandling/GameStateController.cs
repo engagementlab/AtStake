@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (NetworkView))]
 public class GameStateController : MonoBehaviour {
 
 	GameStates states;
@@ -14,7 +15,13 @@ public class GameStateController : MonoBehaviour {
 
 	// Screens exist within states
 	public GameScreen Screen {
-		get { return State.Screen; }
+		get {
+			// This is necessary because ScreenDrawer is trying to get the screen
+			// before it's been set - which seems impossible but somehow isn't?
+			if (State == null)
+				return states.GetState (0).Screen;
+			return State.Screen; 
+		}
 	}
 
 	public static GameStateController instance;
@@ -31,8 +38,11 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	void GotoState (int index) {
+		if (stateIndex == index)
+			return;
 		stateIndex = index;
 		state = states.GetState (index);
+		state.OnStateStart ();
 		Events.instance.Raise (new ChangeStateEvent (state));
 	}
 
@@ -74,5 +84,17 @@ public class GameStateController : MonoBehaviour {
 		}
 		GotoState (stateIndex);
 		state.GotoLastScreen ();
+	}
+
+	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
+		if (MultiplayerManager.instance.Hosting) {
+			GotoScreen (screenName, stateName);
+			networkView.RPC ("ClientGotoScreen", RPCMode.Others, screenName, stateName);
+		}
+	}
+
+	[RPC]
+	void ClientGotoScreen (string screenName, string stateName = "") {
+		GotoScreen (screenName, stateName);
 	}
 }

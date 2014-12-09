@@ -7,7 +7,7 @@ public class LobbyScreen : GameScreen {
 	bool hosting = false;
 	int minPlayers = 1;		// the number of players that must join before we show the play button TODO: the screen drawer should probably handle this
 
-	public LobbyScreen (string name = "Lobby") : base (name) {
+	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Lobby"),
 			CreateButton ("Back")

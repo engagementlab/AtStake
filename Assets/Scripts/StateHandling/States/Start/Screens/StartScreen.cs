@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StartScreen : GameScreen {
 
-	public StartScreen (string name = "Start") : base (name) {
+	public StartScreen (GameState state, string name = "Start") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			CreateButton ("Play"),
 			CreateButton ("Instructions"),

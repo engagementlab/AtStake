@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PitchScreen : GameScreen {
 	
-	public PitchScreen (string name = "Pitch") : base (name) {
+	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
 		
 	}
 }

@@ -9,7 +9,7 @@ PlayerSettings:
   targetDevice: 2
   targetGlesGraphics: 1
   targetResolution: 0
-  accelerometerFrequency: 60
+  accelerometerFrequency: 0
   companyName: Engagement Lab at Emerson College
   productName: '@Stake'
   defaultCursor: {fileID: 0}
@@ -85,7 +85,7 @@ PlayerSettings:
   APKExpansionFiles: 0
   StripUnusedMeshComponents: 0
   iPhoneSdkVersion: 988
-  iPhoneTargetOSVersion: 16
+  iPhoneTargetOSVersion: 22
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIStatusBarHidden: 1

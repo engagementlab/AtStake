@@ -39,15 +39,19 @@ public class DeciderSelectionManager : MonoBehaviour {
 
 	[RPC]
 	void AddSelection (string name, string deciderName) {
+
+		bool nameInList = false;
 		foreach (string[] s in selections) {
 			if (s[0] == name) {
 				s[1] = deciderName;
-				return;
+				nameInList = true;
 			}
 		}
-		selections.Add (new string[] { name, deciderName });
+		if (!nameInList)
+			selections.Add (new string[] { name, deciderName });
+
 		if (selections.Count == MultiplayerManager.instance.PlayerCount && SelectionsMatch ()) {
-			Debug.Log ("start the game!");
+			GameStateController.instance.AllPlayersGotoScreen ("Question", "Round");
 		}
 	}
 }

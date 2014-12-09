@@ -6,7 +6,7 @@ public class HostJoinScreen : GameScreen {
 	LabelElement label;
 	string defaultText = "Select host or join";
 
-	public HostJoinScreen (string name = "Host or Join") : base (name) {
+	public HostJoinScreen (GameState state, string name = "Host or Join") : base (state, name) {
 		label = new LabelElement (defaultText);
 		SetStaticElements (new ScreenElement[] {
 			label,

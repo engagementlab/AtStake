@@ -18,16 +18,9 @@ public class GameState {
 		screen = screens[0];
 	}
 
-	public virtual GameScreen[] SetScreens () {
-		return new GameScreen[0];
-	}
-	
-	void GotoScreen (int index) {
-		screenIndex = index;
-		screen = screens[index];
-		screen.OnScreenStart ();
-		Events.instance.Raise (new ChangeScreenEvent (screen));
-	}
+	/**
+	*	Public functions
+	*/
 
 	public void GotoScreen (string screenName) {
 		for (int i = 0; i < screens.Length; i ++) {
@@ -60,4 +53,25 @@ public class GameState {
 		GotoScreen (screenIndex - 1);
 		return true;
 	}
+
+	/**
+	*	Private functions
+	*/
+
+	void GotoScreen (int index) {
+		screenIndex = index;
+		screen = screens[index];
+		screen.OnScreenStart ();
+		Events.instance.Raise (new ChangeScreenEvent (screen));
+	}
+
+	/**
+	*	Virtual functions
+	*/
+
+	public virtual GameScreen[] SetScreens () {
+		return new GameScreen[0];
+	}
+
+	public virtual void OnStateStart () {}
 }
