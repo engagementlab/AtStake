@@ -26,15 +26,15 @@ public class GameScreen {
 	}
 
 	/**
-	*	Public functions
+	*	Protected functions
 	*/
 
-	public void GotoScreen (string screenName, string stateName = "") {
+	protected void GotoScreen (string screenName, string stateName = "") {
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 
 	// Call this in the constructor to create elements that never change
-	public void SetStaticElements (ScreenElement[] staticElements) {
+	protected void SetStaticElements (ScreenElement[] staticElements) {
 		if (this.staticElements.Length > 0) {
 			Debug.LogWarning ("SetStaticElements() should only be called once per instance of GameScreen.");
 		}
@@ -43,10 +43,16 @@ public class GameScreen {
 	}
 
 	// Call this whenever to create & manipulate elements that move/change
-	public void SetVariableElements (ScreenElement[] variableElements) {
+	protected void SetVariableElements (ScreenElement[] variableElements) {
 		this.variableElements = variableElements;
 		RefreshElements ();
 		Events.instance.Raise (new UpdateDrawerEvent ());
+	}
+
+	protected ButtonElement CreateButton (string id, string content="") {
+		if (content == "")
+			content = id;
+		return new ButtonElement (this, id, content);
 	}
 
 	/**
@@ -67,7 +73,9 @@ public class GameScreen {
 
 	// Only clients hear this
 	public virtual void OnScreenStartClient () {}
-	public virtual void OnButtonPressEvent (ButtonPressEvent e) {}
+
+	// This function only gets called if the pressed button belongs to this GameScreen
+	public virtual void OnButtonPress (ButtonPressEvent e) {}
 
 	/**
 	*	Private functions
@@ -92,5 +100,14 @@ public class GameScreen {
 
 	void SetElements (ScreenElement[] elements) {
 		this.elements = elements;
+	}
+
+	/**
+	*	Messages
+	*/
+
+	void OnButtonPressEvent (ButtonPressEvent e) {
+		if (e.screen == this)
+			OnButtonPress (e);
 	}
 }

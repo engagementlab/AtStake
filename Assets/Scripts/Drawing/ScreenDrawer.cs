@@ -20,7 +20,7 @@ public class ScreenDrawer : MonoBehaviour {
 			if (e is ButtonElement) {
 				ButtonElement b = e as ButtonElement;
 				if (GUILayout.Button (b.content, GUILayout.Width (200), GUILayout.Height (75))) {
-					Events.instance.Raise (new ButtonPressEvent (b.id));
+					Events.instance.Raise (new ButtonPressEvent (b.screen, b.id));
 				}
 			}
 			if (e is LabelElement) {

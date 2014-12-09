@@ -5,14 +5,14 @@ public class StartScreen : GameScreen {
 
 	public StartScreen (string name = "Start") : base (name) {
 		SetStaticElements (new ScreenElement[] {
-			new ButtonElement ("Play", "Play"),
-			new ButtonElement ("Instructions", "Instructions"),
-			new ButtonElement ("Deck", "New Deck"),
-			new ButtonElement ("About", "About")
+			CreateButton ("Play"),
+			CreateButton ("Instructions"),
+			CreateButton ("Deck"),
+			CreateButton ("About")
 		});
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Play": GotoScreen ("Enter Name", "Multiplayer"); break;
 			case "Instructions": GotoScreen ("Instructions"); break;

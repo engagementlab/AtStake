@@ -6,12 +6,12 @@ public class AboutScreen : GameScreen {
 	public AboutScreen (string name = "About") : base (name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("@Stake is a game designed by the Engagement Lab at Emerson College"),
-			new ButtonElement ("Back-About", "Back")
+			CreateButton ("Back")
 		});
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
-		if (e.id == "Back-About") {
+	public override void OnButtonPress (ButtonPressEvent e) {
+		if (e.id == "Back") {
 			GotoScreen ("Start");
 		}
 	}

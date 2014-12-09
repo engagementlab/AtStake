@@ -28,14 +28,14 @@ public class ChooseDeckScreen : GameScreen {
 		int offset = 1;
 		for (int i = offset; i < localDecksCount+offset; i ++) {
 			string name = dl.LocalDecks[i-offset].name;
-			se[i] = new ButtonElement ("deck_l_" + name, name);
+			se[i] = CreateButton ("deck_l_" + name, name);
 		}
 
 		se[localDecksCount+1] = new LabelElement ("Hosted decks");
 		offset = localDecksCount+2;
 		for (int i = offset; i < elementsCount; i ++) {
 			string name = dl.HostedDecks[i-offset].name;
-			se[i] = new ButtonElement ("deck_h_" + name, name);
+			se[i] = CreateButton ("deck_h_" + name, name);
 		}
 		SetVariableElements (se);
 	}
@@ -54,7 +54,7 @@ public class ChooseDeckScreen : GameScreen {
 		return "";
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id.Length < 5)
 			return;
 		if (e.id.Substring (0, 5) == "deck_") {

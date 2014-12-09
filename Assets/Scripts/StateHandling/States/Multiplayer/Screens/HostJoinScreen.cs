@@ -10,16 +10,16 @@ public class HostJoinScreen : GameScreen {
 		label = new LabelElement (defaultText);
 		SetStaticElements (new ScreenElement[] {
 			label,
-			new ButtonElement ("Host", "Host"),
-			new ButtonElement ("Join", "Join"),
-			new ButtonElement ("Back-Host-Join", "Back")
+			CreateButton ("Host"),
+			CreateButton ("Join"),
+			CreateButton ("Back")
 		});
 
 		Events.instance.AddListener<JoinTimeoutEvent> (OnJoinTimeoutEvent);
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Host": 
 				MultiplayerManager.instance.HostGame (); 
@@ -29,7 +29,7 @@ public class HostJoinScreen : GameScreen {
 				MultiplayerManager.instance.JoinGame (); 
 				label.content = "searching for games...";
 				break;
-			case "Back-Host-Join": 
+			case "Back": 
 				GotoScreen ("Enter Name"); 
 				break;
 		}

@@ -6,12 +6,12 @@ public class InstructionsScreen : GameScreen {
 	public InstructionsScreen (string name = "Instructions") : base (name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Instructions on how to play the game:\n1) purchase a new microwave and\n2) reconnect with your older sister"),
-			new ButtonElement ("Back-Instructions", "Back")
+			CreateButton ("Back")
 		});
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
-		if (e.id == "Back-Instructions") {
+	public override void OnButtonPress (ButtonPressEvent e) {
+		if (e.id == "Back") {
 			GotoScreen ("Start");
 		}
 	}

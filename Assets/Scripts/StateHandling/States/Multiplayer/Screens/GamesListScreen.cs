@@ -9,7 +9,7 @@ public class GamesListScreen : GameScreen {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Choose a game to join"),
-			new ButtonElement ("Back-Games-List", "Back")
+			CreateButton ("Back")
 		});
 	}
 
@@ -18,14 +18,14 @@ public class GamesListScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[hosts.Length];
 		for (int i = 0; i < se.Length; i ++) {
 			string gameName = hosts[i].gameName;
-			se[i] = new ButtonElement (i.ToString () + "__" + gameName, gameName);
+			se[i] = CreateButton (i.ToString () + "__" + gameName, gameName);
 		}
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
-			case "Back-Games-List": GotoScreen ("Host or Join"); break;
+			case "Back": GotoScreen ("Host or Join"); break;
 		}
 		char c = e.id[0];
 		char c2 = e.id[1];

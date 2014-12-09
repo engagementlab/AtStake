@@ -21,13 +21,13 @@ public class ChooseDeciderScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[names.Length];
 		for (int i = 0; i < names.Length; i ++) {
 			string name = names[i];
-			se[i] = new ButtonElement ("Name-Decider-" + name, name);
+			se[i] = CreateButton ("Name-Decider-" + name, name);
 		}
 
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id.Length < 13) return;
 		if (e.id.Substring (0, 13) == "Name-Decider-") {
 			decider = e.id.Substring (13);

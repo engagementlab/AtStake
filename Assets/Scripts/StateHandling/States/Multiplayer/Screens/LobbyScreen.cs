@@ -10,7 +10,7 @@ public class LobbyScreen : GameScreen {
 	public LobbyScreen (string name = "Lobby") : base (name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Lobby"),
-			new ButtonElement ("Back-Lobby", "Back")
+			CreateButton ("Back")
 		});
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
@@ -29,15 +29,15 @@ public class LobbyScreen : GameScreen {
 			se[i] = new LabelElement (names[i]);
 		}
 
-		if (showPlay) se[elementCount-1] = new ButtonElement ("Play-Lobby", "Play");
+		if (showPlay) se[elementCount-1] = CreateButton ("Play"); //new ButtonElement (this, "Play-Lobby", "Play");
 
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPressEvent (ButtonPressEvent e) {
+	public override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
-			case "Back-Lobby": GoBack (); break;
-			case "Play-Lobby": GotoChooseDeck (); break;
+			case "Back": GoBack (); break;
+			case "Play": GotoChooseDeck (); break;
 		}
 	}
 
