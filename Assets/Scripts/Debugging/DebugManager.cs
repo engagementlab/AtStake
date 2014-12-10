@@ -6,20 +6,27 @@ public class DebugManager : MonoBehaviour {
 	public bool enableDebug = false;
 	public bool autoLoadDeck = false;
 	public bool host = false;
+	public bool decider = false;
 
 	public string screen;
 	public string state;
+
+	new string name = "Debugging Jenny";
 
 	void Start () {
 		
 		if (!enableDebug)
 			return;
 
-		Events.instance.Raise (new EnterNameEvent ("Debbuging Jenny"));
+		Events.instance.Raise (new EnterNameEvent (name));
 		if (host) {
 			MultiplayerManager.instance.DebugCreateHost ();
 		} else {
 			MultiplayerManager.instance.DebugCreateClient ();
+		}
+
+		if (decider) {
+			Events.instance.Raise (new SelectDeciderEvent (name));
 		}
 
 		if (autoLoadDeck) {

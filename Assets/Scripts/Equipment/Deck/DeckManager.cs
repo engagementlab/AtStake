@@ -38,8 +38,6 @@ public class DeckManager : MonoBehaviour {
 			#if UNITY_ANDROID
 			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
 			#endif
-
-			return "";
 		}
 	}
 

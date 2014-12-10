@@ -12,14 +12,24 @@ public class QuestionScreen : GameScreen {
 		});	
 	}
 
-	public override void OnScreenStart () {
+	public override void OnScreenStart (bool hosting, bool isDecider) {
 		
 		RoundState round = state as RoundState;
 		int roundNumber = round.RoundNumber;
 		title.content = string.Format("Round {0}", roundNumber);
 
-		SetVariableElements (new ScreenElement[] {
-			new LabelElement (round.Question)
-		});
+		ScreenElement[] se = new ScreenElement[isDecider ? 2 : 1];
+		se[0] = new LabelElement (round.Question);
+		if (isDecider) {
+			se[1] = CreateButton ("Next");
+		}
+
+		SetVariableElements (se);
+	}
+
+	protected override void OnButtonPress (ButtonPressEvent e) {
+		if (e.id == "Next") {
+			GameStateController.instance.AllPlayersGotoScreen ("Brainstorm");
+		}
 	}
 }

@@ -3,12 +3,10 @@ using System.Collections;
 
 public class ScreenDrawer : MonoBehaviour {
 
-	GameState state;
 	GameScreen screen;
 	ScreenElement[] elements;
 
 	void Awake () {
-		Events.instance.AddListener<ChangeStateEvent> (OnChangeStateEvent);
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 	}
@@ -36,10 +34,6 @@ public class ScreenDrawer : MonoBehaviour {
 				GUILayout.Label (t.SecondsRounded.ToString ());
 			}
 		}
-	}
-
-	void OnChangeStateEvent (ChangeStateEvent e) {
-		state = e.state;
 	}
 
 	void OnChangeScreenEvent (ChangeScreenEvent e) {

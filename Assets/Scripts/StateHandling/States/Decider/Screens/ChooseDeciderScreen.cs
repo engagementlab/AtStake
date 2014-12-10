@@ -27,7 +27,7 @@ public class ChooseDeciderScreen : GameScreen {
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id.Length < 13) return;
 		if (e.id.Substring (0, 13) == "Name-Decider-") {
 			decider = e.id.Substring (13);

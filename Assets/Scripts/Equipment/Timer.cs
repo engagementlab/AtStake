@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (NetworkView))]
 public class Timer : MonoBehaviour {
 
 	float seconds = -1f;
@@ -24,11 +25,12 @@ public class Timer : MonoBehaviour {
 		StartCoroutine (CountDown ());
 	}
 
-	public bool AddSeconds (float amount) {
-		if (!countingDown)
-			return false;
+	void AddSeconds (float amount) {
+		if (!countingDown) {
+			seconds = amount;
+			StartCoroutine (CountDown ());
+		}
 		seconds += amount;
-		return true;
 	}
 
 	IEnumerator CountDown () {
@@ -43,5 +45,16 @@ public class Timer : MonoBehaviour {
 
 	void OnCountDownEnd () {
 		timerElement.OnCountDownEnd ();
+	}
+
+	public void DeciderAddSeconds (float amount) {
+		networkView.RPC ("AddSecondsMessage", RPCMode.Others, amount);
+	}
+
+	[RPC]
+	void AddSecondsMessage (float amount) {
+		if (Player.instance.IsDecider) {
+			AddSeconds (amount);
+		}
 	}
 }

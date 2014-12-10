@@ -29,9 +29,6 @@ public class MultiplayerManager : MonoBehaviour {
 		get { return player.Players; }
 	}
 
-	bool findingGames = false;
-	bool noGamesFound = false;
-	HostData[] hosts;	
 	GamePlayer player;
 
 	public static MultiplayerManager instance;
@@ -76,8 +73,6 @@ public class MultiplayerManager : MonoBehaviour {
 	public void JoinGame () {
 		player = new GameClient (PlayerName);
 		networkManager.JoinGame ();
-		findingGames = true;
-		noGamesFound = false;
 	}
 
 	public void ConnectToHost (HostData host) {
@@ -93,22 +88,15 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 
-	public void SendOthersToScreen (string screen, string state) {
-		networkView.RPC ("OnSendOthersToScreen", RPCMode.Others, screen, state);
-	}
-
 	/**
 	*	Messages
 	*/
 	
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
-		findingGames = false;
-		noGamesFound = true;
+		
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		findingGames = false;
-		hosts = e.hosts;
 		GotoScreen ("Games List");
 	}
 
@@ -165,11 +153,6 @@ public class MultiplayerManager : MonoBehaviour {
 	[RPC]
 	void SendRefreshListMessage() {
 		Events.instance.Raise (new RefreshPlayerListEvent (player.GetPlayerNames ()));
-	}
-
-	[RPC]
-	void OnSendOthersToScreen (string screen, string state) {
-		GameStateController.instance.GotoScreen (screen, state);
 	}
 
 	/**

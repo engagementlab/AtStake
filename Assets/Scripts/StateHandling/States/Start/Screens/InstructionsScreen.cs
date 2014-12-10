@@ -10,7 +10,7 @@ public class InstructionsScreen : GameScreen {
 		});
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
 			GotoScreen ("Start");
 		}

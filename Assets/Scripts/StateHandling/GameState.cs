@@ -7,6 +7,9 @@ public class GameState {
 	public readonly string name = "";
 	int screenIndex = 0;
 	GameScreen[] screens;
+
+	int previouslyVisitedIndex;
+
 	GameScreen screen;
 	public GameScreen Screen {
 		get { return screen; }
@@ -17,6 +20,7 @@ public class GameState {
 		this.screens = SetScreens ();
 		screenIndex = 0;
 		screen = screens[0];
+		previouslyVisitedIndex = screenIndex;
 	}
 
 	/**
@@ -55,14 +59,19 @@ public class GameState {
 		return true;
 	}
 
+	public void GotoPreviouslyVisitedScreen () {
+		GotoScreen (previouslyVisitedIndex);
+	}
+
 	/**
 	*	Private functions
 	*/
 
 	void GotoScreen (int index) {
+		previouslyVisitedIndex = screenIndex;
 		screenIndex = index;
 		screen = screens[index];
-		screen.OnScreenStart ();
+		screen.OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
 		Events.instance.Raise (new ChangeScreenEvent (screen));
 	}
 

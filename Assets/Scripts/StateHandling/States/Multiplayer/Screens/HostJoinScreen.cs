@@ -19,7 +19,11 @@ public class HostJoinScreen : GameScreen {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		label.content = defaultText;
+	}
+
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Host": 
 				MultiplayerManager.instance.HostGame (); 
@@ -42,9 +46,5 @@ public class HostJoinScreen : GameScreen {
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		label.content = "";
 		GotoScreen ("Games List");
-	}
-
-	public override void OnScreenStart () {
-		label.content = defaultText;
 	}
 }

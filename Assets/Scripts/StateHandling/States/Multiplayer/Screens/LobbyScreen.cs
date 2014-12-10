@@ -34,7 +34,7 @@ public class LobbyScreen : GameScreen {
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Back": GoBack (); break;
 			case "Play": GotoChooseDeck (); break;
@@ -47,7 +47,7 @@ public class LobbyScreen : GameScreen {
 	}
 
 	void GotoChooseDeck () {
-		MultiplayerManager.instance.SendOthersToScreen ("Choose Deck", "Decider");
+		GameStateController.instance.SendOthersToScreen ("Choose Deck", "Decider");
 		GotoScreen ("Choose Deck", "Decider");
 	}
 }

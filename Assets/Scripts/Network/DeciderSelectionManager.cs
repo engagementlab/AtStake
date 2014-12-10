@@ -51,7 +51,13 @@ public class DeciderSelectionManager : MonoBehaviour {
 			selections.Add (new string[] { name, deciderName });
 
 		if (selections.Count == MultiplayerManager.instance.PlayerCount && SelectionsMatch ()) {
+			networkView.RPC ("OnSelectDecider", RPCMode.All, deciderName);
 			GameStateController.instance.AllPlayersGotoScreen ("Question", "Round");
 		}
+	}
+
+	[RPC]
+	void OnSelectDecider (string deciderName) {
+		Events.instance.Raise (new SelectDeciderEvent (deciderName));
 	}
 }

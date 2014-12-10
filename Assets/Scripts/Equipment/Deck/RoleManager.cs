@@ -6,11 +6,6 @@ using System.Collections.Generic;
 public class RoleManager : MonoBehaviour {
 
 	Deck deck;
-	/*Role playerRole;
-	public Role PlayerRole {
-		get { return playerRole; }
-	}*/
-
 	static public RoleManager instance;
 
 	void Awake () {

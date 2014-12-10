@@ -15,7 +15,7 @@ public class EnterNameScreen : GameScreen {
 		});
 	}
 	
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Enter": 
 				if (tfe.content != "") {

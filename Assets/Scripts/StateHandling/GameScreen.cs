@@ -47,6 +47,25 @@ public class GameScreen {
 		Events.instance.Raise (new UpdateDrawerEvent ());
 	}
 
+	protected void AppendVariableElements (ScreenElement[] appendedElements) {
+		
+		ScreenElement[] tempElements = variableElements;
+		ScreenElement[] newVariableElements = new ScreenElement[tempElements.Length + appendedElements.Length];
+		for (int i = 0; i < tempElements.Length; i ++) {
+			newVariableElements[i] = tempElements[i];
+		}
+
+		int index = 0;
+		for (int i = tempElements.Length; i < newVariableElements.Length; i ++) {
+			newVariableElements[i] = appendedElements[index];
+			index ++;
+		}
+
+		variableElements = newVariableElements;
+		RefreshElements ();
+		Events.instance.Raise (new UpdateDrawerEvent ());
+	}
+
 	protected void GotoScreen (string screenName, string stateName = "") {
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
@@ -66,22 +85,33 @@ public class GameScreen {
 	*/
 
 	// Host and clients hear this
-	public virtual void OnScreenStart () {
-		if (MultiplayerManager.instance.Hosting) {
+	public virtual void OnScreenStart (bool hosting, bool isDecider) {
+		if (hosting) {
 			OnScreenStartHost ();
 		} else {
 			OnScreenStartClient ();
 		}
+		if (isDecider) {
+			OnScreenStartDecider ();
+		} else {
+			OnScreenStartPlayer ();
+		}
 	}
 
 	// Only the host hears this
-	public virtual void OnScreenStartHost () {}
+	protected virtual void OnScreenStartHost () {}
 
 	// Only clients hear this
-	public virtual void OnScreenStartClient () {}
+	protected virtual void OnScreenStartClient () {}
+
+	// Only the decider hears this
+	protected virtual void OnScreenStartDecider () {}
+
+	// Everyone but the decider hears this
+	protected virtual void OnScreenStartPlayer () {}
 
 	// This function only gets called if the pressed button belongs to this GameScreen
-	public virtual void OnButtonPress (ButtonPressEvent e) {}
+	protected virtual void OnButtonPress (ButtonPressEvent e) {}
 
 	public virtual void OnCountDownEnd () {}
 

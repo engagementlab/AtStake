@@ -12,7 +12,7 @@ public class StartScreen : GameScreen {
 		});
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Play": GotoScreen ("Enter Name", "Multiplayer"); break;
 			case "Instructions": GotoScreen ("Instructions"); break;

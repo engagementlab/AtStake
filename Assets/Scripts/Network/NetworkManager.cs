@@ -20,16 +20,14 @@ public class NetworkManager : MonoBehaviour {
 	}
 	Settings settings;
 
-	// Debugging
-	bool connected = false;
-	string testMessage = "";
-
 	void Awake () {
 		settings = new Settings (6, false, 10f);
 		MasterServer.ClearHostList ();
 	}
 
-	// Hosting
+	/**
+	*	Hosting
+	*/
 
 	public void HostGame (string instanceGameName) {
 		StartServer (instanceGameName);
@@ -50,7 +48,9 @@ public class NetworkManager : MonoBehaviour {
 		ResetHosts ();
 	}
 
-	// Joining
+	/**
+	*	Joining
+	*/
 
 	public void JoinGame () {
 		RefreshHostList ();
@@ -93,13 +93,10 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	public void DisconnectFromHost () {
-		/*if (Network.connections.Length > 0)
-			Network.CloseConnection (Network.connections[0], false);*/
 		ResetHosts ();
 	}
 
 	void OnConnectedToServer () {
-		connected = true;
 		Events.instance.Raise (new ConnectedToServerEvent ());
 	}
 

@@ -23,7 +23,7 @@ public class GamesListScreen : GameScreen {
 		SetVariableElements (se);
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Back": GotoScreen ("Host or Join"); break;
 		}

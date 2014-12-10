@@ -86,6 +86,10 @@ public class GameStateController : MonoBehaviour {
 		state.GotoLastScreen ();
 	}
 
+	public void GotoPreviouslyVisitedScreen () {
+		state.GotoPreviouslyVisitedScreen ();
+	}
+
 	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
 		if (MultiplayerManager.instance.Hosting) {
 			GotoScreen (screenName, stateName);
@@ -93,8 +97,17 @@ public class GameStateController : MonoBehaviour {
 		}
 	}
 
+	public void SendOthersToScreen (string screen, string state) {
+		networkView.RPC ("OnSendOthersToScreen", RPCMode.Others, screen, state);
+	}
+
 	[RPC]
 	void ClientGotoScreen (string screenName, string stateName = "") {
-		GotoScreen (screenName, stateName);
+		GameStateController.instance.GotoScreen (screenName, stateName);
+	}
+
+	[RPC]
+	void OnSendOthersToScreen (string screenName, string stateName) {
+		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 }

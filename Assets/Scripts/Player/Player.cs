@@ -8,6 +8,11 @@ public class Player : MonoBehaviour {
 		get { return name; }
 	}
 
+	bool isDecider;
+	public bool IsDecider {
+		get { return isDecider; }
+	}
+
 	Role role;
 	public Role MyRole {
 		get { return role; }
@@ -21,12 +26,17 @@ public class Player : MonoBehaviour {
 	static public Player instance;
 
 	void Awake () {
-		
+
 		if (instance == null)
 			instance = this;
 
 		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<SetRoleEvent> (OnSetRoleEvent);
+		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
+	}
+
+	void Start () {
+		beanPool = new BeanPool (3);
 	}
 
 	public Player (string name, Role role) {
@@ -40,5 +50,11 @@ public class Player : MonoBehaviour {
 
 	void OnSetRoleEvent (SetRoleEvent e) {
 		role = e.role;
+	}
+
+	void OnSelectDeciderEvent (SelectDeciderEvent e) {
+		if (e.name == name) {
+			isDecider = true;
+		}
 	}
 }

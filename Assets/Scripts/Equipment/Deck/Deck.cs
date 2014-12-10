@@ -4,8 +4,11 @@ using System.Collections;
 public class Deck {
 
 	string name = "";
-	Role[] roles = new Role[0];
+	public string Name {
+		get { return name; }
+	}
 
+	Role[] roles = new Role[0];
 	public Role[] Roles {
 		get { return roles; }
 	}

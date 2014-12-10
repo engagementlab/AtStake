@@ -15,7 +15,7 @@ public class ChooseDeckScreen : GameScreen {
 		});
 	}
 	
-	public override void OnScreenStartHost () {
+	protected override void OnScreenStartHost () {
 
 		title.content = "Choose a deck";
 
@@ -54,7 +54,7 @@ public class ChooseDeckScreen : GameScreen {
 		return "";
 	}
 
-	public override void OnButtonPress (ButtonPressEvent e) {
+	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id.Length < 5)
 			return;
 		if (e.id.Substring (0, 5) == "deck_") {
