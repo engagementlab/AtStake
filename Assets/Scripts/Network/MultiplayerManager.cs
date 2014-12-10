@@ -7,9 +7,14 @@ public class MultiplayerManager : MonoBehaviour {
 
 	public NetworkManager networkManager;
 	string playerName = "";
-	public string PlayerName {
-		get { return playerName; }
-		set { playerName = value; }
+	string PlayerName {
+		get {
+			// cache the name
+			if (playerName == "") {
+				playerName = Player.instance.Name;
+			}
+			return playerName;
+		}
 	}
 
 	public bool Hosting {
@@ -63,13 +68,13 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public void HostGame () {
-		player = new GameHost (playerName);
-		networkManager.HostGame (playerName);
+		player = new GameHost (PlayerName);
+		networkManager.HostGame (PlayerName);
 		SendRefreshListMessage ();
 	}
 
 	public void JoinGame () {
-		player = new GameClient (playerName);
+		player = new GameClient (PlayerName);
 		networkManager.JoinGame ();
 		findingGames = true;
 		noGamesFound = false;
@@ -165,5 +170,17 @@ public class MultiplayerManager : MonoBehaviour {
 	[RPC]
 	void OnSendOthersToScreen (string screen, string state) {
 		GameStateController.instance.GotoScreen (screen, state);
+	}
+
+	/**
+	*	Debugging
+	*/
+
+	public void DebugCreateClient () {
+		player = new GameClient (PlayerName);
+	}
+
+	public void DebugCreateHost () {
+		player = new GameHost (PlayerName);	
 	}
 }

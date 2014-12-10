@@ -57,6 +57,10 @@ public class GameScreen {
 		return new ButtonElement (this, id, content);
 	}
 
+	protected TimerElement CreateTimer (float startTime) {
+		return new TimerElement (this, startTime);
+	}
+
 	/**
 	*	Virtual functions
 	*/
@@ -78,6 +82,8 @@ public class GameScreen {
 
 	// This function only gets called if the pressed button belongs to this GameScreen
 	public virtual void OnButtonPress (ButtonPressEvent e) {}
+
+	public virtual void OnCountDownEnd () {}
 
 	/**
 	*	Private functions

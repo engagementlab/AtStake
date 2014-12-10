@@ -545,14 +545,26 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: screen
-      value: Choose Deck
+      value: Role
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: state
-      value: Decider
+      value: Round
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: startOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
+      propertyPath: deckManager
+      value: 
+      objectReference: {fileID: 558653960}
+    - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
+      propertyPath: autoLoadDeck
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
+      propertyPath: enableDebug
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -843,9 +855,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac6e689fa512b440a898678d4a33686a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startOverride: 1
-  screen: Choose Deck
-  state: Decider
+  enableDebug: 1
+  autoLoadDeck: 1
+  host: 0
+  screen: Role
+  state: Round
 --- !u!4 &1802084674
 Transform:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ public class LobbyScreen : GameScreen {
 			se[i] = new LabelElement (names[i]);
 		}
 
-		if (showPlay) se[elementCount-1] = CreateButton ("Play"); //new ButtonElement (this, "Play-Lobby", "Play");
+		if (showPlay) se[elementCount-1] = CreateButton ("Play");
 
 		SetVariableElements (se);
 	}

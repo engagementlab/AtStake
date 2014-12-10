@@ -16,7 +16,7 @@ public class DeciderSelectionManager : MonoBehaviour {
 	}
 
 	public void SelectDecider (string deciderName) {
-		string name = MultiplayerManager.instance.PlayerName;
+		string name = Player.instance.Name;
 		if (MultiplayerManager.instance.Hosting) {
 			AddSelection (name, deciderName);
 		} else {

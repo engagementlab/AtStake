@@ -6,10 +6,10 @@ using System.Collections.Generic;
 public class RoleManager : MonoBehaviour {
 
 	Deck deck;
-	Role playerRole;
+	/*Role playerRole;
 	public Role PlayerRole {
 		get { return playerRole; }
-	}
+	}*/
 
 	static public RoleManager instance;
 
@@ -62,7 +62,17 @@ public class RoleManager : MonoBehaviour {
 
 	[RPC]
 	void AssignRole (string name, int roleIndex) {
-		if (name == MultiplayerManager.instance.PlayerName)
-			playerRole = deck.Roles[roleIndex];
+		if (name == Player.instance.Name) {
+			Events.instance.Raise (new SetRoleEvent (deck.Roles[roleIndex]));
+		}
+	}
+
+	/**
+	*	Debugging
+	*/
+
+	public void DebugAssignRole () {
+		Role role = deck.Roles[Random.Range (0, deck.Roles.Length-1)];
+		Events.instance.Raise (new SetRoleEvent (role));		
 	}
 }

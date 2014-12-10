@@ -19,7 +19,7 @@ public class EnterNameScreen : GameScreen {
 		switch (e.id) {
 			case "Enter": 
 				if (tfe.content != "") {
-					MultiplayerManager.instance.PlayerName = tfe.content;
+					Events.instance.Raise (new EnterNameEvent (tfe.content));
 					GotoScreen ("Host or Join");
 				}
 				break;

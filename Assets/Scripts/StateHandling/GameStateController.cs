@@ -5,7 +5,7 @@ using System.Collections;
 public class GameStateController : MonoBehaviour {
 
 	GameStates states;
-	int stateIndex = 0;
+	int stateIndex = -1;
 
 	// States represent categories of screens
 	GameState state;

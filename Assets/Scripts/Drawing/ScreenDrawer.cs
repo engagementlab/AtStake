@@ -31,6 +31,10 @@ public class ScreenDrawer : MonoBehaviour {
 				TextFieldElement t = e as TextFieldElement;
 				t.content = GUILayout.TextField (t.content, 25);
 			}
+			if (e is TimerElement) {
+				TimerElement t = e as TimerElement;
+				GUILayout.Label (t.SecondsRounded.ToString ());
+			}
 		}
 	}
 

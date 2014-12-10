@@ -13,13 +13,13 @@ public class QuestionScreen : GameScreen {
 	}
 
 	public override void OnScreenStart () {
+		
 		RoundState round = state as RoundState;
 		int roundNumber = round.RoundNumber;
-		title.content = "Round " + roundNumber.ToString ();
+		title.content = string.Format("Round {0}", roundNumber);
+
 		SetVariableElements (new ScreenElement[] {
-			new LabelElement (QuestionManager.instance.GetQuestion (roundNumber)),
-			new LabelElement (RoleManager.instance.PlayerRole.name),
-			new LabelElement (RoleManager.instance.PlayerRole.bio)
+			new LabelElement (round.Question)
 		});
 	}
 }

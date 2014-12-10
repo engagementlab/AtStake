@@ -7,6 +7,9 @@ public class Role : System.Object {
 	public readonly string bio;
 
 	Agenda agenda;
+	public Agenda MyAgenda {
+		get { return agenda; }
+	}
 
 	public Role (string name, string bio) {
 		this.name = name;

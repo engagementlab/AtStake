@@ -8,12 +8,18 @@ public class RoundState : GameState {
 		get { return roundNumber; }
 	}
 
+	string question;
+	public string Question {
+		get { return question; }
+	}
+
 	public RoundState (string name = "Round") : base (name) {
 		
 	}
 
 	public override void OnStateStart () {
 		roundNumber ++;
+		question = QuestionManager.instance.GetQuestion (roundNumber);
 	}
 	
 	public override GameScreen[] SetScreens () {

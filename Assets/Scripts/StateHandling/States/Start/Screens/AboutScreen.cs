@@ -5,7 +5,7 @@ public class AboutScreen : GameScreen {
 	
 	public AboutScreen (GameState state, string name = "About") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("@Stake is a game designed by the Engagement Lab at Emerson College"),
+			new LabelElement (Copy.About),
 			CreateButton ("Back")
 		});
 	}

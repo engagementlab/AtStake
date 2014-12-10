@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BeanPool : System.Object {
+public class BeanPool {
 
 	int beanCount = 0;
 	public int BeanCount {
 		get { return beanCount; }
 	}
-
+	
 	public BeanPool (int beanCount) {
 		this.beanCount = beanCount;
 	}

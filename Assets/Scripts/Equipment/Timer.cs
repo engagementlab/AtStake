@@ -3,18 +3,23 @@ using System.Collections;
 
 public class Timer : MonoBehaviour {
 
-	float seconds = 0f;
+	float seconds = -1f;
 	public float Seconds {
 		get { return seconds; }
 	}
 
 	bool countingDown = false;
 
-	void Start () {
+	TimerElement timerElement;
+	static public Timer instance;
 
+	void Awake () {
+		if (instance == null)
+			instance = this;
 	}
 
-	void StartCountDown (float duration) {
+	public void StartCountDown (TimerElement timerElement, float duration) {
+		this.timerElement = timerElement;
 		seconds = duration;
 		StartCoroutine (CountDown ());
 	}
@@ -37,6 +42,6 @@ public class Timer : MonoBehaviour {
 	}
 
 	void OnCountDownEnd () {
-		
+		timerElement.OnCountDownEnd ();
 	}
 }
