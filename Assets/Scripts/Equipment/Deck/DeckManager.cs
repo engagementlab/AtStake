@@ -46,7 +46,11 @@ public class DeckManager : MonoBehaviour {
 	}
 
 	void Start () {
+		
 		if (instance == null) instance = this;
+
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
+
 		GetLocalDeckNames ();
 		GetHostedDeckNames ();
 	}
@@ -141,7 +145,7 @@ public class DeckManager : MonoBehaviour {
 		Role[] r = CreateRoles (jsonRoles);
 		deck = new Deck (json["name"], r);
 
-		SendLoadDeck ();
+		OnLoadDeck ();
 		
 		RoleManager.instance.PopulateDeck (deck);
 	}
@@ -177,19 +181,30 @@ public class DeckManager : MonoBehaviour {
 		return r;
 	}
 
-	void OnGUI () {
-		GUILayout.Label (debugText);
-	}
-
-	void SendLoadDeck () {
+	void OnLoadDeck () {
 		if (MultiplayerManager.instance.Hosting) {
-			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
+			Events.instance.Raise (new HostScheduleMessageEvent ("OnServerLoadDeck"));
 		}
 		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
+	}
+
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.message == "OnServerLoadDeck") {
+			Debug.Log ("sent it");
+			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
+		}
 	}
 
 	[RPC]
 	void OnServerLoadDeck (string filename, int isLocal) {
 		LoadDeck (filename, isLocal == 1);
+	}
+
+	/**
+	 *	Debugging
+	 */
+
+	void OnGUI () {
+		GUILayout.Label (debugText);
 	}
 }

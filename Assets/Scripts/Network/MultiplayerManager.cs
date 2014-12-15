@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class MultiplayerManager : MonoBehaviour {
 
 	public NetworkManager networkManager;
+	public MessageRelayer messageRelayer;
+
 	string playerName = "";
 	string PlayerName {
 		get {
@@ -46,11 +48,12 @@ public class MultiplayerManager : MonoBehaviour {
 
 	void Start () {
 		networkManager = Instantiate (networkManager) as NetworkManager;
+		messageRelayer = Instantiate(messageRelayer) as MessageRelayer;
 	}
 
 	/**
-	*	Actions
-	*/
+	 *	Actions
+	 */
 
 	void GotoScreen (string screenName) {
 		GameStateController.instance.GotoScreen (screenName);
@@ -89,8 +92,8 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	/**
-	*	Messages
-	*/
+	 *	Messages
+	 */
 	
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
 		
@@ -114,8 +117,8 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	/**
-	*	RPCs
-	*/
+	 *	RPCs
+	 */
 
 	[RPC]
 	void RegisterPlayer (string clientName) {
@@ -156,8 +159,8 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	/**
-	*	Debugging
-	*/
+	 *	Debugging
+	 */
 
 	public void DebugCreateClient () {
 		player = new GameClient (PlayerName);

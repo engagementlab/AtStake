@@ -8,10 +8,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 11400000}
   - 148: {fileID: 14800000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: MultiplayerManager
+  m_Name: MessageRelayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,11 +37,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70bc21f995c3447469ffaf1797d64379, type: 3}
+  m_Script: {fileID: 11500000, guid: c0cde04f87c914e82a4e1094859a829d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkManager: {fileID: 11400000, guid: 916b550a513eb4aeb9d29b2ed4d60c02, type: 2}
-  messageRelayer: {fileID: 11400000, guid: bcb134d77f0024f1f90e9ef2abb99dfe, type: 2}
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1

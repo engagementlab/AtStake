@@ -8,9 +8,13 @@ public class RoleManager : MonoBehaviour {
 	Deck deck;
 	static public RoleManager instance;
 
+	List<string> playerNames;
+	int[] randomIndices;
+
 	void Awake () {
 		if (instance == null)
 			instance = this;
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
 	public void PopulateDeck (Deck deck) {
@@ -24,8 +28,8 @@ public class RoleManager : MonoBehaviour {
 		if (!MultiplayerManager.instance.Hosting)
 			return;
 		
-		List<string> playerNames = MultiplayerManager.instance.Players;
-		int[] randomIndices = new int[playerNames.Count];
+		playerNames = MultiplayerManager.instance.Players;
+		randomIndices = new int[playerNames.Count];
 		int rolesCount = deck.Roles.Length;
 		List<int> roleIndices = new List<int>();
 		
@@ -48,6 +52,11 @@ public class RoleManager : MonoBehaviour {
 			roleIndices.Remove (roleIndices[r]);
 		}
 
+		Events.instance.Raise (new HostScheduleMessageEvent ("HostAssignRoles"));
+	}
+
+	void HostAssignRoles () {
+
 		// Each player is sent a message with a name and number. 
 		// If their name matches the messaged name, they're assigned the corresponding role
 		for (int i = 0; i < playerNames.Count; i ++) {
@@ -55,16 +64,24 @@ public class RoleManager : MonoBehaviour {
 		}
 	}
 
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.message == "HostAssignRoles") {
+			HostAssignRoles ();
+		}
+	}
+
 	[RPC]
 	void AssignRole (string name, int roleIndex) {
 		if (name == Player.instance.Name) {
+			Debug.Log (deck.Name);
+			Debug.Log (deck.Roles[roleIndex].name);
 			Events.instance.Raise (new SetRoleEvent (deck.Roles[roleIndex]));
 		}
 	}
 
 	/**
-	*	Debugging
-	*/
+	 *	Debugging
+	 */
 
 	public void DebugAssignRole () {
 		Role role = deck.Roles[Random.Range (0, deck.Roles.Length-1)];
