@@ -15,6 +15,12 @@ public class RoleScreen : GameScreen {
 		if (playerRole != null) 
 			return;
 		
+		CreateRoleCard ();
+		AddBackButton ();
+	}
+
+	protected void CreateRoleCard () {
+		
 		Player player = Player.instance;
 		playerRole = player.MyRole;
 		playerName = player.Name;
@@ -22,7 +28,6 @@ public class RoleScreen : GameScreen {
 		AppendVariableElements (RoleDescription (playerName, playerRole.name, playerRole.bio));
 		AppendVariableElements (RoleAgendaItems (playerRole.MyAgenda.items));
 		AppendVariableElements (RoleBeans (player.MyBeanPool.BeanCount));
-		AddBackButton ();
 	}
 
 	ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {

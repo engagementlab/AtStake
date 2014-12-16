@@ -73,8 +73,6 @@ public class RoleManager : MonoBehaviour {
 	[RPC]
 	void AssignRole (string name, int roleIndex) {
 		if (name == Player.instance.Name) {
-			Debug.Log (deck.Name);
-			Debug.Log (deck.Roles[roleIndex].name);
 			Events.instance.Raise (new SetRoleEvent (deck.Roles[roleIndex]));
 		}
 	}

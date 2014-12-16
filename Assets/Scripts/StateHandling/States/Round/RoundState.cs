@@ -13,6 +13,11 @@ public class RoundState : GameState {
 		get { return question; }
 	}
 
+	string playerName;
+	public string PlayerName {
+		get { return playerName; }
+	}
+
 	public RoundState (string name = "Round") : base (name) {
 		
 	}
@@ -20,6 +25,7 @@ public class RoundState : GameState {
 	public override void OnStateStart () {
 		roundNumber ++;
 		question = QuestionManager.instance.GetQuestion (roundNumber);
+		playerName = Player.instance.Name;
 	}
 	
 	public override GameScreen[] SetScreens () {

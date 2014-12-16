@@ -19,9 +19,8 @@ public class IntroductionScreen : RoleScreen {
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		Debug.Log (e.id);
 		if (e.id == "Next") {
-			GameStateController.instance.AllPlayersGotoScreen ("Question", "Round");
+			GameStateController.instance.AllPlayersGotoScreen ("Question");
 		}
 	}
 }

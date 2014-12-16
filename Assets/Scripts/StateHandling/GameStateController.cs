@@ -27,8 +27,10 @@ public class GameStateController : MonoBehaviour {
 	public static GameStateController instance;
 
 	void Awake () {
+		
 		if (instance == null)
 			instance = this;
+		
 		states = new GameStates ();
 		GotoState (0);
 
@@ -90,25 +92,29 @@ public class GameStateController : MonoBehaviour {
 		state.GotoPreviouslyVisitedScreen ();
 	}
 
+	public void AllPlayersGotoNextScreen () {
+		Events.instance.Raise (new HostScheduleMessageEvent ("OnGotoNextScreen"));
+		networkView.RPC ("OnSendPlayersToNextScreen", RPCMode.All);
+	}
+
 	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
-		//if (MultiplayerManager.instance.Hosting) {
-			//GotoScreen (screenName, stateName);
-			networkView.RPC ("ClientGotoScreen", RPCMode.All, screenName, stateName);
-		//}
-	}
 
-	public void SendOthersToScreen (string screen, string state) {
-		// TODO: Should this be allowed?
-		networkView.RPC ("OnSendOthersToScreen", RPCMode.Others, screen, state);
+		// Using the MessageRelayer in this way doesn't stop this RPC from firing if another RPC is still
+		// being confirmed, but it will prevent other RPCs from firing until this one is confirmed.
+		// wow such a great explanation !!!
+		Events.instance.Raise (new HostScheduleMessageEvent ("OnGotoScreen"));
+		networkView.RPC ("OnSendPlayersToScreen", RPCMode.All, screenName, stateName);
 	}
 
 	[RPC]
-	void ClientGotoScreen (string screenName, string stateName = "") {
-		GameStateController.instance.GotoScreen (screenName, stateName);
+	void OnSendPlayersToNextScreen () {
+		Events.instance.Raise (new ClientConfirmMessageEvent ("OnGotoNextScreen"));
+		GameStateController.instance.GotoNextScreen ();
 	}
 
 	[RPC]
-	void OnSendOthersToScreen (string screenName, string stateName) {
+	void OnSendPlayersToScreen (string screenName, string stateName) {
+		Events.instance.Raise (new ClientConfirmMessageEvent ("OnGotoScreen"));
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 }

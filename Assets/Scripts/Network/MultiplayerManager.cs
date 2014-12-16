@@ -48,7 +48,7 @@ public class MultiplayerManager : MonoBehaviour {
 
 	void Start () {
 		networkManager = Instantiate (networkManager) as NetworkManager;
-		messageRelayer = Instantiate(messageRelayer) as MessageRelayer;
+		messageRelayer = Instantiate (messageRelayer) as MessageRelayer;
 	}
 
 	/**

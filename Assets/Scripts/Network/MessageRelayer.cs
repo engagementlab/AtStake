@@ -25,6 +25,8 @@ public class MessageRelayer : MonoBehaviour {
 	void Awake () {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 		Events.instance.AddListener<HostScheduleMessageEvent> (OnHostScheduleMessageEvent);
+		Events.instance.AddListener<SendMessageToPlayerEvent> (OnSendMessageToPlayerEvent);
+		Events.instance.AddListener<SendMessageToOthersEvent> (OnSendMessageToOthersEvent);
 		Events.instance.AddListener<ClientConfirmMessageEvent> (OnClientConfirmMessageEvent);
 	}
 
@@ -37,6 +39,14 @@ public class MessageRelayer : MonoBehaviour {
 		if (messages.Count == 1) {
 			HostSendMessage ();
 		}
+	}
+
+	public void SendMessageToPlayer (string playerName, string message) {
+		networkView.RPC ("PlayerCheckName", RPCMode.All, playerName, message);
+	}
+
+	public void SendMessageToOthers (string playerName, string message) {
+		networkView.RPC ("OthersCheckName", RPCMode.All, playerName, message);
 	}
 
 	/**
@@ -82,11 +92,32 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	void OnHostScheduleMessageEvent (HostScheduleMessageEvent e) {
-		ScheduleMessage (e.message);
+		if (MultiplayerManager.instance.Hosting) {
+			ScheduleMessage (e.message);
+		} else {
+			networkView.RPC ("HostScheduleMessage", RPCMode.Server, e.message);
+		}
 	}
 
 	void OnClientConfirmMessageEvent (ClientConfirmMessageEvent e) {
-		ConfirmMessageReceived (e.message);
+		if (!MultiplayerManager.instance.Hosting) {
+			ConfirmMessageReceived (e.message);
+		}
+	}
+
+	void OnSendMessageToPlayerEvent (SendMessageToPlayerEvent e) {
+		SendMessageToPlayer (e.playerName, e.message);
+	}
+
+	void OnSendMessageToOthersEvent (SendMessageToOthersEvent e) {
+		SendMessageToOthers (e.playerName, e.message);
+	}
+
+	[RPC]
+	void HostScheduleMessage (string message) {
+
+		// This is used when a client wants the host to schedule a message
+		ScheduleMessage (message);
 	}
 
 	[RPC]
@@ -94,6 +125,24 @@ public class MessageRelayer : MonoBehaviour {
 
 		// The host hears this when a client confirms that it's received the message
 		HostReceiveConfirmation (message);
+	}
+
+	[RPC]
+	void PlayerCheckName (string playerName, string message) {
+
+		// Only the player with the name playerName will hear this message
+		if (playerName == Player.instance.Name) {
+			Events.instance.Raise (new PlayerSendMessageEvent (message));
+		}
+	}
+
+	[RPC]
+	void OthersCheckName (string playerName, string message) {
+
+		// Every player except the one named playerName will hear this message
+		if (playerName != Player.instance.Name) {
+			Events.instance.Raise (new OthersSendMessageEvent (message));
+		}
 	}
 }
 

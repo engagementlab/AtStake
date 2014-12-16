@@ -26,8 +26,8 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	/**
-	*	Hosting
-	*/
+	 *	Hosting
+	 */
 
 	public void HostGame (string instanceGameName) {
 		StartServer (instanceGameName);
@@ -49,8 +49,8 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	/**
-	*	Joining
-	*/
+	 *	Joining
+	 */
 
 	public void JoinGame () {
 		RefreshHostList ();

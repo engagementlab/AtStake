@@ -27,8 +27,8 @@ public class TimerElement : ScreenElement {
 		timer = Timer.instance;
 	}
 
-	public void StartCountDown (float duration) {
-		timer.StartCountDown (this, duration);
+	public void StartCountDown () {
+		timer.StartCountDown (this, startTime);
 	}
 
 	public void OnCountDownEnd () {

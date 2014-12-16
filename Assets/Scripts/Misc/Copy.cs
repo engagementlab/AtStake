@@ -21,9 +21,19 @@ public static class Copy {
 		}
 	}
 
-	static public string BrainstormInstructions {
-		get {
-			return "All players brainstorm for 90 seconds";
+	static public string[,] stageInstructions = new string[,] {
+		{ "Brainstorm", "All players brainstorm silently for 90 seconds" },
+		{ "Pitch", "Now have each player pitch their idea." },
+		{ "Deliberate", "Have players discuss their pitches." }
+	};
+
+	static public string GetInstructions (string stageName) {
+		for (int i = 0; i < stageInstructions.Length / 2; i ++) {
+			string s1 = stageInstructions[i, 0];
+			string s2 = stageInstructions[i, 1];
+			if (s1 == stageName)
+				return s2;
 		}
+		return "stage name not found :(";
 	}
 }

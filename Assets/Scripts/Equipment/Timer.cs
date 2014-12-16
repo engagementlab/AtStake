@@ -19,7 +19,15 @@ public class Timer : MonoBehaviour {
 			instance = this;
 	}
 
+	public void SetTime (float seconds) {
+		if (!countingDown) {
+			this.seconds = seconds;
+		}
+	}
+
 	public void StartCountDown (TimerElement timerElement, float duration) {
+		if (countingDown)
+			return;
 		this.timerElement = timerElement;
 		seconds = duration;
 		StartCoroutine (CountDown ());
