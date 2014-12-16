@@ -19,29 +19,42 @@ public class RoleScreen : GameScreen {
 		playerRole = player.MyRole;
 		playerName = player.Name;
 
-		string title = string.Format ("{0} the {1}", playerName, playerRole.name);
-		string bio = playerRole.bio;
-		AgendaItem[] items = playerRole.MyAgenda.items;
-		
-		ScreenElement[] se = new ScreenElement[items.Length*2 + 5];
-		
-		se[0] = new LabelElement (title);
-		se[1] = new LabelElement (bio);
-		se[2] = new LabelElement ("Agenda");
-		
+		AppendVariableElements (RoleDescription (playerName, playerRole.name, playerRole.bio));
+		AppendVariableElements (RoleAgendaItems (playerRole.MyAgenda.items));
+		AppendVariableElements (RoleBeans (player.MyBeanPool.BeanCount));
+		AddBackButton ();
+	}
+
+	ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
+		string title = string.Format ("{0} the {1}", playerName, playerRole);
+		return new ScreenElement[3] {
+			new LabelElement (title),
+			new LabelElement (bio),
+			new LabelElement ("Agenda")
+		};
+	}
+
+	ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
+		ScreenElement[] se = new ScreenElement[items.Length*2];
 		int index = 0;
-		for (int i = 3; i < se.Length-2; i += 2) {
+		for (int i = 0; i < se.Length; i += 2) {
 			AgendaItem item = items[index];
 			se[i] = new LabelElement (item.description);
 			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus));
 			index ++;
 		}
+		return se;
+	}
 
-		string beanCount = string.Format ("Coins: {0}", player.MyBeanPool.BeanCount);
-		se[se.Length-2] = new LabelElement (beanCount);
-		se[se.Length-1] = CreateButton ("Back");
+	ScreenElement[] RoleBeans (int beanCount) {
+		string beanLabel = string.Format ("Coins: {0}", beanCount);
+		return new ScreenElement[] {
+			new LabelElement (beanLabel)
+		};
+	}
 
-		SetVariableElements (se);
+	protected virtual void AddBackButton () {
+		AppendVariableElements (CreateButton ("Back"));
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

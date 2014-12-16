@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [RequireComponent (typeof(NetworkView))]
 public class DeciderSelectionManager : MonoBehaviour {
 
-	// if the player is hosting, keeps track of clients' selection for decider
+	// if the player is hosting, this keeps track of clients' selection for decider
 	// after all players have have submitted a selection and all selections match, the game begins
 
 	public static DeciderSelectionManager instance;
@@ -52,7 +52,7 @@ public class DeciderSelectionManager : MonoBehaviour {
 
 		if (selections.Count == MultiplayerManager.instance.PlayerCount && SelectionsMatch ()) {
 			networkView.RPC ("OnSelectDecider", RPCMode.All, deciderName);
-			GameStateController.instance.AllPlayersGotoScreen ("Question", "Round");
+			GameStateController.instance.AllPlayersGotoScreen ("Introduction", "Round");
 		}
 	}
 

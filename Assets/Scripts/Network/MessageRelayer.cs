@@ -25,6 +25,7 @@ public class MessageRelayer : MonoBehaviour {
 	void Awake () {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 		Events.instance.AddListener<HostScheduleMessageEvent> (OnHostScheduleMessageEvent);
+		Events.instance.AddListener<ClientConfirmMessageEvent> (OnClientConfirmMessageEvent);
 	}
 
 	/**
@@ -35,7 +36,6 @@ public class MessageRelayer : MonoBehaviour {
 		messages.Add (message);
 		if (messages.Count == 1) {
 			HostSendMessage ();
-			messages.RemoveAt (0);
 		}
 	}
 
@@ -43,20 +43,23 @@ public class MessageRelayer : MonoBehaviour {
 	 *	Client functions
 	 */
 
-	public void ConfirmMessageReceived () {
-		networkView.RPC ("ConfirmHostMessageReceived", RPCMode.Server);
+	public void ConfirmMessageReceived (string message) {
+		networkView.RPC ("ConfirmHostMessageReceived", RPCMode.Server, message);
 	}
 
 	/**
 	 *	Private functions
 	 */
 
-	void HostReceiveConfirmation () {
+	void HostReceiveConfirmation (string message) {
 		
-		if (messages.Count == 0)
+		// ignore if there are no messages to send
+		if (messages.Count == 0 || message != messages[0])
 			return;
 
 		receivedCount ++;
+
+		// if all clients have confirmed, send the next message
 		if (AllReceived) {
 			messages.RemoveAt (0);
 			receivedCount = 0;
@@ -82,11 +85,15 @@ public class MessageRelayer : MonoBehaviour {
 		ScheduleMessage (e.message);
 	}
 
+	void OnClientConfirmMessageEvent (ClientConfirmMessageEvent e) {
+		ConfirmMessageReceived (e.message);
+	}
+
 	[RPC]
-	void ConfirmHostMessageReceived () {
+	void ConfirmHostMessageReceived (string message) {
 
 		// The host hears this when a client confirms that it's received the message
-		HostReceiveConfirmation ();
+		HostReceiveConfirmation (message);
 	}
 }
 

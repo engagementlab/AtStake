@@ -9,7 +9,7 @@ public class ChooseDeciderScreen : GameScreen {
 	public ChooseDeciderScreen (GameState state, string name = "Choose Decider") : base (state, name) {
 		deciderSelection = new LabelElement ("");
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Choose the first decider"),
+			new LabelElement ("The Decider gets 5 beans instead of 3. Please choose the first Decider."),
 			deciderSelection
 		});
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);

@@ -703,7 +703,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: screen
-      value: Brainstorm
+      value: Introduction
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: state
@@ -926,7 +926,7 @@ MonoBehaviour:
   autoLoadDeck: 1
   host: 0
   decider: 1
-  screen: Brainstorm
+  screen: Introduction
   state: Round
 --- !u!4 &1802084674
 Transform:

@@ -184,13 +184,14 @@ public class DeckManager : MonoBehaviour {
 	void OnLoadDeck () {
 		if (MultiplayerManager.instance.Hosting) {
 			Events.instance.Raise (new HostScheduleMessageEvent ("OnServerLoadDeck"));
+		} else {
+			Events.instance.Raise (new ClientConfirmMessageEvent ("OnServerLoadDeck"));
 		}
 		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
 	}
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.message == "OnServerLoadDeck") {
-			Debug.Log ("sent it");
 			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
 		}
 	}

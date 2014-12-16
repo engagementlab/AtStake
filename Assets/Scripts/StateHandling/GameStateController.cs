@@ -91,13 +91,14 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
-		if (MultiplayerManager.instance.Hosting) {
-			GotoScreen (screenName, stateName);
-			networkView.RPC ("ClientGotoScreen", RPCMode.Others, screenName, stateName);
-		}
+		//if (MultiplayerManager.instance.Hosting) {
+			//GotoScreen (screenName, stateName);
+			networkView.RPC ("ClientGotoScreen", RPCMode.All, screenName, stateName);
+		//}
 	}
 
 	public void SendOthersToScreen (string screen, string state) {
+		// TODO: Should this be allowed?
 		networkView.RPC ("OnSendOthersToScreen", RPCMode.Others, screen, state);
 	}
 

@@ -47,6 +47,10 @@ public class GameScreen {
 		Events.instance.Raise (new UpdateDrawerEvent ());
 	}
 
+	protected void AppendVariableElements (ScreenElement screenElement) {
+		AppendVariableElements (new ScreenElement[] { screenElement });
+	}
+
 	protected void AppendVariableElements (ScreenElement[] appendedElements) {
 		
 		ScreenElement[] tempElements = variableElements;

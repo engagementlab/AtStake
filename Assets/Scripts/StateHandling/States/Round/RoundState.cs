@@ -24,6 +24,7 @@ public class RoundState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
+			new IntroductionScreen (this),
 			new QuestionScreen (this),
 			new BrainstormScreen (this),
 			new PitchScreen (this),
