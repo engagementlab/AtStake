@@ -5,6 +5,7 @@ public class StageScreen : GameScreen {
 
 	TimerElement timer;
 	protected string playerName;
+	protected bool addTimeEnabled = false;
 
 	public StageScreen (GameState state, string name) : base (state, name) {
 
@@ -12,8 +13,10 @@ public class StageScreen : GameScreen {
 
 	protected void InitStageScreen (float defaultTime) {
 		
-		Events.instance.AddListener<PlayerSendMessageEvent> (OnPlayerSendMessageEvent);
-		Events.instance.AddListener<OthersSendMessageEvent> (OnOthersSendMessageEvent);
+		Events.instance.AddListener<PlayerReceiveMessageEvent> (OnPlayerReceiveMessageEvent);
+		Events.instance.AddListener<OthersReceiveMessageEvent> (OnOthersReceiveMessageEvent);
+		Events.instance.AddListener<PlayersReceiveMessageEvent> (OnPlayersReceiveMessageEvent);
+		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 
 		timer = CreateTimer (defaultTime);
 		
@@ -53,8 +56,11 @@ public class StageScreen : GameScreen {
 	}
 
 	void AddTime () {
+		if (!addTimeEnabled)
+			return;
 		if (Player.instance.MyBeanPool.SubtractBeans (1)) {
 			Timer.instance.DeciderAddSeconds (5f);
+			addTimeEnabled = false;
 		}
 	}
 
@@ -71,6 +77,8 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual bool StartTimer () { return true; }
-	protected virtual void OnPlayerSendMessageEvent (PlayerSendMessageEvent e) {}
-	protected virtual void OnOthersSendMessageEvent (OthersSendMessageEvent e) {}
+	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
+	protected virtual void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {}
+	protected virtual void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {}
+	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {}
 }

@@ -14,6 +14,8 @@ public class MessageRelayer : MonoBehaviour {
 		get { return receivedCount >= clientCount; }
 	}
 
+	static public MessageRelayer instance;
+
 	/**
 	 *	1. Host sends a message to everyone
 	 *  2. Clients each receive the message, and send confirmation to 
@@ -23,6 +25,10 @@ public class MessageRelayer : MonoBehaviour {
 	 */
 
 	void Awake () {
+
+		if (instance == null)
+			instance = this;
+
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 		Events.instance.AddListener<HostScheduleMessageEvent> (OnHostScheduleMessageEvent);
 		Events.instance.AddListener<SendMessageToPlayerEvent> (OnSendMessageToPlayerEvent);
@@ -41,12 +47,24 @@ public class MessageRelayer : MonoBehaviour {
 		}
 	}
 
-	public void SendMessageToPlayer (string playerName, string message) {
-		networkView.RPC ("PlayerCheckName", RPCMode.All, playerName, message);
+	// Send to everyone except the Decider
+	public void SendMessageToPlayers (string message1, string message2="") {
+		networkView.RPC ("PlayersReceiveMessage", RPCMode.All, message1, message2);
 	}
 
+	// Send to the Decider
+	public void SendMessageToDecider (string message1, string message2="") {
+		networkView.RPC ("DeciderReceiveMessage", RPCMode.All, message1, message2);
+	}
+
+	// Send to a specific player
+	public void SendMessageToPlayer (string playerName, string message) {
+		networkView.RPC ("PlayerReceiveMessage", RPCMode.All, playerName, message);
+	}
+
+	// Send to everyone except a specific player
 	public void SendMessageToOthers (string playerName, string message) {
-		networkView.RPC ("OthersCheckName", RPCMode.All, playerName, message);
+		networkView.RPC ("OthersReceiveMessage", RPCMode.All, playerName, message);
 	}
 
 	/**
@@ -128,20 +146,33 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	[RPC]
-	void PlayerCheckName (string playerName, string message) {
+	void PlayerReceiveMessage (string playerName, string message) {
 
 		// Only the player with the name playerName will hear this message
 		if (playerName == Player.instance.Name) {
-			Events.instance.Raise (new PlayerSendMessageEvent (message));
+			Events.instance.Raise (new PlayerReceiveMessageEvent (message));
 		}
 	}
 
 	[RPC]
-	void OthersCheckName (string playerName, string message) {
+	void OthersReceiveMessage (string playerName, string message) {
 
 		// Every player except the one named playerName will hear this message
 		if (playerName != Player.instance.Name) {
-			Events.instance.Raise (new OthersSendMessageEvent (message));
+			Events.instance.Raise (new OthersReceiveMessageEvent (message));
+		}
+	}
+
+	[RPC]
+	void PlayersReceiveMessage (string message1, string message2) {
+		if (!Player.instance.IsDecider) {
+			Events.instance.Raise (new PlayersReceiveMessageEvent (message1, message2));
+		}
+	}
+
+	void DeciderReceiveMessage (string message1, string message2) {
+		if (Player.instance.IsDecider) {
+			Events.instance.Raise (new DeciderReceiveMessageEvent (message1, message2));
 		}
 	}
 }

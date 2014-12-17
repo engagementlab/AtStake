@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerSendMessageEvent : GameEvent {
+public class PlayerReceiveMessageEvent : GameEvent {
 
 	public readonly string message;
 
-	public PlayerSendMessageEvent (string message) {
+	public PlayerReceiveMessageEvent (string message) {
 		this.message = message;
 	}
 }

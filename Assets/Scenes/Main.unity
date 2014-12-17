@@ -703,7 +703,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: screen
-      value: Introduction
+      value: Brainstorm
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: state
@@ -727,7 +727,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
       propertyPath: decider
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: aa79ee784d5d14a818d3c66cc8c44e72, type: 2}
@@ -925,8 +925,8 @@ MonoBehaviour:
   enableDebug: 0
   autoLoadDeck: 1
   host: 0
-  decider: 1
-  screen: Introduction
+  decider: 0
+  screen: Brainstorm
   state: Round
 --- !u!4 &1802084674
 Transform:

@@ -4,12 +4,51 @@ using System.Collections.Generic;
 
 public class PitchScreen : StageScreen {
 	
-	List<string> players;
-	int currentPlayer = 0;
-	LabelElement pitcher;
+	List<string> players = new List<string>(0);
+	int currentPlayer = -1;
+	LabelElement currentPitcher;
+	LabelElement nextPitcher;
+
+	string CurrentPlayer {
+		get {
+			if (players.Count == 0 || currentPlayer == -1)
+				return "";
+			else
+				return players[currentPlayer];
+		}
+	}
+
+	string NextPlayer {
+		get {
+			if (players.Count == 0 || currentPlayer >= players.Count-1)
+				return "";
+			else
+				return players[currentPlayer+1];
+		}
+	}
+
+	string CurrentLabel {
+		get {
+			if (players.Count == 0 || CurrentPlayer == "") {
+				return "";
+			} else {
+				return CurrentPlayer + "'s turn";
+			}
+		}
+	}
+
+	string NextLabel {
+		get {
+			if (players.Count == 0 || NextPlayer == "")
+				return "";
+			else
+				return "Up next: " + NextPlayer;
+		}
+	}
 
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
-		pitcher = new LabelElement ("");
+		currentPitcher = new LabelElement ("");
+		nextPitcher = new LabelElement ("");
 		InitStageScreen (10f);
 	}
 
@@ -19,125 +58,61 @@ public class PitchScreen : StageScreen {
 		players = MultiplayerManager.instance.Players;
 		players.Remove (Player.instance.Name);
 		
-		UpdatePitcher ();
+		UpdatePitcherLabels ();
 		AppendVariableElements (new ScreenElement[] {
-			pitcher
+			currentPitcher,
+			nextPitcher
 		});
 	}
 
 	protected override void OnScreenStartPlayer () {
 		InitPlayerScreen ();
 		AppendVariableElements (new ScreenElement[] {
-			pitcher
+			currentPitcher,
+			nextPitcher
 		});
-	}
-
-	protected override void OnPlayerSendMessageEvent (PlayerSendMessageEvent e) {
-		pitcher.content = "your turn";
-	}
-
-	protected override void OnOthersSendMessageEvent (OthersSendMessageEvent e) {
-		pitcher.content = "";
 	}
 
 	protected override bool StartTimer () {
 		
+		// Do not start timer if all players have pitched
 		if (currentPlayer >= players.Count-1)
 			return false;
 
-		currentPlayer ++;
-		UpdatePitcher ();
+		if (currentPlayer < players.Count-1) {
+			string cp = CurrentPlayer;
+			if (cp != "")
+				MessageRelayer.instance.SendMessageToPlayer (cp, "DisableAddTime");
+			currentPlayer ++;
+			UpdatePitcherLabels ();
+		}
+
 		return true;
 	}
 
-	void UpdatePitcher () {
-		string currPlayerName = players[currentPlayer];
-		pitcher.content = currPlayerName + "'s turn";
-		Events.instance.Raise (new SendMessageToPlayerEvent (currPlayerName));
-		Events.instance.Raise (new SendMessageToOthersEvent (currPlayerName));
-	}
-
-	/*TimerElement timer;
-	float time = 10f;
-	List<string> players;
-	int currentPlayer = 0;
-	LabelElement pitcher;
-
-	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
-		Events.instance.AddListener<PlayerSendMessageEvent> (OnPlayerSendMessageEvent);
-		Events.instance.AddListener<OthersSendMessageEvent> (OnOthersSendMessageEvent);
-		RoundState round = state as RoundState;
-		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Pitch"),
-			new LabelElement (round.Question)
-		});
-	}
-
-	protected override void OnScreenStartPlayer () {
-		SetVariableElements (new ScreenElement[] {
-			CreateButton ("Role Card")
-		});
-	}
-
-	protected override void OnScreenStartDecider () {
-		
-		// Uncomment to randomize players
-		//players = RandomizedPlayers (Player.instance.Name);
-		players = MultiplayerManager.instance.Players;
-		players.Remove (Player.instance.Name);
-		
-		LabelElement title = new LabelElement (Copy.PitchInstructions);
-		pitcher = PitcherLabel ();
-		ButtonElement timerButton = CreateButton ("Start Timer");
-		timer = CreateTimer (time);
-		ButtonElement nextButton = CreateButton ("Next");
-
-		SetVariableElements (new ScreenElement[] {
-			title,
-			pitcher,
-			timerButton,
-			timer,
-			nextButton
-		});
-	}
-
-	List<string> RandomizedPlayers (string deciderName) {
-		List<string> players = MultiplayerManager.instance.Players;
-		players.Remove (deciderName);
-		return players.Shuffle ();
-	}
-
-	protected override void OnButtonPress (ButtonPressEvent e) {
-		switch (e.id) {
-			case "Start Timer": timer.StartCountDown (); break;
-			case "Next": GameStateController.instance.AllPlayersGotoScreen ("Deliberate"); break;
-			case "Role Card": GotoScreen ("Role"); break;
-		}
-	}
-
 	public override void OnCountDownEnd () {
-		currentPlayer ++;
-		pitcher = PitcherLabel ();
-		Events.instance.Raise (new SendMessageToPlayerEvent (players[currentPlayer]));
+		MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
 	}
 
-	LabelElement PitcherLabel () {
-		return new LabelElement (players[currentPlayer] + "'s turn");
+	void UpdatePitcherLabels () {
+		currentPitcher.content = CurrentLabel;
+		nextPitcher.content = NextLabel;
+		MessageRelayer.instance.SendMessageToPlayers (CurrentPlayer, NextLabel);
 	}
 
-	void OnPlayerSendMessageEvent (PlayerSendMessageEvent e) {
-		// the drawer should handle this
-		SetVariableElements (new ScreenElement[] {
-			new LabelElement ("Your turn!"),
-			CreateButton ("+30 seconds"),
-			CreateButton ("Role Card")
-		});
+	protected override void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
+		string playerName = e.message1;
+		if (playerName == Player.instance.Name)
+			currentPitcher.content = "Your turn!";
+		else
+			currentPitcher.content = e.message1 + "'s turn";
+		nextPitcher.content = e.message2;
 	}
 
-	void OnOthersSendMessageEvent (OthersSendMessageEvent e) {
-		// the drawer should handle this
-		SetVariableElements (new ScreenElement[] {
-			CreateButton ("Role Card")
-		});	
-	}*/
+	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
+		if (e.message == "EnableAddTime")
+			addTimeEnabled = true;
+		if (e.message == "DisableAddTime")
+			addTimeEnabled = false;
+	}
 }
