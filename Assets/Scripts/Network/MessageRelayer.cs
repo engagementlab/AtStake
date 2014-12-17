@@ -170,6 +170,7 @@ public class MessageRelayer : MonoBehaviour {
 		}
 	}
 
+	[RPC]
 	void DeciderReceiveMessage (string message1, string message2) {
 		if (Player.instance.IsDecider) {
 			Events.instance.Raise (new DeciderReceiveMessageEvent (message1, message2));

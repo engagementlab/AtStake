@@ -100,13 +100,13 @@ public class PitchScreen : StageScreen {
 		MessageRelayer.instance.SendMessageToPlayers (CurrentPlayer, NextLabel);
 	}
 
-	protected override void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
-		string playerName = e.message1;
+	protected override void OnPlayersReceiveMessage (string message1, string message2) {
+		string playerName = message1;
 		if (playerName == Player.instance.Name)
 			currentPitcher.content = "Your turn!";
 		else
-			currentPitcher.content = e.message1 + "'s turn";
-		nextPitcher.content = e.message2;
+			currentPitcher.content = message1 + "'s turn";
+		nextPitcher.content = message2;
 	}
 
 	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
