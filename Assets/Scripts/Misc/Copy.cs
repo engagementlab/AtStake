@@ -21,10 +21,22 @@ public static class Copy {
 		}
 	}
 
+	static public string DecideScreenPlayer {
+		get {
+			return "Please wait while the Decider chooses the winning proposal";
+		}
+	}
+
+	static public string DecideScreenDecider {
+		get {
+			return "Choose the player with the best proposal";
+		}
+	}
+
 	static public string[,] stageInstructions = new string[,] {
 		{ "Brainstorm", "All players brainstorm silently for 90 seconds" },
 		{ "Pitch", "Now have each player pitch their idea." },
-		{ "Deliberate", "Have players discuss their pitches." }
+		{ "Deliberate", "Have players discuss their pitches for 90 seconds." }
 	};
 
 	static public string GetInstructions (string stageName) {

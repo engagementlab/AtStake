@@ -23,6 +23,16 @@ public class Player : MonoBehaviour {
 		get { return beanPool; }
 	}
 
+	string winningPlayer = "";
+	public string WinningPlayer {
+		get { return winningPlayer; }
+		set { winningPlayer = value; }
+	}
+
+	public bool Won {
+		get { return winningPlayer == name; }
+	}
+
 	static public Player instance;
 
 	void Awake () {

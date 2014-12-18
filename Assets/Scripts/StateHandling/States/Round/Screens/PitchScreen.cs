@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PitchScreen : StageScreen {
 	
-	List<string> players = new List<string>(0);
 	int currentPlayer = -1;
 	LabelElement currentPitcher;
 	LabelElement nextPitcher;
@@ -55,8 +54,8 @@ public class PitchScreen : StageScreen {
 	protected override void OnScreenStartDecider () {
 		InitDeciderScreen ();
 
-		players = MultiplayerManager.instance.Players;
-		players.Remove (Player.instance.Name);
+		//players = MultiplayerManager.instance.Players;
+		//players.Remove (Player.instance.Name);
 		
 		UpdatePitcherLabels ();
 		AppendVariableElements (new ScreenElement[] {
@@ -101,18 +100,25 @@ public class PitchScreen : StageScreen {
 	}
 
 	protected override void OnPlayersReceiveMessage (string message1, string message2) {
+		
+		// This whole function is pretty ugly
+		if (message1 == "EnableAddTime" || message1 == "DisableAddTime")
+			return;
+
 		string playerName = message1;
-		if (playerName == Player.instance.Name)
+		if (playerName == Player.instance.Name) {
 			currentPitcher.content = "Your turn!";
-		else
-			currentPitcher.content = message1 + "'s turn";
+		} else {
+			if (message1 == "") {
+				currentPitcher.content = "";
+			} else {
+				currentPitcher.content = message1 + "'s turn";
+			}
+		}
 		nextPitcher.content = message2;
 	}
 
 	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
-		if (e.message == "EnableAddTime")
-			addTimeEnabled = true;
-		if (e.message == "DisableAddTime")
-			addTimeEnabled = false;
+		ToggleAddTime (e.message);
 	}
 }

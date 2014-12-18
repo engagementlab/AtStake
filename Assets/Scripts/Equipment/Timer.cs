@@ -44,7 +44,6 @@ public class Timer : MonoBehaviour {
 
 	IEnumerator CountDown () {
 		countingDown = true;
-		Debug.Log ("timmmmmer: " + seconds);
 		while (seconds > 0f) {
 			seconds -= Time.deltaTime;
 			yield return null;
@@ -56,15 +55,4 @@ public class Timer : MonoBehaviour {
 	void OnCountDownEnd () {
 		timerElement.OnCountDownEnd ();
 	}
-	/*
-	public void DeciderAddSeconds (float amount) {
-		networkView.RPC ("AddSecondsMessage", RPCMode.Others, amount);
-	}
-
-	[RPC]
-	void AddSecondsMessage (float amount) {
-		if (Player.instance.IsDecider) {
-			AddSeconds (amount);
-		}
-	}*/
 }

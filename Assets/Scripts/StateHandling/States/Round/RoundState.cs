@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RoundState : GameState {
 	
@@ -16,6 +17,18 @@ public class RoundState : GameState {
 	string playerName;
 	public string PlayerName {
 		get { return playerName; }
+	}
+
+	List<string> players = new List<string>(0);
+	public List<string> Players {
+		get {
+			if (players.Count == 0) {
+				players = MultiplayerManager.instance.Players;
+				if (Player.instance.IsDecider)
+					players.Remove (Player.instance.Name);
+			}
+			return players;
+		}
 	}
 
 	public RoundState (string name = "Round") : base (name) {
@@ -36,6 +49,7 @@ public class RoundState : GameState {
 			new PitchScreen (this),
 			new DeliberateScreen (this),
 			new DecideScreen (this),
+			new WinScreen (this),
 			new AgendaScreen (this),
 			new ScoreboardScreen (this),
 			new RoleScreen (this)

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StageScreen : GameScreen {
 
+	RoundState round;
 	TimerElement timer;
 	protected string playerName;
 	protected bool addTimeEnabled = false;
+	protected List<string> players = new List<string> (0);
 
 	public StageScreen (GameState state, string name) : base (state, name) {
 
@@ -20,7 +23,7 @@ public class StageScreen : GameScreen {
 
 		timer = CreateTimer (defaultTime);
 		
-		RoundState round = state as RoundState;
+		round = state as RoundState;
 		playerName = round.PlayerName;
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement (name),
@@ -37,6 +40,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected override void OnScreenStartDecider () {
+		players = round.Players;
 		InitDeciderScreen ();
 	}
 
@@ -67,6 +71,13 @@ public class StageScreen : GameScreen {
 		}
 	}
 
+	public void ToggleAddTime (string message) {
+		if (message == "EnableAddTime")
+			addTimeEnabled = true;
+		if (message == "DisableAddTime")
+			addTimeEnabled = false;
+	}
+
 	// Only Players add time
 	void AddTime () {
 		if (!addTimeEnabled)
@@ -82,10 +93,6 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
-		if (e.message1 == "EnableAddTime")
-			addTimeEnabled = true;
-		if (e.message1 == "DisableAddTime")
-			addTimeEnabled = false;
 		OnPlayersReceiveMessage (e.message1, e.message2);
 	}
 
@@ -96,8 +103,11 @@ public class StageScreen : GameScreen {
 		}
 	}
 
+	protected virtual void OnPlayersReceiveMessage (string message1, string message2) {
+		ToggleAddTime (message1);
+	}
+
 	protected virtual bool StartTimer () { return true; }
 	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
 	protected virtual void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {}
-	protected virtual void OnPlayersReceiveMessage (string message1, string message2) {}
 }

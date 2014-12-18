@@ -31,8 +31,6 @@ public class MessageRelayer : MonoBehaviour {
 
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 		Events.instance.AddListener<HostScheduleMessageEvent> (OnHostScheduleMessageEvent);
-		Events.instance.AddListener<SendMessageToPlayerEvent> (OnSendMessageToPlayerEvent);
-		Events.instance.AddListener<SendMessageToOthersEvent> (OnSendMessageToOthersEvent);
 		Events.instance.AddListener<ClientConfirmMessageEvent> (OnClientConfirmMessageEvent);
 	}
 
@@ -58,12 +56,12 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	// Send to a specific player
-	public void SendMessageToPlayer (string playerName, string message) {
+	public void SendMessageToPlayer (string playerName, string message="") {
 		networkView.RPC ("PlayerReceiveMessage", RPCMode.All, playerName, message);
 	}
 
-	// Send to everyone except a specific player
-	public void SendMessageToOthers (string playerName, string message) {
+	// Send to everyone except the Decider and a specific player
+	public void SendMessageToOthers (string playerName, string message="") {
 		networkView.RPC ("OthersReceiveMessage", RPCMode.All, playerName, message);
 	}
 
@@ -123,14 +121,6 @@ public class MessageRelayer : MonoBehaviour {
 		}
 	}
 
-	void OnSendMessageToPlayerEvent (SendMessageToPlayerEvent e) {
-		SendMessageToPlayer (e.playerName, e.message);
-	}
-
-	void OnSendMessageToOthersEvent (SendMessageToOthersEvent e) {
-		SendMessageToOthers (e.playerName, e.message);
-	}
-
 	[RPC]
 	void HostScheduleMessage (string message) {
 
@@ -157,14 +147,16 @@ public class MessageRelayer : MonoBehaviour {
 	[RPC]
 	void OthersReceiveMessage (string playerName, string message) {
 
-		// Every player except the one named playerName will hear this message
-		if (playerName != Player.instance.Name) {
+		// Every player except the Decider and the one named playerName will hear this message
+		if (playerName != Player.instance.Name && !Player.instance.IsDecider) {
 			Events.instance.Raise (new OthersReceiveMessageEvent (message));
 		}
 	}
 
 	[RPC]
 	void PlayersReceiveMessage (string message1, string message2) {
+
+		// All players except the Decider will hear this message
 		if (!Player.instance.IsDecider) {
 			Events.instance.Raise (new PlayersReceiveMessageEvent (message1, message2));
 		}
@@ -172,6 +164,8 @@ public class MessageRelayer : MonoBehaviour {
 
 	[RPC]
 	void DeciderReceiveMessage (string message1, string message2) {
+
+		// Only the Decider will hear this message
 		if (Player.instance.IsDecider) {
 			Events.instance.Raise (new DeciderReceiveMessageEvent (message1, message2));
 		}
