@@ -24,19 +24,19 @@ public class DeckManager : MonoBehaviour {
 		
 		get {
 			#if UNITY_WEBPLAYER
-			return "http://engagementgamelab.org/atstake-mobile-decks/local/";
+				return "http://engagementgamelab.org/atstake-mobile-decks/local/";
 			#endif
 
 			#if UNITY_STANDALONE
-			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+				return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
 			#endif
 
 			#if UNITY_IPHONE
-			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+				return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
 			#endif
 
 			#if UNITY_ANDROID
-			return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
+				return System.IO.Path.Combine (Application.streamingAssetsPath, "Decks/");
 			#endif
 		}
 	}
@@ -148,6 +148,7 @@ public class DeckManager : MonoBehaviour {
 		OnLoadDeck ();
 		
 		RoleManager.instance.PopulateDeck (deck);
+		AgendaItemsManager.instance.PopulateAgendaItems ();
 	}
 
 	void CreateQuestions (JSONArray arr) {
@@ -174,7 +175,7 @@ public class DeckManager : MonoBehaviour {
 		AgendaItem[] items = new AgendaItem[jsonItems.Count]; 
 		
 		for (int i = 0; i < jsonItems.Count; i ++) {
-			items[i] = new AgendaItem (jsonItems[i]["description"], Int32.Parse(jsonItems[i]["bonus"]));
+			items[i] = new AgendaItem (Player.instance.Name, jsonItems[i]["description"], Int32.Parse(jsonItems[i]["bonus"]));
 		}
 
 		r.SetAgendaItems (items);

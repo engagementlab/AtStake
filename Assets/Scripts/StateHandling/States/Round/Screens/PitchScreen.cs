@@ -53,10 +53,6 @@ public class PitchScreen : StageScreen {
 
 	protected override void OnScreenStartDecider () {
 		InitDeciderScreen ();
-
-		//players = MultiplayerManager.instance.Players;
-		//players.Remove (Player.instance.Name);
-		
 		UpdatePitcherLabels ();
 		AppendVariableElements (new ScreenElement[] {
 			currentPitcher,
@@ -75,6 +71,7 @@ public class PitchScreen : StageScreen {
 	protected override bool StartTimer () {
 		
 		// Do not start timer if all players have pitched
+		Debug.Log (currentPlayer + ", " + players.Count);
 		if (currentPlayer >= players.Count-1)
 			return false;
 
@@ -119,6 +116,6 @@ public class PitchScreen : StageScreen {
 	}
 
 	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
-		ToggleAddTime (e.message);
+		ToggleEnableAddTime (e.message);
 	}
 }

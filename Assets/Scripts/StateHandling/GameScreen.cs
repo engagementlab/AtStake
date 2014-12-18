@@ -28,8 +28,8 @@ public class GameScreen {
 	}
 
 	/**
-	*	Protected functions
-	*/
+	 *	Protected functions
+	 */
 
 	// Call this in the constructor to create elements that never change
 	protected void SetStaticElements (ScreenElement[] staticElements) {
@@ -84,9 +84,13 @@ public class GameScreen {
 		return new TimerElement (this, startTime);
 	}
 
+	protected void RefreshScreen () {
+		OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
+	}
+
 	/**
-	*	Virtual functions
-	*/
+	 *	Virtual functions
+	 */
 
 	// Host and clients hear this
 	public virtual void OnScreenStart (bool hosting, bool isDecider) {
@@ -120,8 +124,8 @@ public class GameScreen {
 	public virtual void OnCountDownEnd () {}
 
 	/**
-	*	Private functions
-	*/
+	 *	Private functions
+	 */
 
 	void RefreshElements () {
 		
@@ -145,8 +149,8 @@ public class GameScreen {
 	}
 
 	/**
-	*	Messages
-	*/
+	 *	Messages
+	 */
 
 	void OnButtonPressEvent (ButtonPressEvent e) {
 		if (e.screen == this)

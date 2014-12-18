@@ -51,8 +51,8 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	// Send to the Decider
-	public void SendMessageToDecider (string message1, string message2="") {
-		networkView.RPC ("DeciderReceiveMessage", RPCMode.All, message1, message2);
+	public void SendMessageToDecider (string id, string message1="", string message2="") {
+		networkView.RPC ("DeciderReceiveMessage", RPCMode.All, id, message1, message2);
 	}
 
 	// Send to a specific player
@@ -63,6 +63,10 @@ public class MessageRelayer : MonoBehaviour {
 	// Send to everyone except the Decider and a specific player
 	public void SendMessageToOthers (string playerName, string message="") {
 		networkView.RPC ("OthersReceiveMessage", RPCMode.All, playerName, message);
+	}
+
+	public void SendMessageToAll (string id, string message1="", string message2="") {
+		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
 	}
 
 	/**
@@ -163,12 +167,17 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	[RPC]
-	void DeciderReceiveMessage (string message1, string message2) {
+	void DeciderReceiveMessage (string id, string message1, string message2) {
 
 		// Only the Decider will hear this message
 		if (Player.instance.IsDecider) {
-			Events.instance.Raise (new DeciderReceiveMessageEvent (message1, message2));
+			Events.instance.Raise (new DeciderReceiveMessageEvent (id, message1, message2));
 		}
+	}
+
+	[RPC]
+	void AllReceiveMessage (string id, string message1, string message2) {
+		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2));
 	}
 }
 

@@ -12,7 +12,6 @@ public class DecideScreen : GameScreen {
 	public DecideScreen (GameState state, string name = "Decide") : base (state, name) {
 
 		Events.instance.AddListener<PlayersReceiveMessageEvent> (OnPlayersReceiveMessageEvent);
-		//Events.instance.AddListener<OthersReceiveMessageEvent> (OnOthersReceiveMessageEvent);
 
 		instructions = new LabelElement ("");
 		SetStaticElements (new ScreenElement[] {
@@ -46,7 +45,6 @@ public class DecideScreen : GameScreen {
 		if (e.id == "Confirm" && winningPlayer != "") {
 			Player.instance.WinningPlayer = winningPlayer;
 			MessageRelayer.instance.SendMessageToPlayers (winningPlayer);
-			//MessageRelayer.instance.SendMessageToOthers (winningPlayer);
 			GameStateController.instance.AllPlayersGotoNextScreen ();
 		}
 
@@ -60,16 +58,4 @@ public class DecideScreen : GameScreen {
 	void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
 		Player.instance.WinningPlayer = e.message1;
 	}
-
-	void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
-		/*SetVariableElements (new ScreenElement[] {
-			new LabelElement ("You won!!!!!!")
-		});*/
-	}
-
-	/*void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {
-		SetVariableElements (new ScreenElement[] {
-			new LabelElement (e.playerName + " won")
-		});
-	}*/
 }

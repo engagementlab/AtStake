@@ -40,7 +40,6 @@ public class StageScreen : GameScreen {
 	}
 
 	protected override void OnScreenStartDecider () {
-		players = round.Players;
 		InitDeciderScreen ();
 	}
 
@@ -52,6 +51,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitDeciderScreen () {
+		players = round.Players;
 		SetVariableElements (new ScreenElement[] {
 			new LabelElement (Copy.GetInstructions (name)),
 			CreateButton ("Start Timer"),
@@ -71,7 +71,7 @@ public class StageScreen : GameScreen {
 		}
 	}
 
-	public void ToggleAddTime (string message) {
+	public void ToggleEnableAddTime (string message) {
 		if (message == "EnableAddTime")
 			addTimeEnabled = true;
 		if (message == "DisableAddTime")
@@ -97,14 +97,14 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
-		if (e.message1 == "AddTime") {
+		if (e.id == "AddTime") {
 			Timer.instance.AddSeconds (5f);
 			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 		}
 	}
 
 	protected virtual void OnPlayersReceiveMessage (string message1, string message2) {
-		ToggleAddTime (message1);
+		ToggleEnableAddTime (message1);
 	}
 
 	protected virtual bool StartTimer () { return true; }

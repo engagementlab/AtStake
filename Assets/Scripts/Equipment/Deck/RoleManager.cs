@@ -74,6 +74,7 @@ public class RoleManager : MonoBehaviour {
 	void AssignRole (string name, int roleIndex) {
 		if (name == Player.instance.Name) {
 			Events.instance.Raise (new SetRoleEvent (deck.Roles[roleIndex]));
+			Events.instance.Raise (new ClientConfirmMessageEvent ("HostAssignRoles"));
 		}
 	}
 
