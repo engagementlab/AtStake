@@ -38,7 +38,9 @@ public class RoundState : GameState {
 	public override void OnStateStart () {
 		roundNumber ++;
 		question = QuestionManager.instance.GetQuestion (roundNumber);
-		playerName = Player.instance.Name;
+		Player player = Player.instance;
+		playerName = player.Name;
+		player.OnRoundStart ();
 	}
 	
 	public override GameScreen[] SetScreens () {

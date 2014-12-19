@@ -59,6 +59,24 @@
 					"bonus": 2
 				}
 			]
+		},
+		{
+			"name": "Artist",
+			"bio": "Creative thinker who expresses complex ideas through art",
+			"agenda_items": [
+				{
+					"description": "Innovative use of public space for community engagement",
+					"bonus": 1
+				},
+				{
+					"description": "Venues for artists to display their work",
+					"bonus": 1
+				},
+				{
+					"description": "Funding for public art",
+					"bonus": 2
+				}
+			]
 		}
 	]
 }

@@ -19,10 +19,36 @@ public class AgendaResultsScreen : GameScreen {
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		
+		if (e.id != "FinishReceivingWins")
+			return;
+
+		Player player = Player.instance;
+
+		// Show the winning agenda items
+		description.content = "Winning Agenda Items:";
 		List<AgendaItem> winningItems = AgendaItemsManager.instance.WinningItems;
 		ScreenElement[] se = new ScreenElement[winningItems.Count];
 		for (int i = 0; i < se.Length; i ++) {
 			se[i] = new LabelElement (string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus));
+		}
+
+		// If the Decider, add a 'next' button
+		SetVariableElements (se);
+		if (Player.instance.IsDecider)
+			AppendVariableElements (CreateButton ("Next"));
+
+		// Update score
+		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;
+		foreach (AgendaItem item in myWinningItems) {
+			player.MyBeanPool.OnAddBonus (item.bonus);
+		}
+		BeanPoolManager.instance.UpdateMyScore ();
+	}
+
+	protected override void OnButtonPress (ButtonPressEvent e) {
+		if (e.id == "Next") {
+			GameStateController.instance.AllPlayersGotoScreen ("Scoreboard");
 		}
 	}
 }

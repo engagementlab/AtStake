@@ -46,12 +46,11 @@ public class Player : MonoBehaviour {
 	}
 
 	void Start () {
-		beanPool = new BeanPool (3);
+		beanPool = new BeanPool (0);
 	}
 
-	public Player (string name, Role role) {
-		this.role = role;
-		beanPool = new BeanPool (0);
+	public void OnRoundStart () {
+		beanPool.OnRoundStart (isDecider);
 	}
 
 	void OnEnterNameEvent (EnterNameEvent e) {

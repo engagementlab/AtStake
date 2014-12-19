@@ -28,7 +28,8 @@ public class StageScreen : GameScreen {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement (name),
 			new LabelElement (round.Question),
-			timer
+			timer,
+			new BeanPoolElement ()
 			// pot
 			// score
 			// stage progress
@@ -82,7 +83,7 @@ public class StageScreen : GameScreen {
 	void AddTime () {
 		if (!addTimeEnabled)
 			return;
-		if (Player.instance.MyBeanPool.SubtractBeans (1)) {
+		if (Player.instance.MyBeanPool.OnAddTime ()) {
 			MessageRelayer.instance.SendMessageToDecider ("AddTime");
 		}
 	}

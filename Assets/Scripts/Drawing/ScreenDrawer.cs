@@ -33,6 +33,10 @@ public class ScreenDrawer : MonoBehaviour {
 				TimerElement t = e as TimerElement;
 				GUILayout.Label (t.SecondsRounded.ToString ());
 			}
+			if (e is BeanPoolElement) {
+				BeanPoolElement b = e as BeanPoolElement;
+				GUILayout.Label (b.content);
+			}
 		}
 	}
 

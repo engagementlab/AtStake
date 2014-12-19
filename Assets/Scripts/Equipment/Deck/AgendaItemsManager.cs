@@ -8,8 +8,9 @@ public class AgendaItemsManager : MonoBehaviour {
 	static public AgendaItemsManager instance;
 	AgendaItem[] myItems = new AgendaItem[0];
 	string playerName;
-	List<AgendaItem> items = new List<AgendaItem> (0);
-	List<AgendaItem> winningItems = new List<AgendaItem> (0);
+	List<AgendaItem> items = new List<AgendaItem> (0);			// All agenda items
+	List<AgendaItem> votableItems = new List<AgendaItem> (0);	// Items that this player can vote on
+	List<AgendaItem> winningItems = new List<AgendaItem> (0);	// Items that won the vote
 	bool confirmed = false;
 	int index = 0;
 	int finishedVoters = 0;
@@ -19,28 +20,39 @@ public class AgendaItemsManager : MonoBehaviour {
 		get { return winningItems; }
 	}
 
+	public List<AgendaItem> MyWinningItems {
+		get {
+			List<AgendaItem> myWinningItems = new List<AgendaItem>();
+			foreach (AgendaItem item in winningItems) {
+				if (item.playerName == playerName)
+					myWinningItems.Add (item);
+			}
+			return myWinningItems;
+		}
+	}
+
 	public int CurrentIndex {
 		get { return index+1; }
 	}
 
 	public int TotalItems {
-		get { return items.Count; }
+		get { return votableItems.Count; }
 	}
 
 	public AgendaItem NextItem {
 		get {
-			if (index >= items.Count)
+			if (index >= votableItems.Count)
 				return null;
 			if (index == 0)
 				PrepareItems ();
-			AgendaItem nextItem = items[index];
+			AgendaItem nextItem = votableItems[index];
 			index ++;
 			return nextItem;
 		}
 	}
 
 	public bool HasNextItem {
-		get { return index != items.Count; }
+		get { return index != votableItems.Count; }
 	}
 
 	void Awake () {
@@ -81,16 +93,23 @@ public class AgendaItemsManager : MonoBehaviour {
 	void PrepareItems () {
 		if (!Player.instance.IsDecider)
 			RemovePlayerItems (playerName);
-		items = items.Shuffle ();
+		votableItems = votableItems.Shuffle ();
+	}
+
+	void CopyItemsToVotable () {
+		votableItems = new List<AgendaItem>();
+		for (int i = 0; i < items.Count; i ++) {
+			votableItems.Add (items[i]);
+		}
 	}
 
 	void RemovePlayerItems (string name) {
 		List<AgendaItem> tempItems = new List<AgendaItem>();
-		foreach (AgendaItem item in items) {
+		foreach (AgendaItem item in votableItems) {
 			if (item.playerName != name)
 				tempItems.Add (item);
 		}
-		items = tempItems;
+		votableItems = tempItems;
 	}
 
 	void OnSelectDeciderEvent (SelectDeciderEvent e) {
@@ -110,24 +129,24 @@ public class AgendaItemsManager : MonoBehaviour {
 	}
 
 	void CalculateVotes () {
-		bool even = playerCount % 2 == 0;
-		for (int i = 0; i < items.Count; i ++) {
+		bool even = (playerCount-1) % 2 == 0;
+		int majority = even ? (playerCount-1) / 2 : Mathf.CeilToInt (((float)playerCount-1f) / 2f);
+		for (int i = 0; i < votableItems.Count; i ++) {
 			bool won = false;
 			if (even) {
-				int majority = playerCount/2;
-				if (items[i].VoteCount > majority) {
+				if (votableItems[i].VoteCount > majority) {
 					won = true;
 				}
-				if (items[i].VoteCount == majority && items[i].DeciderVote) {
+				if (votableItems[i].VoteCount == majority && votableItems[i].DeciderVote) {
 					won = true;
 				}
 			} else {
-				if (items[i].VoteCount >= Mathf.Ceil (playerCount / 2)) {
+				if (votableItems[i].VoteCount >= majority) {
 					won = true;
 				}
 			}
 			if (won) {
-				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, items[i].playerName, items[i].description);
+				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, votableItems[i].playerName, votableItems[i].description);
 			}
 		}
 		MessageRelayer.instance.SendMessageToAll ("FinishReceivingWins");
@@ -141,7 +160,9 @@ public class AgendaItemsManager : MonoBehaviour {
 			confirmed = true;
 		}
 
-		items.Add (new AgendaItem (otherName, description, bonus));
+		AgendaItem ai = new AgendaItem (otherName, description, bonus);
+		items.Add (ai);
+		votableItems.Add (ai);
 	}
 
 	[RPC]
@@ -155,6 +176,8 @@ public class AgendaItemsManager : MonoBehaviour {
 
 	[RPC]
 	void ReceiveWinningAgendaItem (string name, string description) {
-		winningItems.Add (GetAgendaItem (name, description));
+		AgendaItem i = GetAgendaItem (name, description);
+		if (i != null)
+			winningItems.Add (i);
 	}
 }
