@@ -9,6 +9,11 @@
 			"name": "small",
 			"filename": "small-deck.json",
 			"starred": "false"
+		},
+		{
+			"name": "cake",
+			"filename": "cake-deck.json",
+			"starred": "false"
 		}
 	]
 }

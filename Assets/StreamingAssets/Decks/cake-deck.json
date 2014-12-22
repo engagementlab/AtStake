@@ -1,0 +1,100 @@
+{
+	"name": "cake",
+	"questions": [
+		"How do we get everyone to agree that chocolate cake is best?",
+		"How do we persuade local bakeries to provide free cakes?",
+		"How do we encourage doctors to reclassify cake as health food?"
+	],
+	"roles": [
+		{
+			"name": "Baker",
+			"bio": "Cake-conjuring wizard, spongy to the touch",
+			"agenda_items": [
+				{
+					"description": "Involves the bankrupting of all other bakeries",
+					"bonus": 1
+				},
+				{
+					"description": "Increases the desirability of excessive cake-eating",
+					"bonus": 1
+				},
+				{
+					"description": "At least quintuples the value of cake",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Doctor",
+			"bio": "Crotchety and mean destroyer of happiness",
+			"agenda_items": [
+				{
+					"description": "Decreases cake consumption considerably",
+					"bonus": 1
+				},
+				{
+					"description": "Restaurants that exclusively serve raw, unseasoned bok choy",
+					"bonus": 1
+				},
+				{
+					"description": "Establishes carrot cake as 'pretty ok'",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "#Wade",
+			"bio": "An omnivorous scavenger who feeds on organic materials",
+			"agenda_items": [
+				{
+					"description": "Free samples from bakeries are the size of full cakes",
+					"bonus": 1
+				},
+				{
+					"description": "Bakeries accept volatile, water-based currencies",
+					"bonus": 1
+				},
+				{
+					"description": "I get all the cake",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Candy Manufacturer",
+			"bio": "Owner of a small candy shop who's seen a dropoff in sales",
+			"agenda_items": [
+				{
+					"description": "Brings back the glory days of candy",
+					"bonus": 1
+				},
+				{
+					"description": "Conjures images of the Good Old Days",
+					"bonus": 1
+				},
+				{
+					"description": "Invention of a cake & candy hybrid",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Marty",
+			"bio": "Rose from the dead on the third day and has decided to stick around",
+			"agenda_items": [
+				{
+					"description": "Cake that tastes almost as good as shit",
+					"bonus": 1
+				},
+				{
+					"description": "More cake on the floor",
+					"bonus": 1
+				},
+				{
+					"description": "oooh! guacamole!!!!",
+					"bonus": 2
+				}
+			]
+		}
+	]
+}

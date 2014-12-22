@@ -59,9 +59,6 @@ public class BeanPoolManager : MonoBehaviour {
 		if (e.id == "UpdatePlayerScore") {
 			UpdatePlayerScore (e.message1, int.Parse (e.message2));
 		}
-		/*if (e.id == "FinishUpdatingPlayerScores") {
-			SortPlayers ();
-		}*/
 	}
 
 	void SortPlayers () {

@@ -10,6 +10,10 @@ public class RoleScreen : GameScreen {
 		
 	}
 
+	protected void ResetPlayerRole () {
+		playerRole = null;
+	}
+
 	protected override void OnScreenStartPlayer () {
 		
 		if (playerRole != null) 

@@ -69,6 +69,10 @@ public class MessageRelayer : MonoBehaviour {
 		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
 	}
 
+	public void SendMessageToHost (string id, string message1="", string message2="") {
+		networkView.RPC ("HostReceiveMessage", RPCMode.Server, id, message1, message2);
+	}
+
 	/**
 	 *	Client functions
 	 */
@@ -178,6 +182,11 @@ public class MessageRelayer : MonoBehaviour {
 	[RPC]
 	void AllReceiveMessage (string id, string message1, string message2) {
 		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2));
+	}
+
+	[RPC]
+	void HostReceiveMessage (string id, string message1, string message2) {
+		Events.instance.Raise (new HostReceiveMessageEvent (id, message1, message2));
 	}
 }
 

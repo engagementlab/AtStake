@@ -33,10 +33,8 @@ public class AgendaResultsScreen : GameScreen {
 			se[i] = new LabelElement (string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus));
 		}
 
-		// If the Decider, add a 'next' button
 		SetVariableElements (se);
-		if (Player.instance.IsDecider)
-			AppendVariableElements (CreateButton ("Next"));
+		AppendVariableElements (CreateButton ("Next"));
 
 		// Update score
 		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;
@@ -48,7 +46,7 @@ public class AgendaResultsScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next") {
-			GameStateController.instance.AllPlayersGotoScreen ("Scoreboard");
+			GotoScreen ("Scoreboard");
 		}
 	}
 }

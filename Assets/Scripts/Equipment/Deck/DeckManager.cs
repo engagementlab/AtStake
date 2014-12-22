@@ -17,6 +17,7 @@ public class DeckManager : MonoBehaviour {
 	// the loaded deck's filename & whether or not it's local
 	string deckFilename = "";
 	bool deckLocal = false;
+	bool cakeUnlocked = false; // Easter egg
 
 	string debugText = "";
 
@@ -50,6 +51,7 @@ public class DeckManager : MonoBehaviour {
 		if (instance == null) instance = this;
 
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
+		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 
 		GetLocalDeckNames ();
 		GetHostedDeckNames ();
@@ -121,12 +123,18 @@ public class DeckManager : MonoBehaviour {
 		if (isLocal) {
 			deckList.ClearLocal ();
 			for (int i = 0; i < jsonDecks.Count; i ++) {
-				deckList.AddLocalDeck (jsonDecks[i]["name"], jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
+				string name = jsonDecks[i]["name"];
+				if (name == "cake" && !cakeUnlocked)
+					continue;
+				deckList.AddLocalDeck (name, jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
 			}
 		} else {
 			deckList.ClearHosted ();
 			for (int i = 0; i < jsonDecks.Count; i ++) {
-				deckList.AddHostedDeck (jsonDecks[i]["name"], jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
+				string name = jsonDecks[i]["name"];
+				if (name == "cake" && !cakeUnlocked)
+					continue;
+				deckList.AddHostedDeck (name, jsonDecks[i]["filename"], jsonDecks[i]["starred"]);
 			}
 		}
 		deckList.Updated ();
@@ -194,6 +202,14 @@ public class DeckManager : MonoBehaviour {
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.message == "OnServerLoadDeck") {
 			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
+		}
+	}
+
+	void OnEnterNameEvent (EnterNameEvent e) {
+		if (e.name == "#Wade") {
+			cakeUnlocked = true;
+			GetLocalDeckNames ();
+			GetHostedDeckNames ();
 		}
 	}
 

@@ -32,12 +32,12 @@ public class RoundState : GameState {
 	}
 
 	public RoundState (string name = "Round") : base (name) {
-		
+		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
 	}
 
 	public override void OnStateStart () {
-		roundNumber ++;
 		question = QuestionManager.instance.GetQuestion (roundNumber);
+		roundNumber ++;
 		Player player = Player.instance;
 		playerName = player.Name;
 		player.OnRoundStart ();
@@ -57,5 +57,9 @@ public class RoundState : GameState {
 			new ScoreboardScreen (this),
 			new RoleScreen (this)
 		};
+	}
+
+	void OnRoundEndEvent (RoundEndEvent e) {
+		players.Clear ();
 	}
 }
