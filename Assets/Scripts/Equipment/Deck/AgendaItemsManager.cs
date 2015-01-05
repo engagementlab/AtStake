@@ -65,7 +65,7 @@ public class AgendaItemsManager : MonoBehaviour {
 
 	public void PopulateAgendaItems () {
 		if (MultiplayerManager.instance.Hosting)
-			Events.instance.Raise (new HostScheduleMessageEvent ("SendAgendaItems"));
+			MessageSender.instance.ScheduleMessage ("SendAgendaItems");
 	}
 
 	public AgendaItem GetAgendaItem (string playerName, string description) {
@@ -81,13 +81,9 @@ public class AgendaItemsManager : MonoBehaviour {
 	}
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
-		if (e.message == "SendAgendaItems") {
+		if (e.name == "SendAgendaItems") {
 			networkView.RPC ("SendAgendaItems", RPCMode.All);
 		}
-	}
-
-	void SendAgendaItem (AgendaItem item) {
-		networkView.RPC ("ReceiveAgendaItem", RPCMode.All, item.playerName, item.description, item.bonus);
 	}
 
 	void PrepareItems () {
@@ -154,12 +150,6 @@ public class AgendaItemsManager : MonoBehaviour {
 
 	[RPC]
 	void ReceiveAgendaItem (string otherName, string description, int bonus) {
-		
-		if (!confirmed) {
-			Events.instance.Raise (new ClientConfirmMessageEvent ("SendAgendaItem"));
-			confirmed = true;
-		}
-
 		AgendaItem ai = new AgendaItem (otherName, description, bonus);
 		items.Add (ai);
 		votableItems.Add (ai);
@@ -170,7 +160,8 @@ public class AgendaItemsManager : MonoBehaviour {
 		playerName = Player.instance.Name;
 		myItems = Player.instance.MyRole.MyAgenda.items;
 		for (int i = 0; i < myItems.Length; i ++) {
-			SendAgendaItem (myItems[i]);
+			AgendaItem item = myItems[i];
+			networkView.RPC ("ReceiveAgendaItem", RPCMode.All, item.playerName, item.description, item.bonus);
 		}
 	}
 

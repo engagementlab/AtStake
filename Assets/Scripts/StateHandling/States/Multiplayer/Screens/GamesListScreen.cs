@@ -32,7 +32,7 @@ public class GamesListScreen : GameScreen {
 		int n = (int)char.GetNumericValue (c);
 		int n2 = (int)char.GetNumericValue (c2);
 		if (n > -1) {
-			MultiplayerManager.instance.ConnectToHost (hosts [n]);
+			MultiplayerManager.instance.ConnectToHost (hosts[n]);
 			GotoScreen ("Lobby");
 		}
 	}

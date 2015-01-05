@@ -37,6 +37,7 @@ public class GameStateController : MonoBehaviour {
 		// Each GameState normally handles this message, but GameStateController is sending it here
 		// so that we don't get a bunch of messages at the start of the game
 		Events.instance.Raise (new ChangeScreenEvent (Screen));
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
 	void GotoState (int index) {
@@ -93,28 +94,28 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	public void AllPlayersGotoNextScreen () {
-		Events.instance.Raise (new HostScheduleMessageEvent ("OnGotoNextScreen"));
-		networkView.RPC ("OnSendPlayersToNextScreen", RPCMode.All);
+		MessageSender.instance.ScheduleMessage ("OnGotoNextScreen");
 	}
 
 	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
+		MessageSender.instance.ScheduleMessage (new NetworkMessage ("OnGotoScreen", screenName, stateName));
+	}
 
-		// Using the MessageRelayer in this way doesn't stop this RPC from firing if another RPC is still
-		// being confirmed, but it will prevent other RPCs from firing until this one is confirmed.
-		// wow such a great explanation !!!
-		Events.instance.Raise (new HostScheduleMessageEvent ("OnGotoScreen"));
-		networkView.RPC ("OnSendPlayersToScreen", RPCMode.All, screenName, stateName);
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.name == "OnGotoNextScreen") {
+			networkView.RPC ("OnSendPlayersToNextScreen", RPCMode.All);
+		} else if (e.name == "OnGotoScreen") {
+			networkView.RPC ("OnSendPlayersToScreen", RPCMode.All, e.message1, e.message2);
+		}
 	}
 
 	[RPC]
 	void OnSendPlayersToNextScreen () {
-		Events.instance.Raise (new ClientConfirmMessageEvent ("OnGotoNextScreen"));
 		GameStateController.instance.GotoNextScreen ();
 	}
 
 	[RPC]
 	void OnSendPlayersToScreen (string screenName, string stateName) {
-		Events.instance.Raise (new ClientConfirmMessageEvent ("OnGotoScreen"));
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 }

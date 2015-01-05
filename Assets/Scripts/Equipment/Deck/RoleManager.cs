@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -52,7 +52,7 @@ public class RoleManager : MonoBehaviour {
 			roleIndices.Remove (roleIndices[r]);
 		}
 
-		Events.instance.Raise (new HostScheduleMessageEvent ("HostAssignRoles"));
+		HostAssignRoles ();
 	}
 
 	void HostAssignRoles () {
@@ -60,21 +60,20 @@ public class RoleManager : MonoBehaviour {
 		// Each player is sent a message with a name and number. 
 		// If their name matches the messaged name, they're assigned the corresponding role
 		for (int i = 0; i < playerNames.Count; i ++) {
-			networkView.RPC ("AssignRole", RPCMode.All, playerNames[i], randomIndices[i]);
+			MessageSender.instance.ScheduleMessage (new NetworkMessage ("AssignRole", playerNames[i], "", randomIndices[i]));
 		}
 	}
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
-		if (e.message == "HostAssignRoles") {
-			HostAssignRoles ();
+		if (e.name == "AssignRole") {
+			networkView.RPC ("AssignRole", RPCMode.All, e.message1, e.val);
 		}
 	}
 
 	[RPC]
-	void AssignRole (string name, int roleIndex) {
-		if (name == Player.instance.Name) {
+	void AssignRole (string playerName, int roleIndex) {
+		if (playerName == Player.instance.Name) {
 			Events.instance.Raise (new SetRoleEvent (deck.Roles[roleIndex]));
-			Events.instance.Raise (new ClientConfirmMessageEvent ("HostAssignRoles"));
 		}
 	}
 

@@ -47,8 +47,6 @@ public class LobbyScreen : GameScreen {
 	}
 
 	void GotoChooseDeck () {
-		//GameStateController.instance.SendOthersToScreen ("Choose Deck", "Decider");
-		//GotoScreen ("Choose Deck", "Decider");
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
 	}
 }
