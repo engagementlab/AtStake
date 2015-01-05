@@ -13,6 +13,8 @@ public class GamesListScreen : GameScreen {
 		});
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {}
+
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		hosts = e.hosts;
 		ScreenElement[] se = new ScreenElement[hosts.Length];

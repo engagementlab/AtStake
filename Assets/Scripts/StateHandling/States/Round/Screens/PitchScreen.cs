@@ -118,4 +118,8 @@ public class PitchScreen : StageScreen {
 	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
 		ToggleEnableAddTime (e.message);
 	}
+
+	protected override void OnPressNext () {
+		GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
+	}
 }

@@ -68,8 +68,12 @@ public class StageScreen : GameScreen {
 									timer.StartCountDown (); 
 								}
 								break;
-			case "Next": GameStateController.instance.AllPlayersGotoNextScreen (); break;
+			case "Next": OnPressNext (); break;
 		}
+	}
+
+	protected virtual void OnPressNext () {
+		GameStateController.instance.AllPlayersGotoNextScreen ();
 	}
 
 	public void ToggleEnableAddTime (string message) {

@@ -55,18 +55,19 @@ public class MessageSender : MonoBehaviour {
 		}
 	}
 
+	public void SendMessageToAll (string id, string message1="", string message2="") {
+		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
+	}
+
 	/**
 	 *	Private functions
 	 */
 
 	void HostReceiveConfirmation (string name) {
-		
-		// ignore if there are no messages to send
-		if (messages.Count == 0)
-			return;
-
-		receivedCount ++;
-		RemoveMessage ();
+		if (messages.Count > 0) {
+			receivedCount ++;
+			RemoveMessage ();
+		}
 	}
 
 	void AddMessage (NetworkMessage message) {
@@ -116,6 +117,11 @@ public class MessageSender : MonoBehaviour {
 	[RPC]
 	void ConfirmClientReceived (string name) {
 		HostReceiveConfirmation (name);
+	}
+
+	[RPC]
+	void AllReceiveMessage (string id, string message1, string message2) {
+		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2));
 	}
 
 	/**

@@ -94,6 +94,9 @@ public class GameScreen {
 
 	// Host and clients hear this
 	public virtual void OnScreenStart (bool hosting, bool isDecider) {
+
+		SetVariableElements (new ScreenElement[0]);
+		
 		if (hosting) {
 			OnScreenStartHost ();
 		} else {
@@ -117,6 +120,8 @@ public class GameScreen {
 
 	// Everyone but the decider hears this
 	protected virtual void OnScreenStartPlayer () {}
+
+	public virtual void OnScreenEnd () {}
 
 	// This function only gets called if the pressed button belongs to this GameScreen
 	protected virtual void OnButtonPress (ButtonPressEvent e) {}

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// Deprecate this! Use this MessageSender instead
+
 [RequireComponent (typeof (NetworkView))]
 public class MessageRelayer : MonoBehaviour {
 

@@ -3,12 +3,10 @@ using System.Collections;
 
 public class RoleScreen : GameScreen {
 
-	Role playerRole = null;
+	Role playerRole = null; // was using this to cache the screen but now shit's fucked up eghh?
 	string playerName = "";
 
-	public RoleScreen (GameState state, string name = "Role") : base (state, name) {
-		
-	}
+	public RoleScreen (GameState state, string name = "Role") : base (state, name) {}
 
 	protected void ResetPlayerRole () {
 		playerRole = null;
@@ -68,6 +66,7 @@ public class RoleScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
+			playerRole = null;
 			GameStateController.instance.GotoPreviouslyVisitedScreen ();
 		}
 	}

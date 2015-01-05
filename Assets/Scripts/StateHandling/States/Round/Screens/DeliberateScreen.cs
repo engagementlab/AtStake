@@ -6,4 +6,8 @@ public class DeliberateScreen : StageScreen {
 	public DeliberateScreen (GameState state, string name = "Deliberate") : base (state, name) {
 		InitStageScreen (10f);
 	}
+
+	protected override void OnPressNext () {
+		GameStateController.instance.AllPlayersGotoScreen ("Decide");
+	}
 }

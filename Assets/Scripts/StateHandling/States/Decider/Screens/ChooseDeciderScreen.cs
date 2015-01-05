@@ -15,6 +15,8 @@ public class ChooseDeciderScreen : GameScreen {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {}
+
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
 		
 		string[] names = e.playerNames;

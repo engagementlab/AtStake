@@ -62,12 +62,10 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		Debug.Log (isDecider + ", " + name);
 		if (e.name == name) {
 			isDecider = true;
 		} else {
 			isDecider = false;
 		}
-		Debug.Log (isDecider + ", " + name);
 	}
 }

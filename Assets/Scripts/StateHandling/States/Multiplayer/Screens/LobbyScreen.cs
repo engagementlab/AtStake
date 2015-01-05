@@ -5,7 +5,8 @@ public class LobbyScreen : GameScreen {
 	
 	LabelElement label;
 	bool hosting = false;
-	int minPlayers = 1;		// the number of players that must join before we show the play button TODO: the screen drawer should probably handle this
+	int minPlayers = 2;		// the number of players that must join before we show the play button TODO: the screen drawer should probably handle this
+	string[] playerNames = new string[0];
 
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
@@ -15,18 +16,39 @@ public class LobbyScreen : GameScreen {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {}
+
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
+		
+		playerNames = e.playerNames;
 
 		hosting = MultiplayerManager.instance.Hosting;
 
-		string[] names = e.playerNames;
-		int namesCount = names.Length;
+		int namesCount = playerNames.Length;
 		bool showPlay = hosting && namesCount > minPlayers;
 		int elementCount = showPlay ? namesCount+1 : namesCount;
 		ScreenElement[] se = new ScreenElement[elementCount];
 
 		for (int i = 0; i < namesCount; i ++) {
-			se[i] = new LabelElement (names[i]);
+			se[i] = new LabelElement (playerNames[i]);
+		}
+
+		if (showPlay) se[elementCount-1] = CreateButton ("Play");
+
+		SetVariableElements (se);
+	}
+
+	void RefreshPlayerList () {		
+
+		hosting = MultiplayerManager.instance.Hosting;
+
+		int namesCount = playerNames.Length;
+		bool showPlay = hosting && namesCount > minPlayers;
+		int elementCount = showPlay ? namesCount+1 : namesCount;
+		ScreenElement[] se = new ScreenElement[elementCount];
+
+		for (int i = 0; i < namesCount; i ++) {
+			se[i] = new LabelElement (playerNames[i]);
 		}
 
 		if (showPlay) se[elementCount-1] = CreateButton ("Play");

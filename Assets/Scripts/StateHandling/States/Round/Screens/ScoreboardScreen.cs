@@ -10,6 +10,8 @@ public class ScoreboardScreen : GameScreen {
 		});
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {}
+
 	void OnUpdatedPlayerScoresEvent (UpdatedPlayerScoresEvent e) {
 		ScreenElement[] se = new ScreenElement[e.playerNames.Length+1];
 		for (int i = 0; i < se.Length-1; i ++) {
@@ -22,6 +24,7 @@ public class ScoreboardScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next Round") {
 			GotoScreen ("New Round", "Decider");
+			Events.instance.Raise (new RoundEndEvent ());
 		}
 	}
 }
