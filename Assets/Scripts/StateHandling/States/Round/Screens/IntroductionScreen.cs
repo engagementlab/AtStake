@@ -4,7 +4,7 @@ using System.Collections;
 public class IntroductionScreen : RoleScreen {
 
 	public IntroductionScreen (GameState state, string name = "Introduction") : base (state, name) {
-		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
+		//Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
 	}
 
 	protected override void OnScreenStartDecider () {
@@ -22,9 +22,5 @@ public class IntroductionScreen : RoleScreen {
 		if (e.id == "Next") {
 			GameStateController.instance.AllPlayersGotoScreen ("Question");
 		}
-	}
-
-	void OnRoundEndEvent (RoundEndEvent e) {
-		ResetPlayerRole ();
 	}
 }

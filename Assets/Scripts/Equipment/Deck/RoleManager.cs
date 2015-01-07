@@ -19,10 +19,9 @@ public class RoleManager : MonoBehaviour {
 
 	public void PopulateDeck (Deck deck) {
 		this.deck = deck;
-		SetRandomRoles ();
 	}
 
-	void SetRandomRoles () {
+	public void SetRandomRoles () {
 
 		// The host assigns random roles to the rest of the players
 		if (!MultiplayerManager.instance.Hosting)

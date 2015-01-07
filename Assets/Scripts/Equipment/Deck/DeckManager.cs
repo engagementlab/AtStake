@@ -156,7 +156,8 @@ public class DeckManager : MonoBehaviour {
 		OnLoadDeck ();
 		
 		RoleManager.instance.PopulateDeck (deck);
-		AgendaItemsManager.instance.PopulateAgendaItems ();
+		//AgendaItemsManager.instance.PopulateAgendaItems ();
+		AgendaItemsManager.instance.Populate (deck);
 	}
 
 	void CreateQuestions (JSONArray arr) {

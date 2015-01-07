@@ -8,7 +8,7 @@ public class AgendaItemsManager : MonoBehaviour {
 	static public AgendaItemsManager instance;
 	AgendaItem[] myItems = new AgendaItem[0];
 	string playerName;
-	List<AgendaItem> items = new List<AgendaItem> (0);			// All agenda items
+	List<AgendaItem> items = new List<AgendaItem> (0);			// All agenda items in the deck
 	List<AgendaItem> votableItems = new List<AgendaItem> (0);	// Items that this player can vote on
 	List<AgendaItem> winningItems = new List<AgendaItem> (0);	// Items that won the vote
 	bool confirmed = false;
@@ -44,7 +44,7 @@ public class AgendaItemsManager : MonoBehaviour {
 			if (index >= votableItems.Count)
 				return null;
 			if (index == 0)
-				PrepareItems ();
+				ShuffleItems ();
 			AgendaItem nextItem = votableItems[index];
 			index ++;
 			return nextItem;
@@ -58,64 +58,61 @@ public class AgendaItemsManager : MonoBehaviour {
 	void Awake () {
 		if (instance == null)
 			instance = this;
-		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 	}
 
-	public void PopulateAgendaItems () {
-		if (MultiplayerManager.instance.Hosting)
-			MessageSender.instance.ScheduleMessage ("SendAgendaItems");
+	public void Populate (Deck deck) {
+		items.Clear ();
+		Role[] roles = deck.Roles;
+		foreach (Role r in roles) {
+			AgendaItem[] agendaItems = r.MyAgenda.items;
+			foreach (AgendaItem ai in agendaItems) {
+				items.Add (ai);
+			}
+		}
 	}
 
-	public AgendaItem GetAgendaItem (string playerName, string description) {
-		foreach (AgendaItem item in items) {
-			if (item.playerName == playerName && item.description == description)
-				return item;
+	public void UpdateMyItems () {
+		myItems = Player.instance.MyRole.MyAgenda.items;
+	}
+
+	public void SendVotableItems () {
+		if (!Player.instance.IsDecider) {
+			for (int i = 0; i < myItems.Length; i ++) {
+				AgendaItem item = myItems[i];
+				networkView.RPC ("RecieveVotableItems", RPCMode.All, item.playerName, item.description, item.bonus);
+			}
 		}
-		return null;
 	}
 
 	public void AddVote (AgendaItem item, bool isDecider=false) {
 		item.AddVote (isDecider);
 	}
 
-	void OnHostSendMessageEvent (HostSendMessageEvent e) {
-		if (e.name == "SendAgendaItems") {
-			networkView.RPC ("SendAgendaItems", RPCMode.All);
-		}
-	}
-
-	void PrepareItems () {
-		if (!Player.instance.IsDecider)
-			RemovePlayerItems (playerName);
+	void ShuffleItems () {
 		votableItems = votableItems.Shuffle ();
 	}
 
-	void CopyItemsToVotable () {
-		votableItems = new List<AgendaItem>();
-		for (int i = 0; i < items.Count; i ++) {
-			votableItems.Add (items[i]);
-		}
-	}
-
-	void RemovePlayerItems (string name) {
-		List<AgendaItem> tempItems = new List<AgendaItem>();
+	AgendaItem GetVotableItem (string playerName, string description) {
 		foreach (AgendaItem item in votableItems) {
-			if (item.playerName != name)
-				tempItems.Add (item);
+			if (item.playerName == playerName && item.description == description)
+				return item;
 		}
-		votableItems = tempItems;
+		return null;
 	}
 
-	void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		RemovePlayerItems (e.name);
-		playerCount = MultiplayerManager.instance.PlayerCount;
+	AgendaItem GetItem (string description) {
+		foreach (AgendaItem item in items) {
+			if (item.description == description)
+				return item;
+		}
+		return null;
 	}
 
 	void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
 		if (e.id == "AddVote")
-			AddVote (GetAgendaItem (e.message1, e.message2));
+			AddVote (GetVotableItem (e.message1, e.message2));
 		if (e.id == "FinishedVoting") {
 			finishedVoters ++;
 			if (finishedVoters >= playerCount) {
@@ -145,30 +142,28 @@ public class AgendaItemsManager : MonoBehaviour {
 				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, votableItems[i].playerName, votableItems[i].description);
 			}
 		}
-		MessageRelayer.instance.SendMessageToAll ("FinishReceivingWins");
+		MessageSender.instance.SendMessageToAll ("FinishReceivingWins");
+	}
+
+	void OnSelectDeciderEvent (SelectDeciderEvent e) {
+		playerCount = MultiplayerManager.instance.PlayerCount;
 	}
 
 	[RPC]
-	void ReceiveAgendaItem (string otherName, string description, int bonus) {
-		AgendaItem ai = new AgendaItem (otherName, description, bonus);
-		items.Add (ai);
-		votableItems.Add (ai);
-	}
-
-	[RPC]
-	void SendAgendaItems () {
-		playerName = Player.instance.Name;
-		myItems = Player.instance.MyRole.MyAgenda.items;
-		for (int i = 0; i < myItems.Length; i ++) {
-			AgendaItem item = myItems[i];
-			networkView.RPC ("ReceiveAgendaItem", RPCMode.All, item.playerName, item.description, item.bonus);
+	void RecieveVotableItems (string playerName, string description, int bonus) {
+		if (playerName != Player.instance.Name) {
+			votableItems.Add (new AgendaItem (playerName, description, bonus));
 		}
 	}
 
 	[RPC]
-	void ReceiveWinningAgendaItem (string name, string description) {
-		AgendaItem i = GetAgendaItem (name, description);
-		if (i != null)
-			winningItems.Add (i);
+	void ReceiveWinningAgendaItem (string playerName, string description) {
+		AgendaItem i;
+		if (playerName == Player.instance.Name) {
+			i = GetItem (description);
+		} else {
+			i = GetVotableItem (playerName, description);
+		}
+		winningItems.Add (i);
 	}
 }

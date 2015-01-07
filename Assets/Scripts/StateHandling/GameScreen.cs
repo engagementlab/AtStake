@@ -88,6 +88,10 @@ public class GameScreen {
 		OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
 	}
 
+	protected void ClearScreen () {
+		SetVariableElements (new ScreenElement[0]);
+	}
+
 	/**
 	 *	Virtual functions
 	 */
@@ -95,7 +99,7 @@ public class GameScreen {
 	// Host and clients hear this
 	public virtual void OnScreenStart (bool hosting, bool isDecider) {
 
-		SetVariableElements (new ScreenElement[0]);
+		ClearScreen ();
 		
 		if (hosting) {
 			OnScreenStartHost ();

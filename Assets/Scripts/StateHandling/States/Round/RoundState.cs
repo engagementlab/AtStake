@@ -36,6 +36,7 @@ public class RoundState : GameState {
 	}
 
 	public override void OnStateStart () {
+		Events.instance.Raise (new RoundStartEvent ());
 		question = QuestionManager.instance.GetQuestion (roundNumber);
 		roundNumber ++;
 		Player player = Player.instance;

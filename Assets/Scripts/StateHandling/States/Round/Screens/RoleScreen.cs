@@ -3,28 +3,18 @@ using System.Collections;
 
 public class RoleScreen : GameScreen {
 
-	Role playerRole = null; // was using this to cache the screen but now shit's fucked up eghh?
 	string playerName = "";
 
-	public RoleScreen (GameState state, string name = "Role") : base (state, name) {}
-
-	protected void ResetPlayerRole () {
-		playerRole = null;
+	public RoleScreen (GameState state, string name = "Role") : base (state, name) {
+		Events.instance.AddListener<UpdateRoleEvent> (OnUpdateRoleEvent);
 	}
 
-	protected override void OnScreenStartPlayer () {
-		
-		if (playerRole != null) 
-			return;
-		
-		CreateRoleCard ();
-		AddBackButton ();
-	}
+	public void OnStartScreen (bool hosting, bool isDecider) {}
 
 	protected void CreateRoleCard () {
 		
 		Player player = Player.instance;
-		playerRole = player.MyRole;
+		Role playerRole = player.MyRole;
 		playerName = player.Name;
 
 		AppendVariableElements (RoleDescription (playerName, playerRole.name, playerRole.bio));
@@ -66,8 +56,15 @@ public class RoleScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
-			playerRole = null;
 			GameStateController.instance.GotoPreviouslyVisitedScreen ();
+		}
+	}
+
+	void OnUpdateRoleEvent (UpdateRoleEvent e) {
+		if (!Player.instance.IsDecider) {
+			ClearScreen ();
+			CreateRoleCard ();
+			AddBackButton ();
 		}
 	}
 }
