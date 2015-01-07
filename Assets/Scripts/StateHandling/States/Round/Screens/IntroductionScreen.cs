@@ -3,9 +3,7 @@ using System.Collections;
 
 public class IntroductionScreen : RoleScreen {
 
-	public IntroductionScreen (GameState state, string name = "Introduction") : base (state, name) {
-		//Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
-	}
+	public IntroductionScreen (GameState state, string name = "Introduction") : base (state, name) {}
 
 	protected override void OnScreenStartDecider () {
 		SetVariableElements (new ScreenElement[] {

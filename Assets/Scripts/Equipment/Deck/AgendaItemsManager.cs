@@ -81,9 +81,16 @@ public class AgendaItemsManager : MonoBehaviour {
 		if (!Player.instance.IsDecider) {
 			for (int i = 0; i < myItems.Length; i ++) {
 				AgendaItem item = myItems[i];
-				networkView.RPC ("RecieveVotableItems", RPCMode.All, item.playerName, item.description, item.bonus);
+				networkView.RPC ("ReceiveVotableItems", RPCMode.All, item.playerName, item.description, item.bonus);
 			}
 		}
+	}
+
+	public void ClearItems () {
+		votableItems.Clear ();
+		winningItems.Clear ();
+		finishedVoters = 0;
+		index = 0;
 	}
 
 	public void AddVote (AgendaItem item, bool isDecider=false) {
@@ -150,7 +157,7 @@ public class AgendaItemsManager : MonoBehaviour {
 	}
 
 	[RPC]
-	void RecieveVotableItems (string playerName, string description, int bonus) {
+	void ReceiveVotableItems (string playerName, string description, int bonus) {
 		if (playerName != Player.instance.Name) {
 			votableItems.Add (new AgendaItem (playerName, description, bonus));
 		}

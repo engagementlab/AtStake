@@ -27,11 +27,16 @@ public class AgendaItem : System.Object {
 		this.playerName = playerName;
 		this.description = description;
 		this.bonus = bonus;
+		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 	}
 
 	public void AddVote (bool isDecider=false) {
 		voteCount ++;
 		if (isDecider)
 			deciderVote = true;
+	}
+
+	void OnRoundStartEvent (RoundStartEvent e) {
+		voteCount = 0;
 	}
 }

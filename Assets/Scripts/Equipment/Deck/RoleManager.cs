@@ -46,7 +46,7 @@ public class RoleManager : MonoBehaviour {
 				continue;
 			}
 
-			int r = Random.Range (0, roleIndices.Count-1);
+			int r = Random.Range (0, roleIndices.Count);
 			randomIndices[i] = roleIndices[r];
 			roleIndices.Remove (roleIndices[r]);
 		}

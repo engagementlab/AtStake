@@ -10,6 +10,7 @@ public class RoundStartManager : MonoBehaviour {
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
+		AgendaItemsManager.instance.ClearItems ();
 		if (MultiplayerManager.instance.Hosting) {
 			RoleManager.instance.SetRandomRoles ();
 			MessageSender.instance.ScheduleMessage ("UpdateAgendaItems");

@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class AgendaResultsScreen : GameScreen {
 
 	LabelElement description;
+	string defaultDescription = "please wait while everyone finishes voting :)";
 
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
-		description = new LabelElement ("please wait while everyone finishes voting :)");
+		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
+		description = new LabelElement (defaultDescription);
 		SetStaticElements (new ScreenElement[] {
 			description
 		});
@@ -23,6 +25,7 @@ public class AgendaResultsScreen : GameScreen {
 		if (e.id != "FinishReceivingWins")
 			return;
 
+		ClearScreen ();
 		Player player = Player.instance;
 
 		// Show the winning agenda items
@@ -48,5 +51,10 @@ public class AgendaResultsScreen : GameScreen {
 		if (e.id == "Next") {
 			GotoScreen ("Scoreboard");
 		}
+	}
+
+	void OnRoundStartEvent (RoundStartEvent e) {
+		description.content = defaultDescription;
+		ClearScreen ();
 	}
 }
