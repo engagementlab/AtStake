@@ -492,6 +492,7 @@ Transform:
   - {fileID: 1802084674}
   - {fileID: 590707728}
   - {fileID: 1259599533}
+  - {fileID: 1569866845}
   m_Father: {fileID: 0}
   m_RootOrder: 7
 --- !u!1 &558653959
@@ -1218,6 +1219,58 @@ NetworkView:
   m_Observed: {fileID: 1533882936}
   m_ViewID:
     m_ID: 7
+    m_Type: 1
+--- !u!1 &1569866844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1569866845}
+  - 148: {fileID: 1569866847}
+  - 114: {fileID: 1569866846}
+  m_Layer: 0
+  m_Name: BeanPotManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1569866845
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1569866844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 558627383}
+  m_RootOrder: 10
+--- !u!114 &1569866846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1569866844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9307e93a00d4696a2c54710577b962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!148 &1569866847
+NetworkView:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1569866844}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 1569866845}
+  m_ViewID:
+    m_ID: 12
     m_Type: 1
 --- !u!1 &1802084672
 GameObject:

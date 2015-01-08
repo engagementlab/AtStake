@@ -55,8 +55,8 @@ public class MessageSender : MonoBehaviour {
 		}
 	}
 
-	public void SendMessageToAll (string id, string message1="", string message2="") {
-		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
+	public void SendMessageToAll (string id, string message1="", string message2="", int val=-1) {
+		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2, val);
 	}
 
 	/**
@@ -120,8 +120,8 @@ public class MessageSender : MonoBehaviour {
 	}
 
 	[RPC]
-	void AllReceiveMessage (string id, string message1, string message2) {
-		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2));
+	void AllReceiveMessage (string id, string message1, string message2, int val) {
+		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2, val));
 	}
 
 	/**

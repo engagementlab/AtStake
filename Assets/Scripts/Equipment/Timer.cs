@@ -37,9 +37,7 @@ public class Timer : MonoBehaviour {
 		if (!countingDown) {
 			seconds = amount;
 			StartCoroutine (CountDown ());
-		} /*else {
-			seconds += amount;
-		}*/
+		} 
 	}
 
 	IEnumerator CountDown () {
