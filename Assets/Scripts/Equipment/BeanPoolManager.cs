@@ -18,18 +18,6 @@ public class BeanPoolManager : MonoBehaviour {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
-	// Debugging
-	/*void Update () {
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			Events.instance.Raise (new RefreshPlayerListEvent (new string[] { "Forrest", "Jenny", "Dan", "Mama" }));
-			MessageRelayer.instance.SendMessageToAll ("UpdatePlayerScore", "Forrest", "9");
-			MessageRelayer.instance.SendMessageToAll ("UpdatePlayerScore", "Jenny", "2");
-			MessageRelayer.instance.SendMessageToAll ("UpdatePlayerScore", "Dan", "1");
-			MessageRelayer.instance.SendMessageToAll ("UpdatePlayerScore", "Mama", "6");
-			MessageRelayer.instance.SendMessageToAll ("FinishUpdatingPlayerScores");
-		}
-	}*/
-
 	public void UpdateMyScore () {
 		Player player = Player.instance;
 		MessageRelayer.instance.SendMessageToAll ("UpdatePlayerScore", player.Name, player.MyBeanPool.BeanCount.ToString ());

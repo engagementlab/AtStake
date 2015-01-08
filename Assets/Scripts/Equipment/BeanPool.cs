@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BeanPool {
+public class BeanPool : IBeanPool {
 
 	int beanCount = 0;
 	public int BeanCount {
@@ -16,33 +16,45 @@ public class BeanPool {
 	 *	Public functions
 	 */
 
-	public void OnRoundStart (bool isDecider) {
+	public virtual void OnRoundStart (bool isDecider=false) {
 		AddBeans (isDecider ? BeanValues.deciderStart : BeanValues.playerStart);
 	}
 
 	public bool OnAddTime () {
-		return SubtractBeans (BeanValues.addTime);
+		if (SubtractBeans (BeanValues.addTime)) {
+			BeanPotManager.instance.OnAddTime ();
+			return true;
+		}
+		return false;
 	}
 
 	public void OnAddBonus (int bonusValue) {
 		AddBeans (bonusValue == 1 ? BeanValues.bonus1 : BeanValues.bonus2);
 	}
 
+	public void OnWin () {
+		AddBeans (BeanPotManager.instance.OnWin ());
+	}
+
 	/**
 	 *	Private functions
 	 */
 
-	void AddBeans (int amount) {
+	public void AddBeans (int amount) {
 		beanCount += amount;
-		Events.instance.Raise (new UpdateBeanPoolEvent (beanCount));
+		SendUpdateMessage ();
 	}
 
-	bool SubtractBeans (int amount) {
+	public bool SubtractBeans (int amount) {
 		if (amount > beanCount) 
 			return false;
 		beanCount -= amount;
-		Events.instance.Raise (new UpdateBeanPoolEvent (beanCount));
+		SendUpdateMessage ();
 		return true;
+	}
+
+	void SendUpdateMessage () {
+		Events.instance.Raise (new UpdateBeanPoolEvent (beanCount));
 	}
 }
 
@@ -53,5 +65,6 @@ public static class BeanValues {
 	public static readonly int addTime = 1;
 	public static readonly int bonus1 = 1;
 	public static readonly int bonus2 = 2;
+	public static readonly int roundPot = 3;
 
 }

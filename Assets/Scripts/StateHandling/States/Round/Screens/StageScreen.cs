@@ -10,9 +10,7 @@ public class StageScreen : GameScreen {
 	protected bool addTimeEnabled = false;
 	protected List<string> players = new List<string> (0);
 
-	public StageScreen (GameState state, string name) : base (state, name) {
-
-	}
+	public StageScreen (GameState state, string name) : base (state, name) {}
 
 	protected void InitStageScreen (float defaultTime) {
 		
@@ -29,9 +27,9 @@ public class StageScreen : GameScreen {
 			new LabelElement (name),
 			new LabelElement (round.Question),
 			timer,
-			new BeanPoolElement ()
-			// pot
-			// score
+			new BeanPoolElement (),
+			new BeanPotElement ()
+			// scores
 			// stage progress
 		});
 	}

@@ -30,9 +30,7 @@ public class GamesListScreen : GameScreen {
 			case "Back": GotoScreen ("Host or Join"); break;
 		}
 		char c = e.id[0];
-		char c2 = e.id[1];
 		int n = (int)char.GetNumericValue (c);
-		int n2 = (int)char.GetNumericValue (c2);
 		if (n > -1) {
 			MultiplayerManager.instance.ConnectToHost (hosts[n]);
 			GotoScreen ("Lobby");

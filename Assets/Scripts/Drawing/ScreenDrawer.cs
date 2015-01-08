@@ -37,6 +37,10 @@ public class ScreenDrawer : MonoBehaviour {
 				BeanPoolElement b = e as BeanPoolElement;
 				GUILayout.Label (b.content);
 			}
+			if (e is BeanPotElement) {
+				BeanPotElement b = e as BeanPotElement;
+				GUILayout.Label (b.content);
+			}
 		}
 	}
 

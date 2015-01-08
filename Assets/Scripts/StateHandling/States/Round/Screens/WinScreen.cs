@@ -15,6 +15,7 @@ public class WinScreen : GameScreen {
 	protected override void OnScreenStartPlayer () {
 		if (Player.instance.Won) {
 			winner.content = "You won this round!";
+			Player.instance.MyBeanPool.OnWin ();
 		} else {
 			winner.content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 		}

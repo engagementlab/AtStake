@@ -7,11 +7,10 @@ public class AgendaItemsManager : MonoBehaviour {
 
 	static public AgendaItemsManager instance;
 	AgendaItem[] myItems = new AgendaItem[0];
-	string playerName;
+	//string playerName;
 	List<AgendaItem> items = new List<AgendaItem> (0);			// All agenda items in the deck
 	List<AgendaItem> votableItems = new List<AgendaItem> (0);	// Items that this player can vote on
 	List<AgendaItem> winningItems = new List<AgendaItem> (0);	// Items that won the vote
-	bool confirmed = false;
 	int index = 0;
 	int finishedVoters = 0;
 	int playerCount = 0;
@@ -24,7 +23,7 @@ public class AgendaItemsManager : MonoBehaviour {
 		get {
 			List<AgendaItem> myWinningItems = new List<AgendaItem>();
 			foreach (AgendaItem item in winningItems) {
-				if (item.playerName == playerName)
+				if (item.playerName == Player.instance.Name)
 					myWinningItems.Add (item);
 			}
 			return myWinningItems;
@@ -134,12 +133,12 @@ public class AgendaItemsManager : MonoBehaviour {
 		for (int i = 0; i < votableItems.Count; i ++) {
 			bool won = false;
 			if (even) {
-				if (votableItems[i].VoteCount > majority) {
+				if (votableItems[i].VoteCount >= majority) {
 					won = true;
 				}
-				if (votableItems[i].VoteCount == majority && votableItems[i].DeciderVote) {
+				/*if (votableItems[i].VoteCount == majority && votableItems[i].DeciderVote) {
 					won = true;
-				}
+				}*/
 			} else {
 				if (votableItems[i].VoteCount >= majority) {
 					won = true;
