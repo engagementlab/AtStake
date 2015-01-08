@@ -23,7 +23,9 @@ public class RoundState : GameState {
 	public List<string> Players {
 		get {
 			if (players.Count == 0) {
-				players = MultiplayerManager.instance.Players;
+				foreach (string player in MultiplayerManager.instance.Players) {
+					players.Add (player);
+				}
 				if (Player.instance.IsDecider)
 					players.Remove (Player.instance.Name);
 			}

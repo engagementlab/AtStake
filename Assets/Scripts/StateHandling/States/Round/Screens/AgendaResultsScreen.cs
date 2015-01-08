@@ -49,7 +49,12 @@ public class AgendaResultsScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next") {
-			GotoScreen ("Scoreboard");
+			RoundState round = state as RoundState;
+			if (round.RoundNumber < 3) {
+				GotoScreen ("Scoreboard");
+			} else {
+				GotoScreen ("Final Scoreboard", "End");
+			}
 		}
 	}
 

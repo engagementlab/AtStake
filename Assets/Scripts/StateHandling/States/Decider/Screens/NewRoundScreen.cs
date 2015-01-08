@@ -11,14 +11,17 @@ public class NewRoundScreen : GameScreen {
 		Events.instance.AddListener<HostReceiveMessageEvent> (OnHostReceiveMessageEvent);
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
+		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		SetStaticElements (new ScreenElement[] {
 			instructions
 		});
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
+		
 		MessageMatcher.instance.SetMessage ("New Round", "true");
 
+		ClearScreen ();
 		if (Player.instance.Won) {
 			DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
 			SetVariableElements (new ScreenElement[] {
@@ -60,5 +63,9 @@ public class NewRoundScreen : GameScreen {
 			instructions.content = "Get ready!";
 			allowContinue = true;
 		}
+	}
+
+	void OnRoundStartEvent (RoundStartEvent e) {
+		instructions.content = "Please wait for other players to confirm they're ready :)";
 	}
 }
