@@ -25,6 +25,7 @@ public class GameScreen {
 		this.state = state;
 		this.name = name;
 		Events.instance.AddListener<ButtonPressEvent> (OnButtonPressEvent);
+		Events.instance.AddListener<CountDownEndEvent> (OnCountDownEndEvent);
 	}
 
 	/**
@@ -80,8 +81,8 @@ public class GameScreen {
 		return new ButtonElement (this, id, content);
 	}
 
-	protected TimerElement CreateTimer (float startTime) {
-		return new TimerElement (this, startTime);
+	protected TimerElement CreateTimer () {
+		return new TimerElement ();
 	}
 
 	protected void RefreshScreen () {
@@ -164,5 +165,9 @@ public class GameScreen {
 	void OnButtonPressEvent (ButtonPressEvent e) {
 		if (e.screen == this)
 			OnButtonPress (e);
+	}
+
+	void OnCountDownEndEvent (CountDownEndEvent e) {
+		OnCountDownEnd ();
 	}
 }

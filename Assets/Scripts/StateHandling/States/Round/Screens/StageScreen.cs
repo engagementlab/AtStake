@@ -9,17 +9,19 @@ public class StageScreen : GameScreen {
 	protected string playerName;
 	protected bool addTimeEnabled = false;
 	protected List<string> players = new List<string> (0);
+	float timerDuration = 0;
 
 	public StageScreen (GameState state, string name) : base (state, name) {}
 
-	protected void InitStageScreen (float defaultTime) {
+	protected void InitStageScreen (float timerDuration) {
 		
 		Events.instance.AddListener<PlayerReceiveMessageEvent> (OnPlayerReceiveMessageEvent);
 		Events.instance.AddListener<OthersReceiveMessageEvent> (OnOthersReceiveMessageEvent);
 		Events.instance.AddListener<PlayersReceiveMessageEvent> (OnPlayersReceiveMessageEvent);
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 
-		timer = CreateTimer (defaultTime);
+		this.timerDuration = timerDuration;
+		timer = CreateTimer ();
 		
 		round = state as RoundState;
 		playerName = round.PlayerName;
@@ -63,7 +65,7 @@ public class StageScreen : GameScreen {
 			case "Role Card": GotoScreen ("Role"); break;
 			case "+30 Seconds": AddTime (); break;
 			case "Start Timer": if (StartTimer ()) {
-									timer.StartCountDown (); 
+									Timer.instance.AllStartCountDown (timerDuration);
 								}
 								break;
 			case "Next": OnPressNext (); break;
@@ -101,7 +103,7 @@ public class StageScreen : GameScreen {
 
 	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
 		if (e.id == "AddTime") {
-			Timer.instance.AddSeconds (5f);
+			Timer.instance.AddSeconds (TimerValues.extraTime);
 			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 		}
 	}

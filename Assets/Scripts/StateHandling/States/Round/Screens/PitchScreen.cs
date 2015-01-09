@@ -48,7 +48,7 @@ public class PitchScreen : StageScreen {
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
 		currentPitcher = new LabelElement ("");
 		nextPitcher = new LabelElement ("");
-		InitStageScreen (10f);
+		InitStageScreen (TimerValues.pitch);
 	}
 
 	protected override void OnScreenStartDecider () {

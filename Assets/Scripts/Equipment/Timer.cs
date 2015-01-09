@@ -1,6 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+static public class TimerValues {
+
+	static public readonly float brainstorm = 10f;
+	static public readonly float pitch = 10f;
+	static public readonly float deliberate = 10f;
+	static public readonly float extraTime = 5f;
+
+}
+
 [RequireComponent (typeof (NetworkView))]
 public class Timer : MonoBehaviour {
 
@@ -11,7 +20,6 @@ public class Timer : MonoBehaviour {
 
 	bool countingDown = false;
 
-	TimerElement timerElement;
 	static public Timer instance;
 
 	void Awake () {
@@ -25,10 +33,13 @@ public class Timer : MonoBehaviour {
 		}
 	}
 
-	public void StartCountDown (TimerElement timerElement, float duration) {
+	public void AllStartCountDown (float duration) {
+		networkView.RPC ("ReceiveCountDown", RPCMode.All, duration);
+	}
+
+	public void StartCountDown (float duration) {
 		if (countingDown)
 			return;
-		this.timerElement = timerElement;
 		seconds = duration;
 		StartCoroutine (CountDown ());
 	}
@@ -51,6 +62,11 @@ public class Timer : MonoBehaviour {
 	}
 
 	void OnCountDownEnd () {
-		timerElement.OnCountDownEnd ();
+		Events.instance.Raise (new CountDownEndEvent ());
+	}
+
+	[RPC]
+	void ReceiveCountDown (float duration) {
+		StartCountDown (duration);
 	}
 }
