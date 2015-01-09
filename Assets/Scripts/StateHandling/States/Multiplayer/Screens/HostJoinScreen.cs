@@ -45,6 +45,5 @@ public class HostJoinScreen : GameScreen {
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		label.content = "";
-		GotoScreen ("Games List");
 	}
 }

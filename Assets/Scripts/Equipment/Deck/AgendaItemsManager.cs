@@ -7,7 +7,6 @@ public class AgendaItemsManager : MonoBehaviour {
 
 	static public AgendaItemsManager instance;
 	AgendaItem[] myItems = new AgendaItem[0];
-	//string playerName;
 	List<AgendaItem> items = new List<AgendaItem> (0);			// All agenda items in the deck
 	List<AgendaItem> votableItems = new List<AgendaItem> (0);	// Items that this player can vote on
 	List<AgendaItem> winningItems = new List<AgendaItem> (0);	// Items that won the vote

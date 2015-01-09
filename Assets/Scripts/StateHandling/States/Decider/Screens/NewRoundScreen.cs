@@ -30,7 +30,7 @@ public class NewRoundScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next" && allowContinue) {
-			GameStateController.instance.AllPlayersGotoScreen ("Introduction", "Round");
+			GameStateController.instance.AllPlayersGotoScreen ("Bio", "Round");
 			allowContinue = false;
 		}
 	}

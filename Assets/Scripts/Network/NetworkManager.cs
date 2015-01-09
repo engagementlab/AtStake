@@ -63,7 +63,9 @@ public class NetworkManager : MonoBehaviour {
 
 	IEnumerator FindHosts () {
 
-		// time in seconds before we give up on finding a new game
+		ResetHosts ();
+		OnFoundGames ();
+		
 		// TODO: This doesn't seem to be working
 		int attempts = 3;
 		float timeout = settings.timeoutDuration / attempts;
@@ -103,7 +105,11 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	public void DisconnectFromHost () {
-		ResetHosts ();
+		if (Network.isServer) {
+			StopServer ();
+		} else {
+			ResetHosts ();
+		}
 	}
 
 	void OnConnectedToServer () {

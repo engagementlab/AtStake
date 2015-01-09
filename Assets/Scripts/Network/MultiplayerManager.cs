@@ -78,6 +78,10 @@ public class MultiplayerManager : MonoBehaviour {
 		networkManager.JoinGame ();
 	}
 
+	public void DisconnectGame () {
+		networkManager.DisconnectFromHost ();
+	}
+
 	public void ConnectToHost (HostData host) {
 		networkManager.ConnectToHost (host);
 	}
@@ -87,7 +91,7 @@ public class MultiplayerManager : MonoBehaviour {
 			networkManager.StopServer ();
 		} else {
 			networkView.RPC ("UnregisterPlayer", RPCMode.Server, player.playerName);
-			networkManager.DisconnectFromHost ();
+			DisconnectGame ();
 		}
 	}
 
@@ -100,7 +104,8 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		GotoScreen ("Games List");
+		if (e.hosts.Length > 0)
+			GotoScreen ("Games List");
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
@@ -174,7 +179,7 @@ public class MultiplayerManager : MonoBehaviour {
 	[RPC]
 	void RejectPlayer (string clientName) {
 		if (playerName == clientName) {
-			networkManager.DisconnectFromHost ();
+			DisconnectGame ();
 			Events.instance.Raise (new NameTakenEvent ());
 		}
 	}
