@@ -12,7 +12,7 @@ public class MultiplayerManager : MonoBehaviour {
 	string PlayerName {
 		get {
 			// cache the name
-			if (playerName == "") {
+			if (playerName == "" || playerName != Player.instance.Name) {
 				playerName = Player.instance.Name;
 			}
 			return playerName;

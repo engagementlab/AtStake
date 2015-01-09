@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-static public class TimerValues {
+public static class TimerValues {
 
-	static public readonly float brainstorm = 10f;
-	static public readonly float pitch = 10f;
-	static public readonly float deliberate = 10f;
-	static public readonly float extraTime = 5f;
+	public static readonly float brainstorm = 10f;
+	public static readonly float pitch = 10f;
+	public static readonly float deliberate = 10f;
+	public static readonly float extraTime = 5f;
 
 }
 
@@ -37,14 +37,18 @@ public class Timer : MonoBehaviour {
 		networkView.RPC ("ReceiveCountDown", RPCMode.All, duration);
 	}
 
-	public void StartCountDown (float duration) {
+	void StartCountDown (float duration) {
 		if (countingDown)
 			return;
 		seconds = duration;
 		StartCoroutine (CountDown ());
 	}
 
-	public void AddSeconds (float amount) {
+	public void AllAddSeconds (float amount) {
+		networkView.RPC ("ReceiveAddSeconds", RPCMode.All, amount);
+	}
+
+	void AddSeconds (float amount) {
 		if (!countingDown) {
 			seconds = amount;
 			StartCoroutine (CountDown ());
@@ -68,5 +72,10 @@ public class Timer : MonoBehaviour {
 	[RPC]
 	void ReceiveCountDown (float duration) {
 		StartCountDown (duration);
+	}
+
+	[RPC]
+	void ReceiveAddSeconds (float amount) {
+		AddSeconds (amount);
 	}
 }

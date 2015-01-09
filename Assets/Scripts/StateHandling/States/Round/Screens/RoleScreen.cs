@@ -9,7 +9,7 @@ public class RoleScreen : GameScreen {
 		Events.instance.AddListener<UpdateRoleEvent> (OnUpdateRoleEvent);
 	}
 
-	public void OnStartScreen (bool hosting, bool isDecider) {}
+	public override void OnScreenStart (bool hosting, bool isDecider) {}
 
 	protected void CreateRoleCard () {
 		

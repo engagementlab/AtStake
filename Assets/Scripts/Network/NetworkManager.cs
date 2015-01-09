@@ -21,7 +21,7 @@ public class NetworkManager : MonoBehaviour {
 	Settings settings;
 
 	void Awake () {
-		settings = new Settings (6, false, 10f);
+		settings = new Settings (6, false, 15f);
 		MasterServer.ClearHostList ();
 	}
 
@@ -64,19 +64,29 @@ public class NetworkManager : MonoBehaviour {
 	IEnumerator FindHosts () {
 
 		// time in seconds before we give up on finding a new game
-		float timeout = settings.timeoutDuration;
+		// TODO: This doesn't seem to be working
+		int attempts = 3;
+		float timeout = settings.timeoutDuration / attempts;
 
-		while (hosts.Length == 0 && timeout > 0f) {
-			hosts = MasterServer.PollHostList ();
-			timeout -= Time.deltaTime;
-			yield return null;
+		for (int i = 0; i < attempts; i ++) {
+			while (hosts.Length == 0 && timeout > 0f) {
+				hosts = MasterServer.PollHostList ();
+				timeout -= Time.deltaTime;
+				yield return null;
+			}
+			if (timeout <= 0f) {
+				if (i == attempts-1) {
+					OnTimeout ();
+					break;
+				} else {
+					MasterServer.RequestHostList (gameName);
+				}
+			} else {
+				OnFoundGames ();
+				break;
+			}
 		}
 
-		if (timeout <= 0f) {
-			OnTimeout ();
-		} else {
-			OnFoundGames ();
-		}
 		MasterServer.ClearHostList ();
 	}
 

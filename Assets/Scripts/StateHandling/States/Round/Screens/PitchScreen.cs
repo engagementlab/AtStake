@@ -71,7 +71,6 @@ public class PitchScreen : StageScreen {
 	protected override bool StartTimer () {
 		
 		// Do not start timer if all players have pitched
-		Debug.Log (currentPlayer + ", " + players.Count);
 		if (currentPlayer >= players.Count-1)
 			return false;
 

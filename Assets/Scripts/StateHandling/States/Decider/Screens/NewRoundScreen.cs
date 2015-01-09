@@ -4,12 +4,9 @@ using System.Collections;
 public class NewRoundScreen : GameScreen {
 
 	LabelElement instructions = new LabelElement ("Please wait for other players to confirm they're ready :)");
-	int confirmCount = 0;
 	bool allowContinue = false;
 
 	public NewRoundScreen (GameState state, string name = "New Round") : base (state, name) {
-		Events.instance.AddListener<HostReceiveMessageEvent> (OnHostReceiveMessageEvent);
-		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		SetStaticElements (new ScreenElement[] {
@@ -34,34 +31,15 @@ public class NewRoundScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next" && allowContinue) {
 			GameStateController.instance.AllPlayersGotoScreen ("Introduction", "Round");
-			confirmCount = 0;
 			allowContinue = false;
-		}
-	}
-
-	void AddConfirmation () {
-		confirmCount ++;
-		if (confirmCount == MultiplayerManager.instance.PlayerCount) {
-			MessageRelayer.instance.SendMessageToAll ("AllowContinue");
-		}
-	}
-
-	void OnHostReceiveMessageEvent (HostReceiveMessageEvent e) {
-		if (e.id == "ConfirmNewRound") {
-			AddConfirmation ();
-		}
-	}
-
-	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
-		if (e.id == "AllowContinue" && Player.instance.IsDecider) {
-			allowContinue = true;
 		}
 	}
 
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "New Round") {
 			instructions.content = "Get ready!";
-			allowContinue = true;
+			if (Player.instance.IsDecider)
+				allowContinue = true;
 		}
 	}
 

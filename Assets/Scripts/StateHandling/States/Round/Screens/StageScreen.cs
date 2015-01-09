@@ -10,6 +10,7 @@ public class StageScreen : GameScreen {
 	protected bool addTimeEnabled = false;
 	protected List<string> players = new List<string> (0);
 	float timerDuration = 0;
+	bool timerEnabled = true;
 
 	public StageScreen (GameState state, string name) : base (state, name) {}
 
@@ -45,6 +46,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitPlayerScreen () {
+		addTimeEnabled = false;
 		SetVariableElements (new ScreenElement[] {
 			CreateButton ("+30 Seconds"),
 			CreateButton ("Role Card")
@@ -52,6 +54,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitDeciderScreen () {
+		timerEnabled = true;
 		players = round.Players;
 		SetVariableElements (new ScreenElement[] {
 			new LabelElement (Copy.GetInstructions (name)),
@@ -103,7 +106,7 @@ public class StageScreen : GameScreen {
 
 	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
 		if (e.id == "AddTime") {
-			Timer.instance.AddSeconds (TimerValues.extraTime);
+			Timer.instance.AllAddSeconds (TimerValues.extraTime);
 			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 		}
 	}
@@ -112,7 +115,13 @@ public class StageScreen : GameScreen {
 		ToggleEnableAddTime (message1);
 	}
 
-	protected virtual bool StartTimer () { return true; }
+	protected virtual bool StartTimer () { 
+		if (timerEnabled) {
+			timerEnabled = false;
+			return true;
+		}
+		return false; 
+	}
 	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
 	protected virtual void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {}
 }
