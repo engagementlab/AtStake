@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 public class BeanPoolManager : MonoBehaviour {
 
 	public static BeanPoolManager instance;
 	int playerCount = 0;
-	Dictionary<string, int> playerScores = new Dictionary<string, int>();
 	int scoreUpdateCount = 0;
+
+	List<string> names = new List<string>();
+	List<int> scores = new List<int>();
 
 	void Awake () {
 		if (instance == null)
@@ -16,8 +17,6 @@ public class BeanPoolManager : MonoBehaviour {
 
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
-
-		DebugSortPlayers ();
 	}
 
 	public void UpdateMyScore () {
@@ -25,24 +24,32 @@ public class BeanPoolManager : MonoBehaviour {
 		MessageSender.instance.SendMessageToAll ("UpdatePlayerScore", player.Name, "", player.MyBeanPool.BeanCount);
 	}
 
-	void UpdatePlayerScore (string playerName, int score) {
-		if (playerScores.ContainsKey (playerName)) {
-			playerScores[playerName] = score;
-			scoreUpdateCount ++;
-			if (scoreUpdateCount == playerScores.Count) {
-				scoreUpdateCount = 0;
-				SortPlayers ();
-			}
+	void UpdatePlayerScore (string playerName, int playerScore) {
+		int index = GetNameIndex (playerName);
+		if (index == -1) {
+			names.Add (playerName);
+			scores.Add (playerScore);
+		} else {
+			names[index] = playerName;
+			scores[index] = playerScore;
 		}
+		scoreUpdateCount ++;
+		if (scoreUpdateCount == playerCount) {
+			scoreUpdateCount = 0;
+			SortPlayers ();
+		}
+	}
+
+	int GetNameIndex (string name) {
+		for (int i = 0; i < names.Count; i ++) {
+			if (names[i] == name)
+				return i;
+		}
+		return -1;
 	}
 
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
 		playerCount = e.playerNames.Length;
-		for (int i = 0; i < playerCount; i ++) {
-			string playerName = e.playerNames[i];
-			if (!playerScores.ContainsKey (playerName))
-				playerScores.Add (playerName, 0);
-		}
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
@@ -52,74 +59,42 @@ public class BeanPoolManager : MonoBehaviour {
 	}
 
 	void SortPlayers () {
-		
-		// this doesn't work on ios
-		var items = from pair in playerScores
-		    orderby pair.Value descending
-		    select pair;
-
-		string[] names = new string[playerScores.Count];
-		int[] scores = new int[playerScores.Count];
-		int index = 0;
-		foreach (KeyValuePair<string, int> pair in items) {
-			names[index] = pair.Key;
-			scores[index] = pair.Value;
-			index ++;
-		}
-
-		// This should be its own function, but... eghhh
-		Events.instance.Raise (new UpdatedPlayerScoresEvent (names, scores));
-	}
-
-	/**
-	 *	Debugging
-	 */
-
-	// TODO: Replace SortPlayers() with this
-	void DebugSortPlayers () {
-		
-		List<string> playerNames = new List<string> ();
-		playerNames.Add ("forrest");
-		playerNames.Add ("dan");
-		playerNames.Add ("jenny");
-		playerNames.Add ("stephanie");
-		
-		List<int> playerScores = new List<int> ();
-		playerScores.Add (6);
-		playerScores.Add (8);
-		playerScores.Add (5);
-		playerScores.Add (4);
 
 		List<string> newPlayerNames = new List<string> ();
 		List<int> newPlayerScores = new List<int>();
 
-		for (int i = 0; i < playerScores.Count; i ++) {
-			int playerScore = playerScores[i];
-			string playerName = playerNames[i];
+		for (int i = 0; i < scores.Count; i ++) {
+			int score = scores[i];
+			string name = names[i];
 			if (i == 0) {
-				newPlayerScores.Add (playerScore);
-				newPlayerNames.Add (playerName);
+				newPlayerScores.Add (score);
+				newPlayerNames.Add (name);
 				continue;
 			}
 			for (int j = 0; j < newPlayerScores.Count; j ++) {
-				if (playerScore > newPlayerScores[j]) {
-					newPlayerScores.Insert (j, playerScore);
-					newPlayerNames.Insert (j, playerName);
+				if (score > newPlayerScores[j]) {
+					newPlayerScores.Insert (j, score);
+					newPlayerNames.Insert (j, name);
 					break;
 				} else if (j == newPlayerScores.Count-1) {
-					newPlayerScores.Add (playerScore);
-					newPlayerNames.Add (playerName);
+					newPlayerScores.Add (score);
+					newPlayerNames.Add (name);
 					break;
 				}
 			}
 		}
-		PrintScores (newPlayerNames, newPlayerScores);
-	}
 
-	void PrintScores (List<string> playerNames, List<int> playerScores) {
-		Debug.Log("--------");
-		for (int i = 0; i < playerScores.Count; i ++) {
-			Debug.Log (playerNames[i] + ": " + playerScores[i]);
+		names = newPlayerNames;
+		scores = newPlayerScores;
+
+		string[] namesArr = new string[names.Count];
+		int[] scoresArr = new int[scores.Count];
+		for (int i = 0; i < namesArr.Length; i ++) {
+			namesArr[i] = names[i];
+			scoresArr[i] = scores[i];
 		}
+
+		// This should be its own function, but... eghhh
+		Events.instance.Raise (new UpdatedPlayerScoresEvent (namesArr, scoresArr));
 	}
 }

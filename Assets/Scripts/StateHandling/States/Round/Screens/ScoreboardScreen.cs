@@ -10,9 +10,12 @@ public class ScoreboardScreen : GameScreen {
 		});
 	}
 
-	public override void OnScreenStart (bool hosting, bool isDecider) {}
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		Debug.Log ("start scoreboard");
+	}
 
 	void OnUpdatedPlayerScoresEvent (UpdatedPlayerScoresEvent e) {
+		Debug.Log ("scores updated");
 		ScreenElement[] se = new ScreenElement[e.playerNames.Length+1];
 		for (int i = 0; i < se.Length-1; i ++) {
 			se[i] = new LabelElement (string.Format ("{0}: {1} beans", e.playerNames[i], e.playerScores[i]));
