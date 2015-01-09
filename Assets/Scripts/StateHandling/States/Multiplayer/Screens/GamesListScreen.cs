@@ -4,12 +4,16 @@ using System.Collections;
 public class GamesListScreen : GameScreen {
 
 	HostData[] hosts;
+	LabelElement nameTaken = new LabelElement ("");
 
 	public GamesListScreen (GameState state, string name = "Games List") : base (state, name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
+		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
+		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Choose a game to join"),
-			CreateButton ("Back")
+			CreateButton ("Back"),
+			nameTaken
 		});
 	}
 
@@ -33,7 +37,14 @@ public class GamesListScreen : GameScreen {
 		int n = (int)char.GetNumericValue (c);
 		if (n > -1) {
 			MultiplayerManager.instance.ConnectToHost (hosts[n]);
-			GotoScreen ("Lobby");
 		}
+	}
+
+	void OnRegisterEvent (RegisterEvent e) {
+		GotoScreen ("Lobby");
+	}
+
+	void OnNameTakenEvent (NameTakenEvent e) {
+		nameTaken.content = string.Format ("There's already someone named {0} in this game. Please go back and choose a different name", Player.instance.Name);
 	}
 }

@@ -34,9 +34,9 @@ public static class Copy {
 	}
 
 	static public string[,] stageInstructions = new string[,] {
-		{ "Brainstorm", "All players brainstorm silently for 90 seconds" },
-		{ "Pitch", "Now have each player pitch their idea." },
-		{ "Deliberate", "Have players discuss their pitches for 90 seconds." }
+		{ "Brainstorm", string.Format ("All players brainstorm silently for {0} seconds", TimerValues.brainstorm) },
+		{ "Pitch", string.Format ("Now have each player pitch their idea for {0} seconds.", TimerValues.pitch) },
+		{ "Deliberate", string.Format ("Have players discuss their pitches for {0} seconds.", TimerValues.deliberate) }
 	};
 
 	static public string GetInstructions (string stageName) {

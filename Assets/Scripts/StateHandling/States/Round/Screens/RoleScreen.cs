@@ -22,19 +22,19 @@ public class RoleScreen : GameScreen {
 		AppendVariableElements (RoleBeans (player.MyBeanPool.BeanCount));
 	}
 
-	ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
+	protected ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
 		string title = string.Format ("{0} the {1}", playerName, playerRole);
-		return new ScreenElement[3] {
+		return new ScreenElement[2] {
 			new LabelElement (title),
-			new LabelElement (bio),
-			new LabelElement ("Agenda")
+			new LabelElement (bio)
 		};
 	}
 
-	ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
-		ScreenElement[] se = new ScreenElement[items.Length*2];
+	protected ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
+		ScreenElement[] se = new ScreenElement[items.Length*2+1];
 		int index = 0;
-		for (int i = 0; i < se.Length; i += 2) {
+		se[0] = new LabelElement ("Agenda");
+		for (int i = 1; i < se.Length; i += 2) {
 			AgendaItem item = items[index];
 			se[i] = new LabelElement (item.description);
 			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus));
@@ -60,7 +60,7 @@ public class RoleScreen : GameScreen {
 		}
 	}
 
-	void OnUpdateRoleEvent (UpdateRoleEvent e) {
+	protected virtual void OnUpdateRoleEvent (UpdateRoleEvent e) {
 		if (!Player.instance.IsDecider) {
 			ClearScreen ();
 			CreateRoleCard ();

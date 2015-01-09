@@ -116,14 +116,27 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 
+	bool HasName (string clientName) {
+		foreach (string p in Players) {
+			if (p.ToLower () == clientName.ToLower ())
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 *	RPCs
 	 */
 
 	[RPC]
 	void RegisterPlayer (string clientName) {
-		player.AddPlayer (clientName);
-		RefreshPlayerList ();
+		if (HasName (clientName)) {
+			networkView.RPC ("RejectPlayer", RPCMode.Others, clientName);
+		} else {
+			player.AddPlayer (clientName);
+			RefreshPlayerList ();
+			networkView.RPC ("AcceptPlayer", RPCMode.Others, clientName);
+		}
 	}
 
 	[RPC]
@@ -156,6 +169,21 @@ public class MultiplayerManager : MonoBehaviour {
 	[RPC]
 	void SendRefreshListMessage() {
 		Events.instance.Raise (new RefreshPlayerListEvent (player.GetPlayerNames ()));
+	}
+
+	[RPC]
+	void RejectPlayer (string clientName) {
+		if (playerName == clientName) {
+			networkManager.DisconnectFromHost ();
+			Events.instance.Raise (new NameTakenEvent ());
+		}
+	}
+
+	[RPC]
+	void AcceptPlayer (string clientName) {
+		if (playerName == clientName) {
+			Events.instance.Raise (new RegisterEvent ());
+		}
 	}
 
 	/**

@@ -38,24 +38,6 @@ public class LobbyScreen : GameScreen {
 		SetVariableElements (se);
 	}
 
-	void RefreshPlayerList () {		
-
-		hosting = MultiplayerManager.instance.Hosting;
-
-		int namesCount = playerNames.Length;
-		bool showPlay = hosting && namesCount > minPlayers;
-		int elementCount = showPlay ? namesCount+1 : namesCount;
-		ScreenElement[] se = new ScreenElement[elementCount];
-
-		for (int i = 0; i < namesCount; i ++) {
-			se[i] = new LabelElement (playerNames[i]);
-		}
-
-		if (showPlay) se[elementCount-1] = CreateButton ("Play");
-
-		SetVariableElements (se);
-	}
-
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Back": GoBack (); break;

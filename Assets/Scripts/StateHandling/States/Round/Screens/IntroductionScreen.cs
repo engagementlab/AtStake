@@ -3,6 +3,8 @@ using System.Collections;
 
 public class IntroductionScreen : RoleScreen {
 
+	protected string description = "";
+
 	public IntroductionScreen (GameState state, string name = "Introduction") : base (state, name) {}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
@@ -13,7 +15,7 @@ public class IntroductionScreen : RoleScreen {
 
 	protected override void OnScreenStartDecider () {
 		SetVariableElements (new ScreenElement[] {
-			new LabelElement ("Have everyone introduce themselves, then press next."),
+			new LabelElement (description),
 			CreateButton ("Next")
 		});
 	}
@@ -24,7 +26,7 @@ public class IntroductionScreen : RoleScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next") {
-			GameStateController.instance.AllPlayersGotoScreen ("Question");
+			GameStateController.instance.AllPlayersGotoNextScreen ();
 		}
 	}
 }

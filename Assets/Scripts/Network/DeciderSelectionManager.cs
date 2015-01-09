@@ -25,7 +25,7 @@ public class DeciderSelectionManager : MonoBehaviour {
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "SelectDecider") {
 			Events.instance.Raise (new SelectDeciderEvent (e.message));
-			GameStateController.instance.GotoScreen ("Introduction", "Round");
+			GameStateController.instance.GotoScreen ("Bio", "Round");
 		}
 	}
 
