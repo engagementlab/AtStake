@@ -25,4 +25,12 @@ public static class ExtensionMethods {
 		}
 		return array;
 	}
+
+	public static void SetWidth (this RectTransform rect, float width) {
+		rect.sizeDelta = new Vector2 (width, rect.sizeDelta.y);
+	}
+
+	public static void SetHeight (this RectTransform rect, float height) {
+		rect.sizeDelta = new Vector2 (rect.sizeDelta.x, height);
+	}
 }
