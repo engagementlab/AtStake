@@ -11,7 +11,7 @@ public class BackgroundCanvas : MonoBehaviour {
 	BackgroundCanvasTheme theme = new MultiplayerTheme ();
 
 	void Awake () {
-		SetTheme (new WinTheme ());
+		SetTheme (new MultiplayerTheme ());
 	}
 
 	public void SetTheme (BackgroundCanvasTheme theme) {

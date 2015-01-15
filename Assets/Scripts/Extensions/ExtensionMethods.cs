@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public static class ExtensionMethods {
 
+	public static Vector3 Vector3One = new Vector3 (1, 1, 1);
+
 	public static T[] Shuffle<T> (this T[] array) {
 		int n = array.Length;
 		for (int i = 0; i < n; i++) {
