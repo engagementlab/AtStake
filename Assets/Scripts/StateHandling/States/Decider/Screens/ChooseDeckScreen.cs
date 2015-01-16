@@ -17,7 +17,7 @@ public class ChooseDeckScreen : GameScreen {
 	
 	protected override void OnScreenStartHost () {
 
-		title.content = "Choose a deck";
+		title.Content = "Choose a deck";
 
 		int localDecksCount = dl.LocalDecks.Count;
 		int hostedDecksCount = dl.HostedDecks.Count;

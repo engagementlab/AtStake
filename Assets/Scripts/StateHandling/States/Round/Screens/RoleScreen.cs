@@ -51,7 +51,7 @@ public class RoleScreen : GameScreen {
 	}
 
 	protected virtual void AddBackButton () {
-		AppendVariableElements (CreateButton ("Back"));
+		AppendVariableElements (CreateBottomButton ("Back"));
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

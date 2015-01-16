@@ -90,8 +90,8 @@ public class PitchScreen : StageScreen {
 	}
 
 	void UpdatePitcherLabels () {
-		currentPitcher.content = CurrentLabel;
-		nextPitcher.content = NextLabel;
+		currentPitcher.Content = CurrentLabel;
+		nextPitcher.Content = NextLabel;
 		MessageRelayer.instance.SendMessageToPlayers (CurrentPlayer, NextLabel);
 	}
 
@@ -103,15 +103,15 @@ public class PitchScreen : StageScreen {
 
 		string playerName = message1;
 		if (playerName == Player.instance.Name) {
-			currentPitcher.content = "Your turn!";
+			currentPitcher.Content = "Your turn!";
 		} else {
 			if (message1 == "") {
-				currentPitcher.content = "";
+				currentPitcher.Content = "";
 			} else {
-				currentPitcher.content = message1 + "'s turn";
+				currentPitcher.Content = message1 + "'s turn";
 			}
 		}
-		nextPitcher.content = message2;
+		nextPitcher.Content = message2;
 	}
 
 	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {

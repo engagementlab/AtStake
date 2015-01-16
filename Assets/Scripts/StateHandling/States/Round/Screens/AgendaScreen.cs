@@ -30,8 +30,8 @@ public class AgendaScreen : GameScreen {
 			GotoScreen ("Agenda Results");
 			return;
 		}
-		progress.content = string.Format ("{0} of {1} items", aiManager.CurrentIndex, aiManager.TotalItems);
-		description.content = string.Format ("Vote yes if you think {0}'s proposal {1}", Player.instance.WinningPlayer, currentItem.description);
+		progress.Content = string.Format ("{0} of {1} items", aiManager.CurrentIndex, aiManager.TotalItems);
+		description.Content = string.Format ("Vote yes if you think {0}'s proposal {1}", Player.instance.WinningPlayer, currentItem.description);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

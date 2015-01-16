@@ -16,7 +16,7 @@ public class IntroductionScreen : RoleScreen {
 	protected override void OnScreenStartDecider () {
 		SetVariableElements (new ScreenElement[] {
 			new LabelElement (description),
-			CreateButton ("Next")
+			CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
 

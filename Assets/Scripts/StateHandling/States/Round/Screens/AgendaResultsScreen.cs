@@ -29,7 +29,7 @@ public class AgendaResultsScreen : GameScreen {
 		Player player = Player.instance;
 
 		// Show the winning agenda items
-		description.content = "Winning Agenda Items:";
+		description.Content = "Winning Agenda Items:";
 		List<AgendaItem> winningItems = AgendaItemsManager.instance.WinningItems;
 		ScreenElement[] se = new ScreenElement[winningItems.Count];
 		for (int i = 0; i < se.Length; i ++) {
@@ -37,7 +37,7 @@ public class AgendaResultsScreen : GameScreen {
 		}
 
 		SetVariableElements (se);
-		AppendVariableElements (CreateButton ("Next"));
+		AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
 
 		// Update score
 		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;
@@ -59,7 +59,7 @@ public class AgendaResultsScreen : GameScreen {
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
-		description.content = defaultDescription;
+		description.Content = defaultDescription;
 		ClearScreen ();
 	}
 }

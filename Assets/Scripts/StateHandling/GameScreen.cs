@@ -81,6 +81,12 @@ public class GameScreen {
 		return new ButtonElement (this, id, content);
 	}
 
+	protected BottomButtonElement CreateBottomButton (string id, string content="", Side side=Side.Left) {
+		if (content == "")
+			content = id;
+		return new BottomButtonElement (this, id, content, side);
+	}
+
 	protected TimerElement CreateTimer () {
 		return new TimerElement ();
 	}

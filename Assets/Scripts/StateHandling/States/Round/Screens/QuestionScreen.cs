@@ -16,12 +16,12 @@ public class QuestionScreen : GameScreen {
 		
 		RoundState round = state as RoundState;
 		int roundNumber = round.RoundNumber;
-		title.content = string.Format("Round {0}", roundNumber);
+		title.Content = string.Format("Round {0}", roundNumber);
 
 		ScreenElement[] se = new ScreenElement[isDecider ? 2 : 1];
 		se[0] = new LabelElement (round.Question);
 		if (isDecider) {
-			se[1] = CreateButton ("Next");
+			se[1] = CreateBottomButton ("Next", "", Side.Right);
 		}
 
 		SetVariableElements (se);

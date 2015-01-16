@@ -22,7 +22,7 @@ public class DecideScreen : GameScreen {
 		RoundState round = state as RoundState;
 		players = round.Players;
 
-		instructions.content = Copy.DecideScreenDecider;
+		instructions.Content = Copy.DecideScreenDecider;
 		ScreenElement[] se = new ScreenElement[players.Count+1];
 		for (int i = 0; i < se.Length-1; i ++) {
 			string name = players[i];
@@ -35,7 +35,7 @@ public class DecideScreen : GameScreen {
 	}
 
 	protected override void OnScreenStartPlayer () {
-		instructions.content = Copy.DecideScreenPlayer;
+		instructions.Content = Copy.DecideScreenPlayer;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

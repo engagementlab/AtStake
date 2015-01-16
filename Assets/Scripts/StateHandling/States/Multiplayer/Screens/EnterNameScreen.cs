@@ -26,7 +26,7 @@ public class EnterNameScreen : GameScreen {
 			new LabelElement ("Please type your name:"),
 			tfe,
 			CreateButton ("Enter"),
-			CreateButton ("Back")
+			CreateBottomButton ("Back")
 		});
 	}
 	

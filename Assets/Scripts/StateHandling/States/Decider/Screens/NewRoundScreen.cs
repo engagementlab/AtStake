@@ -37,13 +37,13 @@ public class NewRoundScreen : GameScreen {
 
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "New Round") {
-			instructions.content = "Get ready!";
+			instructions.Content = "Get ready!";
 			if (Player.instance.IsDecider)
 				allowContinue = true;
 		}
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
-		instructions.content = "Please wait for other players to confirm they're ready :)";
+		instructions.Content = "Please wait for other players to confirm they're ready :)";
 	}
 }

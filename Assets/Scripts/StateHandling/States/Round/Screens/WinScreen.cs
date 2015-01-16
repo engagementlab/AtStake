@@ -14,17 +14,17 @@ public class WinScreen : GameScreen {
 
 	protected override void OnScreenStartPlayer () {
 		if (Player.instance.Won) {
-			winner.content = "You won this round!";
+			winner.Content = "You won this round!";
 			Player.instance.MyBeanPool.OnWin ();
 		} else {
-			winner.content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
+			winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 		}
 	}
 
 	protected override void OnScreenStartDecider () {
-		winner.content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
+		winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 		SetVariableElements (new ScreenElement[] {
-			CreateButton ("Next")
+			CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
 

@@ -12,7 +12,7 @@ public class GamesListScreen : GameScreen {
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Choose a game to join"),
-			CreateButton ("Back"),
+			CreateBottomButton ("Back"),
 			nameTaken
 		});
 	}
@@ -45,6 +45,6 @@ public class GamesListScreen : GameScreen {
 	}
 
 	void OnNameTakenEvent (NameTakenEvent e) {
-		nameTaken.content = string.Format ("There's already someone named {0} in this game. Please go back and choose a different name", Player.instance.Name);
+		nameTaken.Content = string.Format ("There's already someone named {0} in this game. Please go back and choose a different name", Player.instance.Name);
 	}
 }

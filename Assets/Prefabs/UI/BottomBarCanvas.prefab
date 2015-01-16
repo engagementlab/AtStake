@@ -46,6 +46,7 @@ GameObject:
   - 222: {fileID: 22200004}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11477634}
   m_Layer: 5
   m_Name: ButtonRight
   m_TagString: Untagged
@@ -98,6 +99,7 @@ GameObject:
   - 222: {fileID: 22200010}
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11477632}
   m_Layer: 5
   m_Name: ButtonLeft
   m_TagString: Untagged
@@ -287,7 +289,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11400006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400028}
+        m_MethodName: OnButtonPress
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11477634}
+          m_ObjectArgumentAssemblyTypeName: BottomButton, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11400010
@@ -380,7 +394,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11400016}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400028}
+        m_MethodName: OnButtonPress
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11477632}
+          m_ObjectArgumentAssemblyTypeName: BottomButton, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &11400016
@@ -472,10 +498,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d373f93c0440e9a866acef29dbeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLeft: {fileID: 11400016}
-  buttonRight: {fileID: 11400006}
-  leftText: {fileID: 11400012}
-  rightText: {fileID: 11400010}
+  buttonLeft: {fileID: 11477632}
+  buttonRight: {fileID: 11477634}
+--- !u!114 &11477632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cba2a38a03d864a84b6f3ac900546e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 11400016}
+  text: {fileID: 11400012}
+--- !u!114 &11477634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cba2a38a03d864a84b6f3ac900546e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 11400006}
+  text: {fileID: 11400010}
 --- !u!222 &22200000
 CanvasRenderer:
   m_ObjectHideFlags: 1

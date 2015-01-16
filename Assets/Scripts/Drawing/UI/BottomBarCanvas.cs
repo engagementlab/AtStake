@@ -4,23 +4,51 @@ using UnityEngine.UI;
 
 public class BottomBarCanvas : MonoBehaviour {
 
-	public Image buttonLeft;
-	public Image buttonRight;
-	public Text leftText;
-	public Text rightText;
+	public BottomButton buttonLeft;
+	public BottomButton buttonRight;
+
+	GameScreen screen;
+	ScreenElement[] elements;
 
 	void Awake () {
-		SetLeft (Palette.Blue, "back");
-		SetRight (Palette.Teal, "next");
+		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 	}
 
-	public void SetLeft (Color color, string content) {
-		buttonLeft.color = color;
-		leftText.text = content;
+	void SetButton (GameScreen gameScreen, string id, string content, Side side) {
+		if (side == Side.Left) {
+			buttonLeft.Set (gameScreen, id, content, Palette.Pink);
+		} else {
+			buttonRight.Set (gameScreen, id, content, Palette.Orange);
+		}
 	}
 
-	public void SetRight (Color color, string content) {
-		buttonRight.color = color;
-		rightText.text = content;
+	void DisableButtons () {
+		buttonLeft.SetEnabled (false);
+		buttonRight.SetEnabled (false);
+	}
+
+	public void OnButtonPress (BottomButton button) {
+		Events.instance.Raise (new ButtonPressEvent (button.Screen, button.ID));
+	}
+
+	void UpdateScreen () {
+		DisableButtons ();
+		foreach (ScreenElement element in elements) {
+			if (element is BottomButtonElement) {
+				BottomButtonElement b = element as BottomButtonElement;
+				SetButton (b.screen, b.id, b.Content, b.Side);
+			}
+		}
+	}
+
+	void OnChangeScreenEvent (ChangeScreenEvent e) {
+		screen = e.screen;
+		elements = screen.Elements;
+		UpdateScreen ();		
+	}
+
+	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
+		elements = screen.Elements;
+		UpdateScreen ();
 	}
 }

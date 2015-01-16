@@ -23,7 +23,7 @@ public class ScreenDrawer : MonoBehaviour {
 			}
 			if (e is LabelElement) {
 				LabelElement l = e as LabelElement;
-				GUILayout.Label (l.content);
+				GUILayout.Label (l.Content);
 			}
 			if (e is TextFieldElement) {
 				TextFieldElement t = e as TextFieldElement;

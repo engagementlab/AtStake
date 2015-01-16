@@ -59,7 +59,7 @@ public class StageScreen : GameScreen {
 		SetVariableElements (new ScreenElement[] {
 			new LabelElement (Copy.GetInstructions (name)),
 			CreateButton ("Start Timer"),
-			CreateButton ("Next")
+			CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
 

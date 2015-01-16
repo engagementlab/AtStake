@@ -12,7 +12,7 @@ public class HostJoinScreen : GameScreen {
 			label,
 			CreateButton ("Host"),
 			CreateButton ("Join"),
-			CreateButton ("Back")
+			CreateBottomButton ("Back")
 		});
 
 		Events.instance.AddListener<JoinTimeoutEvent> (OnJoinTimeoutEvent);
@@ -20,7 +20,7 @@ public class HostJoinScreen : GameScreen {
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
-		label.content = defaultText;
+		label.Content = defaultText;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -31,7 +31,7 @@ public class HostJoinScreen : GameScreen {
 				break;
 			case "Join": 
 				MultiplayerManager.instance.JoinGame (); 
-				label.content = "searching for games...";
+				label.Content = "searching for games...";
 				break;
 			case "Back": 
 				GotoScreen ("Enter Name"); 
@@ -40,10 +40,10 @@ public class HostJoinScreen : GameScreen {
 	}
 
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
-		label.content = "no games found :(";
+		label.Content = "no games found :(";
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		label.content = "";
+		label.Content = "";
 	}
 }

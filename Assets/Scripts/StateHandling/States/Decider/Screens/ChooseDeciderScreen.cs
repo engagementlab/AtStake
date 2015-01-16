@@ -33,7 +33,7 @@ public class ChooseDeciderScreen : GameScreen {
 		if (e.id.Length < 13) return;
 		if (e.id.Substring (0, 13) == "Name-Decider-") {
 			decider = e.id.Substring (13);
-			deciderSelection.content = "You've chosen " + decider;
+			deciderSelection.Content = "You've chosen " + decider;
 			DeciderSelectionManager.instance.SelectDecider (decider);
 		}
 	}

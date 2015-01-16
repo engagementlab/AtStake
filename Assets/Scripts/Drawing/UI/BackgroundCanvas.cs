@@ -8,14 +8,11 @@ public class BackgroundCanvas : MonoBehaviour {
 	public Image bottomBar;
 	public Image background;
 
-	BackgroundCanvasTheme theme = new MultiplayerTheme ();
-
 	void Awake () {
 		SetTheme (new MultiplayerTheme ());
 	}
 
 	public void SetTheme (BackgroundCanvasTheme theme) {
-		this.theme = theme;
 		topBar.color = theme.TopBar;
 		bottomBar.color = theme.BottomBar;
 		background.color = theme.Background;

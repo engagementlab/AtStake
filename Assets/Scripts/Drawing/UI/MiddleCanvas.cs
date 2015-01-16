@@ -15,35 +15,47 @@ public class MiddleCanvas : MonoBehaviour {
 
 	void Awake () {
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
+		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 	}
-
+ 
 	public void OnButtonPress (MiddleButton button) {
 		Events.instance.Raise (new ButtonPressEvent (button.Screen, button.ID));
 	}
 
-	void OnChangeScreenEvent (ChangeScreenEvent e) {
-		
-		screen = e.screen;
-		elements = screen.Elements;
+	public void OnEndEditTextField (InputField inputField) {
+		textFieldManager.OnEndEdit (inputField.text);
+	}
 
-		labelManager.ResetLabel ();
+	void UpdateScreen () {
+		labelManager.RemoveLabels ();
 		textFieldManager.Hide ();
 		buttonManager.RemoveButtons ();
 
 		foreach (ScreenElement element in elements) {
 			if (element is LabelElement) {
 				LabelElement l = element as LabelElement;
-				labelManager.SetLabel (l.content);
+				labelManager.SetLabel (l);
 			}
 			if (element is TextFieldElement) {
 				TextFieldElement t = element as TextFieldElement;
-				textFieldManager.Show (t.content);
+				textFieldManager.Show (t);
 			}
-			if (element is ButtonElement) {
+			if (element is ButtonElement && !(element is BottomButtonElement)) {
 				ButtonElement b = element as ButtonElement;
 				buttonManager.SetButton (b.screen, b.id, b.Content);
 			}
 		}
+	}
+
+	void OnChangeScreenEvent (ChangeScreenEvent e) {
+		
+		screen = e.screen;
+		elements = screen.Elements;
+		UpdateScreen ();
+	}
+
+	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
+		elements = screen.Elements;
 	}
 }
 
@@ -98,25 +110,53 @@ public class MiddleButtonManager : ElementManager {
 [System.Serializable]
 public class MiddleLabelManager : ElementManager {
 
-	public Text text;
+	public GameObject label;
+	List<GameObject> labels = new List<GameObject> ();
 
-	public void SetLabel (string content) {
-		text.text = content;
-		if (content == "") {
-			text.gameObject.SetActive (false);
-		} else {
-			text.gameObject.SetActive (true);
+	public void SetLabel (LabelElement label) {
+
+		GameObject go = GetInactiveLabel ();
+		if (go == null) {
+			go = CreateLabel ();
+			go.SetActive (true);
 		}
+
+		Text t = go.GetComponent<Text> ();
+		label.SetText (t);
+		//t.text = content;
 	}
 
-	public void ResetLabel () {
-		SetLabel ("");
+	GameObject CreateLabel () {
+		GameObject go = GameObject.Instantiate (label) as GameObject;
+		RectTransform t = go.transform as RectTransform;
+		t.SetParent (buttonGroupTransform);
+		t.SetSiblingIndex (0);
+		t.localScale = ExtensionMethods.Vector3One;
+		labels.Add (go);
+		return go;
+	}
+
+	GameObject GetInactiveLabel () {
+		foreach (GameObject go in labels) {
+			if (!go.activeSelf) {
+				go.SetActive (true);
+				return go;
+			}
+		}
+		return null;
+	}
+
+	public void RemoveLabels () {
+		foreach (GameObject go in labels) {
+			go.SetActive (false);
+		}
 	}
 }
 
 [System.Serializable]
 public class MiddleTextFieldManager : ElementManager {
 
+	public TextFieldElement textField;
 	public InputField inputField;
 	public Text placeholder;
 	public Text text;
@@ -125,10 +165,14 @@ public class MiddleTextFieldManager : ElementManager {
 		placeholder.text = content;
 	}
 
-	public void Show (string content) {
+	public void Show (TextFieldElement textField) {
+		this.textField = textField;
 		inputField.gameObject.SetActive (true);
-		text.text = content;
-		Debug.Log(content);
+		text.text = textField.content;
+	}
+
+	public void OnEndEdit (string content) {
+		textField.content = content;
 	}
 
 	public void Hide () {

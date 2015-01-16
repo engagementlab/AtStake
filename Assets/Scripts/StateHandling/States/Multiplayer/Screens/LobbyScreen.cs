@@ -11,7 +11,7 @@ public class LobbyScreen : GameScreen {
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Lobby"),
-			CreateButton ("Back")
+			CreateBottomButton ("Back")
 		});
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
