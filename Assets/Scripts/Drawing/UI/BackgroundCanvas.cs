@@ -10,12 +10,26 @@ public class BackgroundCanvas : MonoBehaviour {
 
 	void Awake () {
 		SetTheme (new MultiplayerTheme ());
+		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 	}
 
 	public void SetTheme (BackgroundCanvasTheme theme) {
 		topBar.color = theme.TopBar;
 		bottomBar.color = theme.BottomBar;
 		background.color = theme.Background;
+	}
+
+	void OnChangeScreenEvent (ChangeScreenEvent e) {
+		string name = e.screen.name;
+		if (name == "Lobby") {
+			SetTheme (new LobbyTheme ());
+		}
+		if (name == "Start" || name == "Host or Join") {
+			SetTheme (new MultiplayerTheme ());
+		}
+		if (name == "Role") {
+			SetTheme (new RoleTheme ());
+		}
 	}
 }
 
@@ -142,5 +156,20 @@ public class RoleTheme : BackgroundCanvasTheme {
 
 	public override Color Background {
 		get { return Palette.White; }
+	}
+}
+
+public class LobbyTheme : BackgroundCanvasTheme {
+
+	public override Color TopBar {
+		get { return Palette.Blue; }
+	}
+
+	public override Color BottomBar {
+		get { return Palette.Blue; }
+	}
+
+	public override Color Background {
+		get { return Palette.LtBlue; }
 	}
 }

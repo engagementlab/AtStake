@@ -33,11 +33,11 @@ public class RoleScreen : GameScreen {
 	protected ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
 		ScreenElement[] se = new ScreenElement[items.Length*2+1];
 		int index = 0;
-		se[0] = new LabelElement ("Agenda");
+		se[0] = new LabelElement ("Agenda", new DefaultCenterTextStyle ());
 		for (int i = 1; i < se.Length; i += 2) {
 			AgendaItem item = items[index];
-			se[i] = new LabelElement (item.description);
-			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus));
+			se[i] = new LabelElement (item.description, new SmallTextStyle ());
+			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), new BonusTextStyle ());
 			index ++;
 		}
 		return se;

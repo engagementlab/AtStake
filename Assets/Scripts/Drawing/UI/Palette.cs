@@ -47,4 +47,9 @@ public static class Palette {
 	public static Color White {
 		get { return white; }
 	}
+
+	static Color grey = new Color (0.25f, 0.25f, 0.25f);
+	public static Color Grey {
+		get { return grey; }
+	}
 }

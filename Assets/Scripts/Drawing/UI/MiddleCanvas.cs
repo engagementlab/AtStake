@@ -47,8 +47,14 @@ public class MiddleCanvas : MonoBehaviour {
 		}
 	}
 
+	void SortElements () {
+		List<GameObject> gameObjects;
+		gameObjects.AddRange (buttonManager.Buttons);
+		gameObjects.AddRange (labelManager.Labels);
+		gameObjects.Add (textFieldManager.inputField);
+	}
+
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
-		
 		screen = e.screen;
 		elements = screen.Elements;
 		UpdateScreen ();
@@ -56,6 +62,7 @@ public class MiddleCanvas : MonoBehaviour {
 
 	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		elements = screen.Elements;
+		UpdateScreen ();
 	}
 }
 
@@ -69,6 +76,9 @@ public class MiddleButtonManager : ElementManager {
 
 	public GameObject button;
 	List<GameObject> buttons = new List<GameObject> ();
+	public List<GameObject> Buttons {
+		get { return buttons; }
+	}
 
 	public void SetButton (GameScreen gameScreen, string id, string content) {
 		
@@ -112,6 +122,9 @@ public class MiddleLabelManager : ElementManager {
 
 	public GameObject label;
 	List<GameObject> labels = new List<GameObject> ();
+	public List<GameObject> Labels {
+		get { return labels; }
+	}
 
 	public void SetLabel (LabelElement label) {
 
@@ -123,7 +136,6 @@ public class MiddleLabelManager : ElementManager {
 
 		Text t = go.GetComponent<Text> ();
 		label.SetText (t);
-		//t.text = content;
 	}
 
 	GameObject CreateLabel () {

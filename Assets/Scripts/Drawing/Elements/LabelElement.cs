@@ -13,15 +13,26 @@ public class LabelElement : ScreenElement {
 				text.text = content;
 		}
 	}
+	TextStyle style = new DefaultTextStyle ();
 	Text text = null;
 
-
-	public LabelElement (string content="") {
+	public LabelElement (string content="", TextStyle style=null) {
 		this.content = content;
+		if (style == null) {
+			style = new DefaultTextStyle ();
+		}
+		this.style = style;
 	}
 
 	public void SetText (Text text) {
 		this.text = text;
 		this.text.text = content;
+		StyleText ();
+	}
+
+	void StyleText () {
+		text.fontSize = style.Size;
+		text.alignment = style.Anchor;
+		text.color = style.Color;
 	}
 }
