@@ -11,7 +11,7 @@ public class DecideScreen : GameScreen {
 
 	public DecideScreen (GameState state, string name = "Decide") : base (state, name) {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
-		instructions = new LabelElement ("");
+		instructions = new LabelElement ("", 0);
 		SetStaticElements (new ScreenElement[] {
 			instructions
 		});
@@ -26,9 +26,9 @@ public class DecideScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[players.Count+1];
 		for (int i = 0; i < se.Length-1; i ++) {
 			string name = players[i];
-			se[i] = CreateButton ("Name-" + name, name);
+			se[i] = CreateButton ("Name-" + name, i+1, name);
 		}
-		confirmButton = CreateButton ("Confirm");
+		confirmButton = CreateButton ("Confirm", se.Length);
 		se[se.Length-1] = confirmButton;
 
 		SetVariableElements (se);

@@ -11,12 +11,13 @@ public class AgendaScreen : GameScreen {
 
 	public AgendaScreen (GameState state, string name = "Agenda") : base (state, name) {
 
-		progress = new LabelElement ();
-		description = new LabelElement ();
-		yesButton = CreateButton ("yah");
-		noButton = CreateButton ("nah");
+		progress = new LabelElement ("", 0);
+		description = new LabelElement ("", 1);
+		yesButton = CreateButton ("yah", 2);
+		noButton = CreateButton ("nah", 3);
 
 		SetStaticElements (new ScreenElement[] {
+			progress,
 			description,
 			yesButton,
 			noButton

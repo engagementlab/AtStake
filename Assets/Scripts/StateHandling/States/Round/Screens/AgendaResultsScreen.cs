@@ -10,9 +10,10 @@ public class AgendaResultsScreen : GameScreen {
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
-		description = new LabelElement (defaultDescription);
+		description = new LabelElement (defaultDescription, 0);
 		SetStaticElements (new ScreenElement[] {
-			description
+			description,
+			CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
 
@@ -33,11 +34,11 @@ public class AgendaResultsScreen : GameScreen {
 		List<AgendaItem> winningItems = AgendaItemsManager.instance.WinningItems;
 		ScreenElement[] se = new ScreenElement[winningItems.Count];
 		for (int i = 0; i < se.Length; i ++) {
-			se[i] = new LabelElement (string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus));
+			se[i] = new LabelElement (string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus), i+1);
 		}
 
 		SetVariableElements (se);
-		AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
+		//AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
 
 		// Update score
 		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;

@@ -13,9 +13,14 @@ public static class TimerValues {
 [RequireComponent (typeof (NetworkView))]
 public class Timer : MonoBehaviour {
 
-	float seconds = -1f;
+	float duration = 0;
+	float seconds = -1;
 	public float Seconds {
 		get { return seconds; }
+	}
+
+	public float Progress {
+		get { return seconds / duration; }
 	}
 
 	bool countingDown = false;
@@ -37,9 +42,10 @@ public class Timer : MonoBehaviour {
 		networkView.RPC ("ReceiveCountDown", RPCMode.All, duration);
 	}
 
-	void StartCountDown (float duration) {
+	public void StartCountDown (float duration) {
 		if (countingDown)
 			return;
+		this.duration = duration;
 		seconds = duration;
 		StartCoroutine (CountDown ());
 	}

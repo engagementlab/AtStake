@@ -5,8 +5,8 @@ public class AboutScreen : GameScreen {
 	
 	public AboutScreen (GameState state, string name = "About") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement (Copy.About),
-			CreateButton ("Back")
+			new LabelElement (Copy.About, 0),
+			CreateBottomButton ("Back", "", Side.Left)
 		});
 	}
 

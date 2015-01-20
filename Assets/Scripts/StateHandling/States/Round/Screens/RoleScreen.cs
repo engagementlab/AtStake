@@ -25,19 +25,19 @@ public class RoleScreen : GameScreen {
 	protected ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
 		string title = string.Format ("{0} the {1}", playerName, playerRole);
 		return new ScreenElement[2] {
-			new LabelElement (title),
-			new LabelElement (bio)
+			new LabelElement (title, 0),
+			new LabelElement (bio, 1)
 		};
 	}
 
 	protected ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
 		ScreenElement[] se = new ScreenElement[items.Length*2+1];
 		int index = 0;
-		se[0] = new LabelElement ("Agenda", new DefaultCenterTextStyle ());
+		se[0] = new LabelElement ("Agenda", 2, new DefaultCenterTextStyle ());
 		for (int i = 1; i < se.Length; i += 2) {
 			AgendaItem item = items[index];
-			se[i] = new LabelElement (item.description, new SmallTextStyle ());
-			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), new BonusTextStyle ());
+			se[i] = new LabelElement (item.description, i+1, new SmallTextStyle ());
+			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), i+2, new BonusTextStyle ());
 			index ++;
 		}
 		return se;
@@ -46,7 +46,7 @@ public class RoleScreen : GameScreen {
 	ScreenElement[] RoleBeans (int beanCount) {
 		string beanLabel = string.Format ("Coins: {0}", beanCount);
 		return new ScreenElement[] {
-			new LabelElement (beanLabel)
+			new LabelElement (beanLabel, 0)
 		};
 	}
 

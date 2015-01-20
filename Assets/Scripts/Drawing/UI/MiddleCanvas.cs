@@ -9,6 +9,7 @@ public class MiddleCanvas : MonoBehaviour {
 	public MiddleButtonManager buttonManager;
 	public MiddleLabelManager labelManager;
 	public MiddleTextFieldManager textFieldManager;
+	public MiddleTimerManager timerManager;
 
 	ScreenElement[] elements;
 	GameScreen screen;
@@ -26,9 +27,21 @@ public class MiddleCanvas : MonoBehaviour {
 		textFieldManager.OnEndEdit (inputField.text);
 	}
 
+	public void OnTimerPress (TimerButton timer) {
+		Events.instance.Raise (new ButtonPressEvent (timer.Screen, timer.ID));
+	}
+
+	void Update () {
+		if (timerManager.Enabled) {
+			timerManager.UpdateProgress ();
+		}
+	}
+
 	void UpdateScreen () {
+		
 		labelManager.RemoveLabels ();
 		textFieldManager.Hide ();
+		timerManager.Hide ();
 		buttonManager.RemoveButtons ();
 
 		foreach (ScreenElement element in elements) {
@@ -40,18 +53,15 @@ public class MiddleCanvas : MonoBehaviour {
 				TextFieldElement t = element as TextFieldElement;
 				textFieldManager.Show (t);
 			}
-			if (element is ButtonElement && !(element is BottomButtonElement)) {
+			if (element is ButtonElement && !(element is BottomButtonElement) && !(element is TimerElement)) {
 				ButtonElement b = element as ButtonElement;
-				buttonManager.SetButton (b.screen, b.id, b.Content);
+				buttonManager.SetButton (b);
+			}
+			if (element is TimerElement) {
+				TimerElement t = element as TimerElement;
+				timerManager.Show (t);
 			}
 		}
-	}
-
-	void SortElements () {
-		List<GameObject> gameObjects;
-		gameObjects.AddRange (buttonManager.Buttons);
-		gameObjects.AddRange (labelManager.Labels);
-		gameObjects.Add (textFieldManager.inputField);
 	}
 
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
@@ -80,15 +90,16 @@ public class MiddleButtonManager : ElementManager {
 		get { return buttons; }
 	}
 
-	public void SetButton (GameScreen gameScreen, string id, string content) {
-		
+	public void SetButton (ButtonElement button) {
+
 		GameObject go = GetInactiveButton ();
 		if (go == null) {
 			go = CreateButton ();
+			go.SetActive (true);
 		}
-
+		go.transform.SetSiblingIndex (button.Position);
 		MiddleButton mb = go.GetComponent<MiddleButton> ();
-		mb.Set (gameScreen, id, content);
+		mb.Set (button.screen, button.id, button.Content);
 	}
 
 	GameObject CreateButton () {
@@ -133,7 +144,7 @@ public class MiddleLabelManager : ElementManager {
 			go = CreateLabel ();
 			go.SetActive (true);
 		}
-
+		go.transform.SetSiblingIndex (label.Position);
 		Text t = go.GetComponent<Text> ();
 		label.SetText (t);
 	}
@@ -142,7 +153,6 @@ public class MiddleLabelManager : ElementManager {
 		GameObject go = GameObject.Instantiate (label) as GameObject;
 		RectTransform t = go.transform as RectTransform;
 		t.SetParent (buttonGroupTransform);
-		t.SetSiblingIndex (0);
 		t.localScale = ExtensionMethods.Vector3One;
 		labels.Add (go);
 		return go;
@@ -180,6 +190,7 @@ public class MiddleTextFieldManager : ElementManager {
 	public void Show (TextFieldElement textField) {
 		this.textField = textField;
 		inputField.gameObject.SetActive (true);
+		inputField.transform.SetSiblingIndex (textField.Position);
 		text.text = textField.content;
 	}
 
@@ -189,5 +200,38 @@ public class MiddleTextFieldManager : ElementManager {
 
 	public void Hide () {
 		inputField.gameObject.SetActive (false);
+	}
+}
+
+[System.Serializable]
+public class MiddleTimerManager : ElementManager {
+
+	public TimerElement timerElement;
+	public GameObject timer;
+	public Image fill;
+	public bool Enabled { get; set; }
+
+	public MiddleTimerManager () {
+		Enabled = false;
+	}
+
+	public void Show (TimerElement timerElement) {
+		this.timerElement = timerElement;
+		timerElement.SetFill (fill);
+		timer.SetActive (true);
+		timer.transform.SetSiblingIndex (timerElement.Position);
+		TimerButton tb = timer.GetComponent<TimerButton> ();
+		tb.Set (timerElement.screen, timerElement.id, timerElement.Content);
+		Enabled = true;
+	}
+
+	public void Hide () {
+		timer.SetActive (false);
+		Enabled = false;
+	}
+
+	public void UpdateProgress () {
+		if (timerElement != null)
+			timerElement.Update ();
 	}
 }

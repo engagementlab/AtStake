@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿	using UnityEngine;
 using System.Collections;
 
 public class ButtonElement : ScreenElement {
@@ -11,15 +11,10 @@ public class ButtonElement : ScreenElement {
 		set { content = value; }
 	}
 
-	public ButtonElement (GameScreen screen, string id, string content) {
+	public ButtonElement (GameScreen screen, string id, string content, int position) {
 		this.screen = screen;
 		this.id = id;
 		this.content = content;
-	}
-
-	public override void Draw () {
-		if (GUILayout.Button (content)) {
-			Events.instance.Raise (new ButtonPressEvent (screen, id));
-		}
+		this.Position = position;
 	}
 }

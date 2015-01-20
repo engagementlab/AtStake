@@ -5,7 +5,7 @@ public class TextFieldElement : ScreenElement {
 
 	public string content = "";
 
-	public TextFieldElement () {
-
+	public TextFieldElement (int position) {
+		this.Position = position;
 	}
 }

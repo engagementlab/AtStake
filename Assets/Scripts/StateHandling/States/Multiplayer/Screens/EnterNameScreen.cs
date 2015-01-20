@@ -7,7 +7,7 @@ public class EnterNameScreen : GameScreen {
 
 	public EnterNameScreen (GameState state, string name = "Enter Name") : base (state, name) {
 		
-		tfe = new TextFieldElement ();
+		tfe = new TextFieldElement (1);
 		
 		// For testing only!
 		#if UNITY_WEBPLAYER
@@ -23,9 +23,9 @@ public class EnterNameScreen : GameScreen {
 		#endif
 
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Please type your name:"),
+			new LabelElement ("Please type your name:", 0),
 			tfe,
-			CreateButton ("Enter"),
+			CreateButton ("Enter", 2),
 			CreateBottomButton ("Back")
 		});
 	}

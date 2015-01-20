@@ -5,8 +5,8 @@ public class NewDeckScreen : GameScreen {
 	
 	public NewDeckScreen (GameState state, string name = "New Deck") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement (Copy.NewDeck),
-			CreateButton ("Back")
+			new LabelElement (Copy.NewDeck, 0),
+			CreateBottomButton ("Back", "", Side.Left)
 		});
 	}
 

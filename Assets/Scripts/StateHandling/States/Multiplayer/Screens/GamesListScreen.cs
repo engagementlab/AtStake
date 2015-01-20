@@ -4,16 +4,16 @@ using System.Collections;
 public class GamesListScreen : GameScreen {
 
 	HostData[] hosts;
-	LabelElement nameTaken = new LabelElement ("");
+	LabelElement nameTaken = new LabelElement ("", 1);
 
 	public GamesListScreen (GameState state, string name = "Games List") : base (state, name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Choose a game to join"),
-			CreateBottomButton ("Back"),
-			nameTaken
+			new LabelElement ("Choose a game to join", 0),
+			nameTaken,
+			CreateBottomButton ("Back")
 		});
 	}
 
@@ -24,7 +24,7 @@ public class GamesListScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[hosts.Length];
 		for (int i = 0; i < se.Length; i ++) {
 			string gameName = hosts[i].gameName;
-			se[i] = CreateButton (i.ToString () + "__" + gameName, gameName);
+			se[i] = CreateButton (i.ToString () + "__" + gameName, i+2, gameName);
 		}
 		SetVariableElements (se);
 	}

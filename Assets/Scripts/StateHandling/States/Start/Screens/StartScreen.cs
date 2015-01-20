@@ -5,10 +5,11 @@ public class StartScreen : GameScreen {
 
 	public StartScreen (GameState state, string name = "Start") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
-			CreateButton ("Play"),
+			CreateButton ("Play", 0),
 			//CreateButton ("Instructions"),
 			//CreateButton ("Deck"),
-			CreateButton ("About")
+			CreateButton ("About", 1)
+			//CreateTimer ("Start", 2)
 		});
 	}
 
@@ -18,6 +19,7 @@ public class StartScreen : GameScreen {
 			//case "Instructions": GotoScreen ("Instructions"); break;
 			//case "Deck": GotoScreen ("New Deck"); break;
 			case "About": GotoScreen ("About"); break;
+			case "Start": Timer.instance.StartCountDown (10); break;
 		}
 	}
 }

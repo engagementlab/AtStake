@@ -16,12 +16,13 @@ public class LabelElement : ScreenElement {
 	TextStyle style = new DefaultTextStyle ();
 	Text text = null;
 
-	public LabelElement (string content="", TextStyle style=null) {
+	public LabelElement (string content, int position, TextStyle style=null) {
 		this.content = content;
 		if (style == null) {
 			style = new DefaultTextStyle ();
 		}
 		this.style = style;
+		this.Position = position;
 	}
 
 	public void SetText (Text text) {

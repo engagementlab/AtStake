@@ -10,7 +10,7 @@ public class LobbyScreen : GameScreen {
 
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Lobby"),
+			new LabelElement ("Lobby", 0),
 			CreateBottomButton ("Back")
 		});
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
@@ -30,10 +30,10 @@ public class LobbyScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[elementCount];
 
 		for (int i = 0; i < namesCount; i ++) {
-			se[i] = new LabelElement (playerNames[i]);
+			se[i] = new LabelElement (playerNames[i], i+1);
 		}
 
-		if (showPlay) se[elementCount-1] = CreateButton ("Play");
+		if (showPlay) se[elementCount-1] = CreateButton ("Play", elementCount+1);
 
 		SetVariableElements (se);
 	}

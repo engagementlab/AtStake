@@ -9,7 +9,7 @@ public class ChooseDeckScreen : GameScreen {
 
 	public ChooseDeckScreen (GameState state, string name = "Choose Deck") : base (state, name) {
 		Events.instance.AddListener<UpdateDeckListEvent> (OnUpdateDeckListEvent);
-		title = new LabelElement ("Please wait while the host chooses a deck");
+		title = new LabelElement ("Please wait while the host chooses a deck", 0);
 		SetStaticElements (new ScreenElement[] {
 			title	
 		});
@@ -24,18 +24,18 @@ public class ChooseDeckScreen : GameScreen {
 		int elementsCount = localDecksCount + hostedDecksCount+2;
 		ScreenElement[] se = new ScreenElement[elementsCount];
 
-		se[0] = new LabelElement ("Local decks");
+		se[0] = new LabelElement ("Local decks", 1);
 		int offset = 1;
 		for (int i = offset; i < localDecksCount+offset; i ++) {
 			string name = dl.LocalDecks[i-offset].name;
-			se[i] = CreateButton ("deck_l_" + name, name);
+			se[i] = CreateButton ("deck_l_" + name, i+2, name);
 		}
 
-		se[localDecksCount+1] = new LabelElement ("Hosted decks");
 		offset = localDecksCount+2;
+		se[localDecksCount+1] = new LabelElement ("Hosted decks", offset+3);
 		for (int i = offset; i < elementsCount; i ++) {
 			string name = dl.HostedDecks[i-offset].name;
-			se[i] = CreateButton ("deck_h_" + name, name);
+			se[i] = CreateButton ("deck_h_" + name, i+4, name);
 		}
 		SetVariableElements (se);
 	}

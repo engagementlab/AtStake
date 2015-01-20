@@ -4,7 +4,7 @@ using System.Collections;
 public class ScreenElement {
 	
 	public int Position {
-		get; set;
+		get; protected set;
 	}
 
 	public virtual void Draw () {}

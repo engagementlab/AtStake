@@ -22,13 +22,13 @@ public class StageScreen : GameScreen {
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 
 		this.timerDuration = timerDuration;
-		timer = CreateTimer ();
+		timer = CreateTimer ("Start", 2);
 		
 		round = state as RoundState;
 		playerName = round.PlayerName;
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement (name),
-			new LabelElement (round.Question),
+			new LabelElement (name, 0),
+			new LabelElement (round.Question, 1),
 			timer,
 			new BeanPoolElement (),
 			new BeanPotElement ()
@@ -48,8 +48,8 @@ public class StageScreen : GameScreen {
 	protected void InitPlayerScreen () {
 		addTimeEnabled = false;
 		SetVariableElements (new ScreenElement[] {
-			CreateButton ("+30 Seconds"),
-			CreateButton ("Role Card")
+			CreateButton ("+30 Seconds", 3),
+			CreateButton ("Role Card", 4)
 		});
 	}
 
@@ -57,8 +57,7 @@ public class StageScreen : GameScreen {
 		timerEnabled = true;
 		players = round.Players;
 		SetVariableElements (new ScreenElement[] {
-			new LabelElement (Copy.GetInstructions (name)),
-			CreateButton ("Start Timer"),
+			new LabelElement (Copy.GetInstructions (name), 3),
 			CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
@@ -67,10 +66,9 @@ public class StageScreen : GameScreen {
 		switch (e.id) {
 			case "Role Card": GotoScreen ("Role"); break;
 			case "+30 Seconds": AddTime (); break;
-			case "Start Timer": if (StartTimer ()) {
-									Timer.instance.AllStartCountDown (timerDuration);
-								}
-								break;
+			case "Start": if (StartTimer ()) {
+							Timer.instance.AllStartCountDown (timerDuration);
+						} break;
 			case "Next": OnPressNext (); break;
 		}
 	}

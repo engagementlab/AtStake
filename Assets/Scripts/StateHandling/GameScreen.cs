@@ -75,10 +75,10 @@ public class GameScreen {
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 
-	protected ButtonElement CreateButton (string id, string content="") {
+	protected ButtonElement CreateButton (string id, int position, string content="") {
 		if (content == "")
 			content = id;
-		return new ButtonElement (this, id, content);
+		return new ButtonElement (this, id, content, position);
 	}
 
 	protected BottomButtonElement CreateBottomButton (string id, string content="", Side side=Side.Left) {
@@ -87,8 +87,10 @@ public class GameScreen {
 		return new BottomButtonElement (this, id, content, side);
 	}
 
-	protected TimerElement CreateTimer () {
-		return new TimerElement ();
+	protected TimerElement CreateTimer (string id, int position, string content="") {
+		if (content == "")
+			content = id;
+		return new TimerElement (this, id, content, position);
 	}
 
 	protected void RefreshScreen () {

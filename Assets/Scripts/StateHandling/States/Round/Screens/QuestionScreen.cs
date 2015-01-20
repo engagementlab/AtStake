@@ -6,7 +6,7 @@ public class QuestionScreen : GameScreen {
 	LabelElement title;
 
 	public QuestionScreen (GameState state, string name = "Question") : base (state, name) {
-		title = new LabelElement ("Round");
+		title = new LabelElement ("Round", 0);
 		SetStaticElements (new ScreenElement[] {
 			title
 		});	
@@ -19,7 +19,7 @@ public class QuestionScreen : GameScreen {
 		title.Content = string.Format("Round {0}", roundNumber);
 
 		ScreenElement[] se = new ScreenElement[isDecider ? 2 : 1];
-		se[0] = new LabelElement (round.Question);
+		se[0] = new LabelElement (round.Question, 1);
 		if (isDecider) {
 			se[1] = CreateBottomButton ("Next", "", Side.Right);
 		}

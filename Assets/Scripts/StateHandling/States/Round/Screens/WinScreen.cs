@@ -6,7 +6,7 @@ public class WinScreen : GameScreen {
 	LabelElement winner;
 
 	public WinScreen (GameState state, string name = "Win") : base (state, name) {
-		winner = new LabelElement ("");
+		winner = new LabelElement ("", 0);
 		SetStaticElements (new ScreenElement[] {
 			winner
 		});
