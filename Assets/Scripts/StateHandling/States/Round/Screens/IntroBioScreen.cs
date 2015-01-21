@@ -7,10 +7,21 @@ public class IntroBioScreen : IntroductionScreen {
 		description = "Have everyone introduce themselves, then press next.";
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		if (isDecider) {
+			OnScreenStartDecider ();
+		} else {
+			ClearScreen ();
+			CreateBio ();
+		}
+	}
+
 	void CreateBio () {
 		Player player = Player.instance;
-		Role playerRole = player.MyRole;
-		AppendVariableElements (RoleDescription (player.Name, playerRole.name, playerRole.bio));
+		if (player.MyRole != null) {
+			Role playerRole = player.MyRole;
+			AppendVariableElements (RoleDescription (player.Name, playerRole.name, playerRole.bio));
+		}
 	}
 
 	protected override void OnUpdateRoleEvent (UpdateRoleEvent e) {

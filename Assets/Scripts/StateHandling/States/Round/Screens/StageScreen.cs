@@ -22,7 +22,7 @@ public class StageScreen : GameScreen {
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 
 		this.timerDuration = timerDuration;
-		timer = CreateTimer ("Start", 2);
+		timer = CreateTimer ("Timer", 2, name);
 		
 		round = state as RoundState;
 		playerName = round.PlayerName;
@@ -46,9 +46,10 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitPlayerScreen () {
-		addTimeEnabled = false;
+		if (!addTimeEnabled) {
+			OnDisableAddTime ();
+		}
 		SetVariableElements (new ScreenElement[] {
-			CreateButton ("+30 Seconds", 3),
 			CreateButton ("Role Card", 4)
 		});
 	}
@@ -56,6 +57,8 @@ public class StageScreen : GameScreen {
 	protected void InitDeciderScreen () {
 		timerEnabled = true;
 		players = round.Players;
+		timer.Content = name;
+		timer.Interactable = true;
 		SetVariableElements (new ScreenElement[] {
 			new LabelElement (Copy.GetInstructions (name), 3),
 			CreateBottomButton ("Next", "", Side.Right)
@@ -65,23 +68,45 @@ public class StageScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Role Card": GotoScreen ("Role"); break;
-			case "+30 Seconds": AddTime (); break;
-			case "Start": if (StartTimer ()) {
-							Timer.instance.AllStartCountDown (timerDuration);
-						} break;
 			case "Next": OnPressNext (); break;
+			case "Timer": HandleTimerPress (); break;
+		}
+	}
+
+	void HandleTimerPress () {
+		if (Player.instance.IsDecider) {
+			if (StartTimer ()) {
+				Timer.instance.AllStartCountDown (timerDuration);
+			}
+		} else {
+			AddTime ();
 		}
 	}
 
 	protected virtual void OnPressNext () {
-		GameStateController.instance.AllPlayersGotoNextScreen ();
+		if (!Timer.instance.CountingDown)
+			GameStateController.instance.AllPlayersGotoNextScreen ();
 	}
 
 	public void ToggleEnableAddTime (string message) {
-		if (message == "EnableAddTime")
-			addTimeEnabled = true;
-		if (message == "DisableAddTime")
-			addTimeEnabled = false;
+		if (message == "EnableAddTime") {
+			OnEnableAddTime ();
+		}
+		if (message == "DisableAddTime") {
+			OnDisableAddTime ();
+		}
+	}
+
+	protected virtual void OnEnableAddTime () {
+		addTimeEnabled = true;
+		timer.Content = "+30 Seconds";
+		timer.Interactable = true;
+	}
+
+	protected virtual void OnDisableAddTime () {
+		addTimeEnabled = false;
+		timer.Content = name;
+		timer.Interactable = false;
 	}
 
 	// Only Players add time

@@ -30,7 +30,7 @@ public class AgendaItemsManager : MonoBehaviour {
 	}
 
 	public int CurrentIndex {
-		get { return index+1; }
+		get { return index; }
 	}
 
 	public int TotalItems {

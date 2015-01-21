@@ -500,6 +500,8 @@ MonoBehaviour:
     buttonGroupTransform: {fileID: 22497026}
     timer: {fileID: 161754}
     fill: {fileID: 11467190}
+    button: {fileID: 11461756}
+    text: {fileID: 11461754}
 --- !u!114 &11497026
 MonoBehaviour:
   m_ObjectHideFlags: 1

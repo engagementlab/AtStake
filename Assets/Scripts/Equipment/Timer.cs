@@ -24,12 +24,16 @@ public class Timer : MonoBehaviour {
 	}
 
 	bool countingDown = false;
+	public bool CountingDown {
+		get { return countingDown; }
+	}
 
 	static public Timer instance;
 
 	void Awake () {
 		if (instance == null)
 			instance = this;
+		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 	}
 
 	public void SetTime (float seconds) {
@@ -56,6 +60,7 @@ public class Timer : MonoBehaviour {
 
 	void AddSeconds (float amount) {
 		if (!countingDown) {
+			duration = amount;
 			seconds = amount;
 			StartCoroutine (CountDown ());
 		} 
@@ -73,6 +78,11 @@ public class Timer : MonoBehaviour {
 
 	void OnCountDownEnd () {
 		Events.instance.Raise (new CountDownEndEvent ());
+	}
+
+	void OnChangeScreenEvent (ChangeScreenEvent e) {
+		if (!countingDown)
+			seconds = -1;
 	}
 
 	[RPC]

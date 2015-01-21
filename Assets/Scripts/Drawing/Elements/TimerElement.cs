@@ -5,7 +5,18 @@ using System.Collections;
 public class TimerElement : ButtonElement {
 
 	Timer timer = null;
+	Button button = null;
 	Image fill = null;
+
+	bool interactable = true;
+	public bool Interactable {
+		get { return interactable; }
+		set { 
+			interactable = value; 
+			if (button != null)	
+				button.interactable = interactable;
+		}
+	}
 
 	public float Seconds {
 		get { 
@@ -28,11 +39,17 @@ public class TimerElement : ButtonElement {
 		timer = Timer.instance;
 	}
 
-	public void SetFill (Image fill) {
+	public void SetButton (Button button, Image fill, Text text) {
+		this.button = button;
 		this.fill = fill;
+		this.text = text;
+		button.interactable = Interactable;
 	}
 
 	public void Update () {
-		fill.fillAmount = timer.Progress;
+		if (interactable && timer.Seconds == 0 || timer.Seconds == -1)
+			fill.fillAmount = 1;
+		else
+			fill.fillAmount = timer.Progress;
 	}
 }

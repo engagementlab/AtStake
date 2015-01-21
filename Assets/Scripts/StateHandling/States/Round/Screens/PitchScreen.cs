@@ -46,8 +46,8 @@ public class PitchScreen : StageScreen {
 	}
 
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
-		currentPitcher = new LabelElement ("", 0);
-		nextPitcher = new LabelElement ("", 1);
+		currentPitcher = new LabelElement ("", 5);
+		nextPitcher = new LabelElement ("", 6);
 		InitStageScreen (TimerValues.pitch);
 	}
 
@@ -86,6 +86,7 @@ public class PitchScreen : StageScreen {
 	}
 
 	public override void OnCountDownEnd () {
+		MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 		MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
 	}
 
@@ -119,6 +120,7 @@ public class PitchScreen : StageScreen {
 	}
 
 	protected override void OnPressNext () {
-		GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
+		if (!Timer.instance.CountingDown)
+			GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
 	}
 }

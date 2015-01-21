@@ -9,7 +9,7 @@ public class AgendaScreen : GameScreen {
 	ButtonElement noButton;
 	AgendaItem currentItem;
 
-	public AgendaScreen (GameState state, string name = "Agenda") : base (state, name) {
+	public AgendaScreen (GameState state, string name = "Agenda Item") : base (state, name) {
 
 		progress = new LabelElement ("", 0);
 		description = new LabelElement ("", 1);

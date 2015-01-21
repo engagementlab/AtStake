@@ -21,15 +21,30 @@ public class BackgroundCanvas : MonoBehaviour {
 
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
 		string name = e.screen.name;
-		if (name == "Lobby") {
-			SetTheme (new LobbyTheme ());
+		BackgroundCanvasTheme theme = new DefaultTheme ();
+		switch (name) {
+			case "Start":
+			case "About":
+			case "Enter Name":
+			case "Host or Join": 
+			case "Games List":
+			case "Choose Deck":
+			case "Choose Decider": theme = new MultiplayerTheme (); break;
+			case "Lobby": theme = new LobbyTheme (); break;
+			case "Role": theme = new RoleTheme (); break;
+			case "Bio":
+			case "Agenda":
+			case "Question": theme = new IntroductionTheme (); break;
+			case "Brainstorm":
+			case "Pitch":
+			case "Deliberate":
+			case "Decide": theme = new PitchTheme (); break;
+			case "Agenda Item":
+			case "Agenda Results":
+			case "Scoreboard":
+			case "Win": theme = new WinTheme (); break;
 		}
-		if (name == "Start" || name == "Host or Join") {
-			SetTheme (new MultiplayerTheme ());
-		}
-		if (name == "Role") {
-			SetTheme (new RoleTheme ());
-		}
+		SetTheme (theme);
 	}
 }
 
@@ -42,7 +57,7 @@ public abstract class BackgroundCanvasTheme {
 public class DefaultTheme : BackgroundCanvasTheme {
 
 	public override Color TopBar {
-		get { return Palette.White; }
+		get { return Palette.Grey; }
 	}
 
 	public override Color BottomBar {
@@ -50,7 +65,7 @@ public class DefaultTheme : BackgroundCanvasTheme {
 	}
 
 	public override Color Background {
-		get { return Palette.White; }
+		get { return Palette.Grey; }
 	}
 }
 

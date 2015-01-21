@@ -36,8 +36,8 @@ public class RoleScreen : GameScreen {
 		se[0] = new LabelElement ("Agenda", 2, new DefaultCenterTextStyle ());
 		for (int i = 1; i < se.Length; i += 2) {
 			AgendaItem item = items[index];
-			se[i] = new LabelElement (item.description, i+1, new SmallTextStyle ());
-			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), i+2, new BonusTextStyle ());
+			se[i] = new LabelElement (item.description, i+2, new SmallTextStyle ());
+			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), i+3, new BonusTextStyle ());
 			index ++;
 		}
 		return se;

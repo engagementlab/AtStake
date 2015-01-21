@@ -8,6 +8,7 @@ public class BrainstormScreen : StageScreen {
 	}
 
 	protected override void OnPressNext () {
-		GameStateController.instance.AllPlayersGotoScreen ("Pitch");
+		if (!Timer.instance.CountingDown)
+			GameStateController.instance.AllPlayersGotoScreen ("Pitch");
 	}
 }

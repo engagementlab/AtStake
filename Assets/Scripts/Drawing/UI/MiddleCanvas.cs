@@ -100,6 +100,7 @@ public class MiddleButtonManager : ElementManager {
 		go.transform.SetSiblingIndex (button.Position);
 		MiddleButton mb = go.GetComponent<MiddleButton> ();
 		mb.Set (button.screen, button.id, button.Content);
+		button.SetText (mb.text);
 	}
 
 	GameObject CreateButton () {
@@ -209,6 +210,8 @@ public class MiddleTimerManager : ElementManager {
 	public TimerElement timerElement;
 	public GameObject timer;
 	public Image fill;
+	public Button button;
+	public Text text;
 	public bool Enabled { get; set; }
 
 	public MiddleTimerManager () {
@@ -217,7 +220,7 @@ public class MiddleTimerManager : ElementManager {
 
 	public void Show (TimerElement timerElement) {
 		this.timerElement = timerElement;
-		timerElement.SetFill (fill);
+		timerElement.SetButton (button, fill, text);
 		timer.SetActive (true);
 		timer.transform.SetSiblingIndex (timerElement.Position);
 		TimerButton tb = timer.GetComponent<TimerButton> ();

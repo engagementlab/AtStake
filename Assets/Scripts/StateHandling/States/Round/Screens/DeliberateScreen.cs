@@ -8,6 +8,7 @@ public class DeliberateScreen : StageScreen {
 	}
 
 	protected override void OnPressNext () {
-		GameStateController.instance.AllPlayersGotoScreen ("Decide");
+		if (!Timer.instance.CountingDown)
+			GameStateController.instance.AllPlayersGotoScreen ("Decide");
 	}
 }

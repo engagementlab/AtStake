@@ -71,6 +71,24 @@ public class GameScreen {
 		Events.instance.Raise (new UpdateDrawerEvent ());
 	}
 
+	protected void RemoveLastElement () {
+		RemoveVariableElement (variableElements.Length-1);
+	}
+
+	protected void RemoveVariableElement (int index) {
+		ScreenElement[] newElements = new ScreenElement[variableElements.Length];
+		int count = 0;
+		for (int i = 0; i < variableElements.Length; i ++) {
+			if (i != index) {
+				newElements[count] = variableElements[i];
+				count ++;
+			}
+		}
+		variableElements = newElements;
+		RefreshElements ();
+		Events.instance.Raise (new UpdateDrawerEvent ());	
+	}
+
 	protected void GotoScreen (string screenName, string stateName = "") {
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}

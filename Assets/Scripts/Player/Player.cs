@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 		get { return isDecider; }
 	}
 
-	Role role;
+	Role role = null;
 	public Role MyRole {
 		get { return role; }
 	}
