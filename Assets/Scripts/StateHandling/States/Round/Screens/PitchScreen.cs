@@ -71,23 +71,27 @@ public class PitchScreen : StageScreen {
 	protected override bool StartTimer () {
 		
 		// Do not start timer if all players have pitched
-		if (currentPlayer >= players.Count-1)
+		if (currentPlayer >= players.Count-1 || !timer.Interactable)
 			return false;
 
-		if (currentPlayer < players.Count-1) {
-			string cp = CurrentPlayer;
-			if (cp != "")
-				MessageRelayer.instance.SendMessageToPlayer (cp, "DisableAddTime");
-			currentPlayer ++;
-			UpdatePitcherLabels ();
-		}
+		string cp = CurrentPlayer;
+		if (cp != "")
+			MessageRelayer.instance.SendMessageToPlayer (cp, "DisableAddTime");
+		currentPlayer ++;
+		UpdatePitcherLabels ();
+		timer.Interactable = false;
 
 		return true;
 	}
 
 	public override void OnCountDownEnd () {
-		MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
-		MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
+		if (Player.instance.IsDecider) {
+			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
+			MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
+			if (currentPlayer < players.Count-1) {
+				timer.Interactable = true;
+			}
+		}
 	}
 
 	void UpdatePitcherLabels () {

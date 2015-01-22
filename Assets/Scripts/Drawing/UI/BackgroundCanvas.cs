@@ -61,11 +61,11 @@ public class DefaultTheme : BackgroundCanvasTheme {
 	}
 
 	public override Color BottomBar {
-		get { return Palette.White; }
+		get { return Palette.Grey; }
 	}
 
 	public override Color Background {
-		get { return Palette.Grey; }
+		get { return Palette.White; }
 	}
 }
 

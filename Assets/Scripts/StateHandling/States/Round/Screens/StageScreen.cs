@@ -5,12 +5,15 @@ using System.Collections.Generic;
 public class StageScreen : GameScreen {
 
 	RoundState round;
-	TimerElement timer;
+	protected TimerElement timer;
 	protected string playerName;
 	protected bool addTimeEnabled = false;
 	protected List<string> players = new List<string> (0);
 	float timerDuration = 0;
-	bool timerEnabled = true;
+
+	protected bool ThisScreen {
+		get { return GameStateController.instance.Screen.name == name; }
+	}
 
 	public StageScreen (GameState state, string name) : base (state, name) {}
 
@@ -55,7 +58,6 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitDeciderScreen () {
-		timerEnabled = true;
 		players = round.Players;
 		timer.Content = name;
 		timer.Interactable = true;
@@ -73,6 +75,11 @@ public class StageScreen : GameScreen {
 		}
 	}
 
+	protected virtual void OnPressNext () {
+		if (!Timer.instance.CountingDown)
+			GameStateController.instance.AllPlayersGotoNextScreen ();
+	}
+
 	void HandleTimerPress () {
 		if (Player.instance.IsDecider) {
 			if (StartTimer ()) {
@@ -83,9 +90,12 @@ public class StageScreen : GameScreen {
 		}
 	}
 
-	protected virtual void OnPressNext () {
-		if (!Timer.instance.CountingDown)
-			GameStateController.instance.AllPlayersGotoNextScreen ();
+	protected virtual bool StartTimer () { 
+		if (timer.Interactable) {
+			timer.Interactable = false;
+			return true;
+		}
+		return false; 
 	}
 
 	public void ToggleEnableAddTime (string message) {
@@ -98,12 +108,14 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual void OnEnableAddTime () {
+		Debug.Log("enable");
 		addTimeEnabled = true;
 		timer.Content = "+30 Seconds";
 		timer.Interactable = true;
 	}
 
 	protected virtual void OnDisableAddTime () {
+		Debug.Log("disable");
 		addTimeEnabled = false;
 		timer.Content = name;
 		timer.Interactable = false;
@@ -120,31 +132,26 @@ public class StageScreen : GameScreen {
 
 	// Only the Decider should override this
 	public override void OnCountDownEnd () {
-		MessageRelayer.instance.SendMessageToPlayers ("EnableAddTime");
+		Debug.Log(ThisScreen);
+		Debug.Log(Player.instance.IsDecider);
+		if (ThisScreen && Player.instance.IsDecider) MessageRelayer.instance.SendMessageToPlayers ("EnableAddTime");
 	}
 
 	protected virtual void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
-		OnPlayersReceiveMessage (e.message1, e.message2);
+		if (ThisScreen) OnPlayersReceiveMessage (e.message1, e.message2);
 	}
 
 	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
-		if (e.id == "AddTime") {
+		if (ThisScreen && e.id == "AddTime") {
 			Timer.instance.AllAddSeconds (TimerValues.extraTime);
 			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 		}
 	}
 
 	protected virtual void OnPlayersReceiveMessage (string message1, string message2) {
-		ToggleEnableAddTime (message1);
+		if (ThisScreen) ToggleEnableAddTime (message1);
 	}
 
-	protected virtual bool StartTimer () { 
-		if (timerEnabled) {
-			timerEnabled = false;
-			return true;
-		}
-		return false; 
-	}
 	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
 	protected virtual void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {}
 }
