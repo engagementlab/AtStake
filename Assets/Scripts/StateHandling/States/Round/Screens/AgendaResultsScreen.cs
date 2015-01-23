@@ -12,8 +12,8 @@ public class AgendaResultsScreen : GameScreen {
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		description = new LabelElement (defaultDescription, 0);
 		SetStaticElements (new ScreenElement[] {
-			description,
-			CreateBottomButton ("Next", "", Side.Right)
+			description//,
+			//CreateBottomButton ("Next", "", Side.Right)
 		});
 	}
 
@@ -38,7 +38,7 @@ public class AgendaResultsScreen : GameScreen {
 		}
 
 		SetVariableElements (se);
-		//AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
+		AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
 
 		// Update score
 		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;

@@ -39,8 +39,14 @@ public class RoundState : GameState {
 
 	public override void OnStateStart () {
 		Events.instance.Raise (new RoundStartEvent ());
-		question = QuestionManager.instance.GetQuestion (roundNumber);
-		roundNumber ++;
+		if (roundNumber < 3) {
+			question = QuestionManager.instance.GetQuestion (roundNumber);
+			roundNumber ++;
+		} else {
+			// when starting a new game, reset the round number to 0
+			roundNumber = 0;
+			question = QuestionManager.instance.GetQuestion (roundNumber);
+		}
 		Player player = Player.instance;
 		playerName = player.Name;
 		player.OnRoundStart ();
@@ -48,7 +54,6 @@ public class RoundState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
-			//new IntroductionScreen (this),
 			new IntroBioScreen (this),
 			new IntroAgendaScreen (this),
 			new QuestionScreen (this),

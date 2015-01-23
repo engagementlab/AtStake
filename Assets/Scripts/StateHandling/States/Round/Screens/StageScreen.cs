@@ -23,6 +23,7 @@ public class StageScreen : GameScreen {
 		Events.instance.AddListener<OthersReceiveMessageEvent> (OnOthersReceiveMessageEvent);
 		Events.instance.AddListener<PlayersReceiveMessageEvent> (OnPlayersReceiveMessageEvent);
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
+		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
 
 		this.timerDuration = timerDuration;
 		timer = CreateTimer ("Timer", 2, name);
@@ -108,14 +109,12 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual void OnEnableAddTime () {
-		Debug.Log("enable");
 		addTimeEnabled = true;
 		timer.Content = "+30 Seconds";
 		timer.Interactable = true;
 	}
 
 	protected virtual void OnDisableAddTime () {
-		Debug.Log("disable");
 		addTimeEnabled = false;
 		timer.Content = name;
 		timer.Interactable = false;
@@ -132,8 +131,6 @@ public class StageScreen : GameScreen {
 
 	// Only the Decider should override this
 	public override void OnCountDownEnd () {
-		Debug.Log(ThisScreen);
-		Debug.Log(Player.instance.IsDecider);
 		if (ThisScreen && Player.instance.IsDecider) MessageRelayer.instance.SendMessageToPlayers ("EnableAddTime");
 	}
 
@@ -154,4 +151,8 @@ public class StageScreen : GameScreen {
 
 	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
 	protected virtual void OnOthersReceiveMessageEvent (OthersReceiveMessageEvent e) {}
+
+	void OnRoundEndEvent (RoundEndEvent e) {
+		addTimeEnabled = false;
+	}
 }

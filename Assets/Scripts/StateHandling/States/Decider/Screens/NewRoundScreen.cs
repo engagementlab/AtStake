@@ -22,8 +22,7 @@ public class NewRoundScreen : GameScreen {
 		if (Player.instance.Won) {
 			DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
 			SetVariableElements (new ScreenElement[] {
-				new LabelElement ("You're the next Decider!", 0),
-				CreateBottomButton ("Next", "", Side.Right)
+				new LabelElement ("You're the next Decider!", 0)
 			});
 		}
 	}
@@ -38,8 +37,10 @@ public class NewRoundScreen : GameScreen {
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "New Round") {
 			instructions.Content = "Get ready!";
-			if (Player.instance.IsDecider)
+			if (Player.instance.IsDecider && Player.instance.Won) {
+				AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
 				allowContinue = true;
+			}
 		}
 	}
 

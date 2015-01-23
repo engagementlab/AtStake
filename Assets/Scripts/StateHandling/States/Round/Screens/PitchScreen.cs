@@ -85,7 +85,7 @@ public class PitchScreen : StageScreen {
 	}
 
 	public override void OnCountDownEnd () {
-		if (Player.instance.IsDecider) {
+		if (ThisScreen && Player.instance.IsDecider) {
 			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
 			MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
 			if (currentPlayer < players.Count-1) {

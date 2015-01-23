@@ -12,6 +12,7 @@ public class BottomBarCanvas : MonoBehaviour {
 
 	void Awake () {
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
+		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 	}
 
 	void SetButton (GameScreen gameScreen, string id, string content, Side side) {
