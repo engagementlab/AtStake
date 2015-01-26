@@ -18,9 +18,14 @@ public class Player : MonoBehaviour {
 		get { return role; }
 	}
 
-	BeanPool beanPool;
+	BeanPool beanPool = null;
 	public BeanPool MyBeanPool {
-		get { return beanPool; }
+		get { 
+			if (beanPool == null) {
+				beanPool = new BeanPool (0);
+			}
+			return beanPool; 
+		}
 	}
 
 	string winningPlayer = "";
@@ -46,7 +51,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void Start () {
-		beanPool = new BeanPool (0);
+		//beanPool = new BeanPool (0);
 	}
 
 	public void OnRoundStart () {

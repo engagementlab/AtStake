@@ -38,7 +38,7 @@ public class NewRoundScreen : GameScreen {
 		if (e.id == "New Round") {
 			instructions.Content = "Get ready!";
 			if (Player.instance.IsDecider && Player.instance.Won) {
-				AppendVariableElements (CreateBottomButton ("Next", "", Side.Right));
+				AppendVariableElements (CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 				allowContinue = true;
 			}
 		}

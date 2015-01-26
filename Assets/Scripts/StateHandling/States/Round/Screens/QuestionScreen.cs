@@ -21,7 +21,7 @@ public class QuestionScreen : GameScreen {
 		ScreenElement[] se = new ScreenElement[isDecider ? 2 : 1];
 		se[0] = new LabelElement (round.Question, 1);
 		if (isDecider) {
-			se[1] = CreateBottomButton ("Next", "", Side.Right);
+			se[1] = CreateBottomButton ("Next", "", "bottomPink", Side.Right);
 		}
 
 		SetVariableElements (se);

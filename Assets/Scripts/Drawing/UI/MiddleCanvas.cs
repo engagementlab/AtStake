@@ -20,7 +20,7 @@ public class MiddleCanvas : MonoBehaviour {
 	}
  
 	public void OnButtonPress (MiddleButton button) {
-		Events.instance.Raise (new ButtonPressEvent (button.Screen, button.ID));
+		Events.instance.Raise (new ButtonPressEvent (button.Element));
 	}
 
 	public void OnEndEditTextField (InputField inputField) {
@@ -28,7 +28,7 @@ public class MiddleCanvas : MonoBehaviour {
 	}
 
 	public void OnTimerPress (TimerButton timer) {
-		Events.instance.Raise (new ButtonPressEvent (timer.Screen, timer.ID));
+		Events.instance.Raise (new ButtonPressEvent (timer.Element));
 	}
 
 	void Update () {
@@ -99,8 +99,8 @@ public class MiddleButtonManager : ElementManager {
 		}
 		go.transform.SetSiblingIndex (button.Position);
 		MiddleButton mb = go.GetComponent<MiddleButton> ();
-		mb.Set (button.screen, button.id, button.Content);
-		button.SetText (mb.text);
+		mb.Set (button);
+		button.MiddleButton = mb;
 	}
 
 	GameObject CreateButton () {
@@ -224,7 +224,7 @@ public class MiddleTimerManager : ElementManager {
 		timer.SetActive (true);
 		timer.transform.SetSiblingIndex (timerElement.Position);
 		TimerButton tb = timer.GetComponent<TimerButton> ();
-		tb.Set (timerElement.screen, timerElement.id, timerElement.Content);
+		tb.Set (tb.Element);
 		Enabled = true;
 	}
 

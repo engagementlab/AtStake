@@ -19,12 +19,13 @@ public class RoleScreen : GameScreen {
 
 		AppendVariableElements (RoleDescription (playerName, playerRole.name, playerRole.bio));
 		AppendVariableElements (RoleAgendaItems (playerRole.MyAgenda.items));
-		AppendVariableElements (RoleBeans (player.MyBeanPool.BeanCount));
 	}
 
 	protected ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
 		string title = string.Format ("{0} the {1}", playerName, playerRole);
-		return new ScreenElement[2] {
+		return new ScreenElement[] {
+			new BeanPoolElement (),
+			new BeanPotElement (),
 			new LabelElement (title, 0),
 			new LabelElement (bio, 1)
 		};
@@ -41,13 +42,6 @@ public class RoleScreen : GameScreen {
 			index ++;
 		}
 		return se;
-	}
-
-	ScreenElement[] RoleBeans (int beanCount) {
-		string beanLabel = string.Format ("Coins: {0}", beanCount);
-		return new ScreenElement[] {
-			new LabelElement (beanLabel, 0)
-		};
 	}
 
 	protected virtual void AddBackButton () {

@@ -6,6 +6,8 @@ public class TopBar : MonoBehaviour {
 
 	public Text beanPool;	
 	public Text beanPot;
+	public Image beanPoolImage;
+	public Image beanPotImage;
 
 	GameScreen screen;
 	ScreenElement[] elements;
@@ -13,18 +15,28 @@ public class TopBar : MonoBehaviour {
 	void Awake () {
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
-		beanPool.enabled = false;
-		beanPot.enabled = false;
+		SetPoolEnabled (false);
+		SetPotEnabled (false);
 	}
 
 	void SetPool (BeanPoolElement pool) {
 		pool.SetText (beanPool);
-		beanPool.enabled = true;
+		SetPoolEnabled (true);
 	}
 
 	void SetPot (BeanPotElement pot) {
 		pot.SetText (beanPot);
-		beanPot.enabled = true;
+		SetPotEnabled (true);
+	}
+
+	void SetPoolEnabled (bool enabled) {
+		beanPoolImage.enabled = enabled;
+		beanPool.enabled = enabled;
+	}
+
+	void SetPotEnabled (bool enabled) {
+		beanPotImage.enabled = enabled;
+		beanPot.enabled = enabled;
 	}
 
 	void UpdateScreen () {

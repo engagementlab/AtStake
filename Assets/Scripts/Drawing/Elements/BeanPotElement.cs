@@ -4,22 +4,24 @@ using System.Collections;
 
 public class BeanPotElement : ScreenElement {
 
-	string content = "Pot:";
+	string content = "";
 	public string Content {
 		get { return content; }
 		set {
 			content = value;
-			text.text = content;
+			if (text != null)
+				text.text = content;
 		}
 	}
-	Text text;
+	Text text = null;
 
 	public BeanPotElement () {
 		Events.instance.AddListener<UpdateBeanPotEvent> (OnUpdateBeanPotEvent);
+		UpdateContent (BeanPotManager.instance.BeanCount);
 	}
 
 	void UpdateContent (int beanCount) {
-		Content = string.Format ("Pot: {0}", beanCount);
+		Content = beanCount.ToString ();
 	}
 
 	void OnUpdateBeanPotEvent (UpdateBeanPotEvent e) {

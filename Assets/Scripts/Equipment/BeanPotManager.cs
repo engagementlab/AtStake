@@ -6,6 +6,10 @@ public class BeanPotManager : MonoBehaviour {
 
 	BeanPot beanPot = new BeanPot ();
 
+	public int BeanCount {
+		get { return beanPot.BeanCount; }
+	}
+
 	static public BeanPotManager instance;
 
 	void Awake () {
@@ -27,6 +31,10 @@ public class BeanPotManager : MonoBehaviour {
 		int beanCount = beanPot.BeanCount;
 		beanPot.Empty ();
 		return beanCount;
+	}
+
+	public void OnLose () {
+		beanPot.Empty ();
 	}
 
 	void SendSetBeanPotMessage () {

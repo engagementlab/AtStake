@@ -9,17 +9,19 @@ public class BeanPoolElement : ScreenElement {
 		get { return content; }
 		set {
 			content = value;
-			text.text = content;
+			if (text != null)
+				text.text = content;
 		}
 	}
-	Text text;
+	Text text = null;
 
 	public BeanPoolElement () {
 		Events.instance.AddListener<UpdateBeanPoolEvent> (OnUpdateBeanPoolEvent);
+		UpdateContent (Player.instance.MyBeanPool.BeanCount);
 	}
 
 	void UpdateContent (int beanCount) {
-		Content = string.Format ("Beans: {0}", beanCount);
+		Content = beanCount.ToString ();
 	}
 
 	void OnUpdateBeanPoolEvent (UpdateBeanPoolEvent e) {

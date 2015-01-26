@@ -26,13 +26,13 @@ public class StageScreen : GameScreen {
 		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
 
 		this.timerDuration = timerDuration;
-		timer = CreateTimer ("Timer", 2, name);
+		timer = CreateTimer ("Timer", 1, name);
 		
 		round = state as RoundState;
 		playerName = round.PlayerName;
 		SetStaticElements (new ScreenElement[] {
-			new LabelElement (name, 0),
-			new LabelElement (round.Question, 1),
+			//new LabelElement (name, 0),
+			new LabelElement (round.Question, 0),
 			timer,
 			new BeanPoolElement (),
 			new BeanPotElement ()
@@ -54,7 +54,7 @@ public class StageScreen : GameScreen {
 			OnDisableAddTime ();
 		}
 		SetVariableElements (new ScreenElement[] {
-			CreateButton ("Role Card", 4)
+			CreateButton ("Role Card", 3)
 		});
 	}
 
@@ -63,8 +63,8 @@ public class StageScreen : GameScreen {
 		timer.Content = name;
 		timer.Interactable = true;
 		SetVariableElements (new ScreenElement[] {
-			new LabelElement (Copy.GetInstructions (name), 3),
-			CreateBottomButton ("Next", "", Side.Right)
+			new LabelElement (Copy.GetInstructions (name), 2),
+			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
 		});
 	}
 

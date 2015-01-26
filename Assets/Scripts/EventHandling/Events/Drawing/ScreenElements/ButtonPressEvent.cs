@@ -3,11 +3,13 @@ using System.Collections;
 
 public class ButtonPressEvent : GameEvent {
 
+	public readonly ButtonElement element;
 	public readonly string id = "";
 	public readonly GameScreen screen;
 
-	public ButtonPressEvent (GameScreen screen, string id) {
-		this.screen = screen;
-		this.id = id;
+	public ButtonPressEvent (ButtonElement element) {
+		this.element = element;
+		screen = element.screen;
+		id = element.id;
 	}
 }

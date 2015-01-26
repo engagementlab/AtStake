@@ -15,11 +15,11 @@ public class BottomBarCanvas : MonoBehaviour {
 		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 	}
 
-	void SetButton (GameScreen gameScreen, string id, string content, Side side) {
+	void SetButton (Side side, ButtonElement element) {
 		if (side == Side.Left) {
-			buttonLeft.Set (gameScreen, id, content, Palette.Pink);
+			buttonLeft.Set (element);
 		} else {
-			buttonRight.Set (gameScreen, id, content, Palette.Orange);
+			buttonRight.Set (element);
 		}
 	}
 
@@ -29,7 +29,7 @@ public class BottomBarCanvas : MonoBehaviour {
 	}
 
 	public void OnButtonPress (BottomButton button) {
-		Events.instance.Raise (new ButtonPressEvent (button.Screen, button.ID));
+		Events.instance.Raise (new ButtonPressEvent (button.Element));
 	}
 
 	void UpdateScreen () {
@@ -37,7 +37,7 @@ public class BottomBarCanvas : MonoBehaviour {
 		foreach (ScreenElement element in elements) {
 			if (element is BottomButtonElement) {
 				BottomButtonElement b = element as BottomButtonElement;
-				SetButton (b.screen, b.id, b.Content, b.Side);
+				SetButton (b.Side, b);
 			}
 		}
 	}

@@ -10,7 +10,7 @@ public class BottomButtonElement : ButtonElement {
 		get { return side; }
 	}
 
-	public BottomButtonElement (GameScreen screen, string id, string content, Side side=Side.Left) : base (screen, id, content, 0) {
+	public BottomButtonElement (GameScreen screen, string id, string content, string color="bottomOrange", Side side=Side.Left) : base (screen, id, content, 0, color) {
 		this.side = side;
 	}
 }

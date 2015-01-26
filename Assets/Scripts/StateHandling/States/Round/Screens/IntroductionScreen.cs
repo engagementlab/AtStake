@@ -16,8 +16,10 @@ public class IntroductionScreen : RoleScreen {
 	protected override void OnScreenStartDecider () {
 		Debug.Log("decider start");
 		SetVariableElements (new ScreenElement[] {
+			new BeanPoolElement (),
+			new BeanPotElement (),
 			new LabelElement (description, 0),
-			CreateBottomButton ("Next", "", Side.Right)
+			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
 		});
 	}
 

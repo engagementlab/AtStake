@@ -6,7 +6,7 @@ public class InstructionsScreen : GameScreen {
 	public InstructionsScreen (GameState state, string name = "Instructions") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement (Copy.Instructions, 0),
-			CreateBottomButton ("Back", "", Side.Left)
+			CreateBottomButton ("Back", "", "bottomOrange", Side.Left)
 		});
 	}
 

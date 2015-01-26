@@ -39,17 +39,14 @@ public class RoundState : GameState {
 
 	public override void OnStateStart () {
 		Events.instance.Raise (new RoundStartEvent ());
-		if (roundNumber < 3) {
-			question = QuestionManager.instance.GetQuestion (roundNumber);
-			roundNumber ++;
-		} else {
-			// when starting a new game, reset the round number to 0
+		if (roundNumber == 3) {
 			roundNumber = 0;
-			question = QuestionManager.instance.GetQuestion (roundNumber);
 		}
+		question = QuestionManager.instance.GetQuestion (roundNumber);
 		Player player = Player.instance;
 		playerName = player.Name;
-		player.OnRoundStart ();
+		if (roundNumber == 0) player.OnRoundStart ();
+		roundNumber ++;
 	}
 	
 	public override GameScreen[] SetScreens () {

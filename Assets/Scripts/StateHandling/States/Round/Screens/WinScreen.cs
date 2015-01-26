@@ -18,13 +18,15 @@ public class WinScreen : GameScreen {
 			Player.instance.MyBeanPool.OnWin ();
 		} else {
 			winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
+			BeanPotManager.instance.OnLose ();
 		}
 	}
 
 	protected override void OnScreenStartDecider () {
+		BeanPotManager.instance.OnLose ();
 		winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 		SetVariableElements (new ScreenElement[] {
-			CreateBottomButton ("Next", "", Side.Right)
+			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
 		});
 	}
 

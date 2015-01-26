@@ -99,10 +99,10 @@ public class GameScreen {
 		return new ButtonElement (this, id, content, position);
 	}
 
-	protected BottomButtonElement CreateBottomButton (string id, string content="", Side side=Side.Left) {
+	protected BottomButtonElement CreateBottomButton (string id, string content="", string color="", Side side=Side.Left) {
 		if (content == "")
 			content = id;
-		return new BottomButtonElement (this, id, content, side);
+		return new BottomButtonElement (this, id, content, color, side);
 	}
 
 	protected TimerElement CreateTimer (string id, int position, string content="") {

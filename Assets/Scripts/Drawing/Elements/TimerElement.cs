@@ -7,6 +7,16 @@ public class TimerElement : ButtonElement {
 	Timer timer = null;
 	Button button = null;
 	Image fill = null;
+	Text text = null;
+
+	public override string Content {
+		get { return content.ToLower (); }
+		set { 
+			content = value.ToLower (); 
+			if (text != null) 
+				text.text = content;
+		}
+	}
 
 	bool interactable = true;
 	public bool Interactable {

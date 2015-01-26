@@ -6,28 +6,41 @@ public class ButtonElement : ScreenElement {
 
 	public readonly string id = "";
 	public readonly GameScreen screen;
-	string content = "";
-	public string Content {
-		get { return content; }
+	
+	protected string content = "";
+	public virtual string Content {
+		get { return content.ToLower (); }
 		set { 
-			content = value; 
-			if (text != null) 
-				text.text = content;
+			content = value.ToLower (); 
+			if (middleButton != null) 
+				middleButton.text.text = content;
 		}
 	}
-	protected Text text = null;
 
-	public ButtonElement (GameScreen screen, string id, string content, int position) {
+	string color = "";
+	public string Color {
+		get { return color; }
+		set { 
+			color = value;
+			middleButton.SetColor (color);
+		}
+	}
+
+	MiddleButton middleButton;
+	public MiddleButton MiddleButton {
+		set {
+			middleButton = value;
+			middleButton.text.text = Content;
+			middleButton.SetColor (color);
+		}
+	}
+
+	public ButtonElement (GameScreen screen, string id, string content, int position, string color="blue") {
 		this.screen = screen;
 		this.id = id;
 		this.content = content;
 		this.Position = position;
-	}
-
-	public void SetText (Text text) {
-		this.text = text;
-		this.text.text = content;
-		//StyleText ();
+		this.color = color;
 	}
 
 	void StyleText () {
