@@ -52,4 +52,9 @@ public static class Palette {
 	public static Color Grey {
 		get { return grey; }
 	}
+
+	static Color black = new Color (0, 0, 0);
+	public static Color Black {
+		get { return black; }
+	}
 }

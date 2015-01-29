@@ -55,3 +55,27 @@ public class BonusTextStyle : TextStyle {
 		get { return Palette.Blue; }
 	}
 }
+
+public class HeaderTextStyle : TextStyle {
+	public override int Size {
+		get { return 100; }
+	}	
+	public override TextAnchor Anchor {
+		get { return TextAnchor.UpperLeft; }
+	}
+	public override Color Color {
+		get { return Palette.Black; }
+	}
+}
+
+public class CenterWhiteTextStyle : TextStyle {
+	public override int Size {
+		get { return 36; }
+	}
+	public override TextAnchor Anchor {
+		get { return TextAnchor.UpperCenter; }
+	}
+	public override Color Color {
+		get { return Palette.White; }
+	}
+}

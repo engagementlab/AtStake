@@ -16,7 +16,9 @@ public class MiddleButton : MonoBehaviour {
 		get { return Element.id; }
 	}
 	public string Content { 
-		get { return Element.Content; }
+		get { 
+			return Element.Content; 
+		}
 	}
 
 	public void Set (ButtonElement element) {

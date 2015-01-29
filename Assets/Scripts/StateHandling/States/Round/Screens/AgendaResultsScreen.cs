@@ -17,13 +17,17 @@ public class AgendaResultsScreen : GameScreen {
 	}
 
 	public override void OnScreenStart (bool isHosting, bool isDecider) {
+		SetVariableElements (new ScreenElement[] {
+			new ImageElement ("wait", 1, Color.white)
+		});
 		MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		
-		if (e.id != "FinishReceivingWins")
+		if (e.id != "FinishReceivingWins") {
 			return;
+		}
 
 		ClearScreen ();
 		Player player = Player.instance;

@@ -45,7 +45,7 @@ public class TimerElement : ButtonElement {
 		get { return Mathf.CeilToInt (Seconds); }
 	}
 
-	public TimerElement (GameScreen screen, string id, string content, int position) : base (screen, id, content, position) {
+	public TimerElement (GameScreen screen, string id, string content, int position) : base (screen, id, content, position, "white") {
 		timer = Timer.instance;
 	}
 

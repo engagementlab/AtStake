@@ -10,6 +10,7 @@ public class MiddleCanvas : MonoBehaviour {
 	public MiddleLabelManager labelManager;
 	public MiddleTextFieldManager textFieldManager;
 	public MiddleTimerManager timerManager;
+	public MiddleImageManager imageManager;
 
 	ScreenElement[] elements;
 	GameScreen screen;
@@ -42,6 +43,7 @@ public class MiddleCanvas : MonoBehaviour {
 		labelManager.RemoveLabels ();
 		textFieldManager.Hide ();
 		timerManager.Hide ();
+		imageManager.Hide ();
 		buttonManager.RemoveButtons ();
 
 		foreach (ScreenElement element in elements) {
@@ -60,6 +62,10 @@ public class MiddleCanvas : MonoBehaviour {
 			if (element is TimerElement) {
 				TimerElement t = element as TimerElement;
 				timerManager.Show (t);
+			}
+			if (element is ImageElement) {
+				ImageElement i = element as ImageElement;
+				imageManager.Show (i);
 			}
 		}
 	}
@@ -224,7 +230,7 @@ public class MiddleTimerManager : ElementManager {
 		timer.SetActive (true);
 		timer.transform.SetSiblingIndex (timerElement.Position);
 		TimerButton tb = timer.GetComponent<TimerButton> ();
-		tb.Set (tb.Element);
+		tb.Set (timerElement);
 		Enabled = true;
 	}
 
@@ -236,5 +242,23 @@ public class MiddleTimerManager : ElementManager {
 	public void UpdateProgress () {
 		if (timerElement != null)
 			timerElement.Update ();
+	}
+}
+
+[System.Serializable]
+public class MiddleImageManager : ElementManager {
+
+	public GameObject image;
+
+	public void Show (ImageElement imageElement) {
+		image.SetActive (true);
+		image.transform.SetSiblingIndex (imageElement.Position);
+		StaticImage staticImage = image.GetComponent<StaticImage> ();
+		staticImage.Source = imageElement.Sprite;
+		staticImage.Color = imageElement.Color;
+	}
+
+	public void Hide () {
+		image.SetActive (false);
 	}
 }

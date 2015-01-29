@@ -243,8 +243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: .20784314, b: .376470596, a: 1}
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -422,8 +422,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: .564705908, b: 0, a: 1}
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -511,7 +511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba2a38a03d864a84b6f3ac900546e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 11400016}
+  source: {fileID: 11400016}
+  button: {fileID: 11400014}
   text: {fileID: 11400012}
 --- !u!114 &11477634
 MonoBehaviour:
@@ -524,7 +525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba2a38a03d864a84b6f3ac900546e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 11400006}
+  source: {fileID: 11400006}
+  button: {fileID: 11400008}
   text: {fileID: 11400010}
 --- !u!222 &22200000
 CanvasRenderer:

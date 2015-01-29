@@ -10,6 +10,7 @@ public class StageScreen : GameScreen {
 	protected bool addTimeEnabled = false;
 	protected List<string> players = new List<string> (0);
 	float timerDuration = 0;
+	LabelElement topLabel;
 
 	protected bool ThisScreen {
 		get { return GameStateController.instance.Screen.name == name; }
@@ -30,14 +31,13 @@ public class StageScreen : GameScreen {
 		
 		round = state as RoundState;
 		playerName = round.PlayerName;
+		topLabel = new LabelElement (round.Question, 0);
+		
 		SetStaticElements (new ScreenElement[] {
-			//new LabelElement (name, 0),
-			new LabelElement (round.Question, 0),
+			topLabel,
 			timer,
 			new BeanPoolElement (),
 			new BeanPotElement ()
-			// scores
-			// stage progress
 		});
 	}
 
@@ -53,6 +53,7 @@ public class StageScreen : GameScreen {
 		if (!addTimeEnabled) {
 			OnDisableAddTime ();
 		}
+		topLabel.Content = round.Question;
 		SetVariableElements (new ScreenElement[] {
 			CreateButton ("Role Card", 3)
 		});
@@ -60,10 +61,10 @@ public class StageScreen : GameScreen {
 
 	protected void InitDeciderScreen () {
 		players = round.Players;
+		topLabel.Content = Copy.GetInstructions (name);
 		timer.Content = name;
 		timer.Interactable = true;
 		SetVariableElements (new ScreenElement[] {
-			new LabelElement (Copy.GetInstructions (name), 2),
 			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
 		});
 	}
