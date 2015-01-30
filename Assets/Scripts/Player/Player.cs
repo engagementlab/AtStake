@@ -50,10 +50,6 @@ public class Player : MonoBehaviour {
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 	}
 
-	void Start () {
-		//beanPool = new BeanPool (0);
-	}
-
 	public void OnRoundStart () {
 		beanPool.OnRoundStart (isDecider);
 	}

@@ -8,7 +8,8 @@ public class StartScreen : GameScreen {
 			CreateButton ("Play", 0),
 			//CreateButton ("Instructions"),
 			//CreateButton ("Deck"),
-			CreateButton ("About", 1)
+			CreateButton ("About", 1)/*,
+			CreateTimer ("timer", 2, "test")*/
 		});
 	}
 
@@ -18,6 +19,7 @@ public class StartScreen : GameScreen {
 			//case "Instructions": GotoScreen ("Instructions"); break;
 			//case "Deck": GotoScreen ("New Deck"); break;
 			case "About": GotoScreen ("About"); break;
+			//case "timer": Timer.instance.StartCountDown (10f); break;
 		}
 	}
 }

@@ -15,6 +15,15 @@ public class StageScreen : GameScreen {
 	protected bool ThisScreen {
 		get { return GameStateController.instance.Screen.name == name; }
 	}
+	protected bool ThisScreenRole {
+		get {
+			if (GameStateController.instance.Screen.name == "Role" && 
+				GameStateController.instance.PrevScreen.name == name) {
+				return true;
+			}
+			return false;
+		}
+	}
 
 	public StageScreen (GameState state, string name) : base (state, name) {}
 
@@ -25,6 +34,7 @@ public class StageScreen : GameScreen {
 		Events.instance.AddListener<PlayersReceiveMessageEvent> (OnPlayersReceiveMessageEvent);
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
 		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
+		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 
 		this.timerDuration = timerDuration;
 		timer = CreateTimer ("Timer", 1, name);
@@ -83,9 +93,12 @@ public class StageScreen : GameScreen {
 	}
 
 	void HandleTimerPress () {
+		Debug.Log("decider: " + Player.instance.IsDecider);
 		if (Player.instance.IsDecider) {
 			if (StartTimer ()) {
 				Timer.instance.AllStartCountDown (timerDuration);
+			} else {
+				Debug.Log("can't start timer");
 			}
 		} else {
 			AddTime ();
@@ -123,8 +136,9 @@ public class StageScreen : GameScreen {
 
 	// Only Players add time
 	void AddTime () {
-		if (!addTimeEnabled)
+		if (!addTimeEnabled) {
 			return;
+		}
 		if (Player.instance.MyBeanPool.OnAddTime ()) {
 			MessageRelayer.instance.SendMessageToDecider ("AddTime");
 		}
@@ -132,11 +146,13 @@ public class StageScreen : GameScreen {
 
 	// Only the Decider should override this
 	public override void OnCountDownEnd () {
-		if (ThisScreen && Player.instance.IsDecider) MessageRelayer.instance.SendMessageToPlayers ("EnableAddTime");
+		if (ThisScreen && Player.instance.IsDecider) 
+			MessageRelayer.instance.SendMessageToPlayers ("EnableAddTime");
 	}
 
 	protected virtual void OnPlayersReceiveMessageEvent (PlayersReceiveMessageEvent e) {
-		if (ThisScreen) OnPlayersReceiveMessage (e.message1, e.message2);
+		if (ThisScreen || ThisScreenRole) 
+			OnPlayersReceiveMessage (e.message1, e.message2);
 	}
 
 	protected virtual void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
@@ -147,7 +163,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected virtual void OnPlayersReceiveMessage (string message1, string message2) {
-		if (ThisScreen) ToggleEnableAddTime (message1);
+		ToggleEnableAddTime (message1);
 	}
 
 	protected virtual void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {}
@@ -155,5 +171,11 @@ public class StageScreen : GameScreen {
 
 	void OnRoundEndEvent (RoundEndEvent e) {
 		addTimeEnabled = false;
+	}
+
+	protected virtual void OnGameEndEvent (GameEndEvent e) {
+		// not particularly elegant, but this works
+		ToggleEnableAddTime ("DisableAddTime");
+		timer.Interactable = true;
 	}
 }

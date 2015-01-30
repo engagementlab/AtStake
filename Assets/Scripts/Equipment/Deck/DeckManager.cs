@@ -119,6 +119,7 @@ public class DeckManager : MonoBehaviour {
 
 	void ParseDecksList (string content, bool isLocal) {
 		var json = JSONNode.Parse (content);
+		if (json == null) return;
 		JSONArray jsonDecks = json["decks"] as JSONArray;
 		if (isLocal) {
 			deckList.ClearLocal ();

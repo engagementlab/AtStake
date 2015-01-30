@@ -97,7 +97,7 @@ public class MessageSender : MonoBehaviour {
 	 */
 
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
-		clientCount = e.playerNames.Length-1; // -1 because we don't include the host
+		clientCount = e.playerNames.Length-1; // subtract 1 because we don't include the host
 	}
 
 	/**

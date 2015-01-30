@@ -25,6 +25,7 @@ public class FinalScoreboardScreen : GameScreen {
 		if (e.id == "Main Menu") {
 			MultiplayerManager.instance.DisconnectGame ();
 			GotoScreen ("Start", "Start");
+			Events.instance.Raise (new GameEndEvent ());
 		}
 	}
 }

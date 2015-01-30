@@ -15,6 +15,10 @@ public class GameState {
 		get { return screen; }
 	}
 
+	public GameScreen PrevScreen {
+		get { return screens[previouslyVisitedIndex]; }
+	}
+
 	public GameState (string name) {
 		this.name = name;
 		this.screens = SetScreens ();

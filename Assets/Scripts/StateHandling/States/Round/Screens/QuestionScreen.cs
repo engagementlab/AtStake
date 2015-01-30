@@ -8,6 +8,8 @@ public class QuestionScreen : GameScreen {
 	public QuestionScreen (GameState state, string name = "Question") : base (state, name) {
 		title = new LabelElement ("Round", 0);
 		SetStaticElements (new ScreenElement[] {
+			new BeanPoolElement (),
+			new BeanPotElement (),
 			title
 		});	
 	}

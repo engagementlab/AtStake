@@ -24,6 +24,10 @@ public class GameStateController : MonoBehaviour {
 		}
 	}
 
+	public GameScreen PrevScreen {
+		get { return State.PrevScreen; }
+	}
+
 	public static GameStateController instance;
 
 	void Awake () {

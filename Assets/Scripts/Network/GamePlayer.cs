@@ -17,6 +17,7 @@ public class GamePlayer {
 
 	public GamePlayer (string playerName) {
 		this.playerName = playerName;
+		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 	}
 
 	public void AddPlayer (string name) {
@@ -47,5 +48,10 @@ public class GamePlayer {
 
 	public void ClearPlayers () {
 		players.Clear ();
+	}
+
+	public void OnGameEndEvent (GameEndEvent e) {
+		ClearPlayers ();
+		Debug.Log(PlayerCount);
 	}
 }

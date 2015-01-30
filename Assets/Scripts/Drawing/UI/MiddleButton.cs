@@ -21,7 +21,7 @@ public class MiddleButton : MonoBehaviour {
 		}
 	}
 
-	public void Set (ButtonElement element) {
+	public virtual void Set (ButtonElement element) {
 		SetEnabled (true);
 		Element = element;
 		text.text = Content;

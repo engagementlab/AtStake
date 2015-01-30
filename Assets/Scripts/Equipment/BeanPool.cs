@@ -28,7 +28,7 @@ public class BeanPool : IBeanPool {
 	 */
 
 	public virtual void OnRoundStart (bool isDecider=false) {
-		AddBeans (isDecider ? BeanValues.deciderStart : BeanValues.playerStart);
+		SetBeans (isDecider ? BeanValues.deciderStart : BeanValues.playerStart);
 	}
 
 	public bool OnAddTime () {
@@ -53,6 +53,11 @@ public class BeanPool : IBeanPool {
 
 	public void AddBeans (int amount) {
 		beanCount += amount;
+		SendUpdateMessage ();
+	}
+
+	public void SetBeans (int amount) {
+		beanCount = amount;
 		SendUpdateMessage ();
 	}
 

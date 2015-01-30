@@ -4,6 +4,7 @@ using System.Collections;
 
 public class ButtonManager : MonoBehaviour {
 
+	public ButtonColor timer;
 	public ButtonColor blue;
 	public ButtonColor green;
 	public ButtonColor orange;
@@ -19,6 +20,7 @@ public class ButtonManager : MonoBehaviour {
 
 	public ButtonColor GetColor (string color) {
 		switch (color) {
+			case "timer": return timer;
 			case "blue": return blue;
 			case "green": return green;
 			case "orange": return orange;

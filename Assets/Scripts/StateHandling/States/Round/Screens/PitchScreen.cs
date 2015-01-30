@@ -127,4 +127,9 @@ public class PitchScreen : StageScreen {
 		if (!Timer.instance.CountingDown)
 			GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
 	}
+
+	protected override void OnGameEndEvent (GameEndEvent e) {
+		base.OnGameEndEvent (e);
+		currentPlayer = -1;
+	}
 }

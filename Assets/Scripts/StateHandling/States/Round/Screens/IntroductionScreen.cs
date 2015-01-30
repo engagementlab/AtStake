@@ -14,7 +14,6 @@ public class IntroductionScreen : RoleScreen {
 	}
 
 	protected override void OnScreenStartDecider () {
-		Debug.Log("decider start");
 		SetVariableElements (new ScreenElement[] {
 			new BeanPoolElement (),
 			new BeanPotElement (),

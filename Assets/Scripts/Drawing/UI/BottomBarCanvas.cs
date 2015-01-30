@@ -18,8 +18,10 @@ public class BottomBarCanvas : MonoBehaviour {
 	void SetButton (Side side, ButtonElement element) {
 		if (side == Side.Left) {
 			buttonLeft.Set (element);
+			buttonLeft.SetEnabled (true);
 		} else {
 			buttonRight.Set (element);
+			buttonRight.SetEnabled (true);
 		}
 	}
 

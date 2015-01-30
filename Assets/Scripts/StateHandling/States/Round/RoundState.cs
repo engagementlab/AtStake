@@ -35,6 +35,7 @@ public class RoundState : GameState {
 
 	public RoundState (string name = "Round") : base (name) {
 		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
+		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 	}
 
 	public override void OnStateStart () {
@@ -67,6 +68,11 @@ public class RoundState : GameState {
 	}
 
 	void OnRoundEndEvent (RoundEndEvent e) {
+		players.Clear ();
+	}
+
+	void OnGameEndEvent (GameEndEvent e) {
+		roundNumber = 0;
 		players.Clear ();
 	}
 }

@@ -17,6 +17,10 @@ public class IntroAgendaScreen : IntroductionScreen {
 		if (!Player.instance.IsDecider) {
 			ClearScreen ();
 			CreateAgenda ();
+			AppendVariableElements (new ScreenElement[] {
+				new BeanPotElement (),
+				new BeanPoolElement ()
+			});
 		}
 	}
 }

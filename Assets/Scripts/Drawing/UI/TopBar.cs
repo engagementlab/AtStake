@@ -40,6 +40,8 @@ public class TopBar : MonoBehaviour {
 	}
 
 	void UpdateScreen () {
+		SetPoolEnabled (false);
+		SetPotEnabled (false);
 		foreach (ScreenElement element in elements) {
 			if (element is BeanPoolElement) {
 				SetPool (element as BeanPoolElement);
