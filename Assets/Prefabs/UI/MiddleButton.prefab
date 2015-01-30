@@ -142,9 +142,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: ed3c9f48bc10549f3b5e69075486fdfd, type: 3}
     m_FontSize: 65
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 48
+    m_MaxSize: 72
     m_Alignment: 4
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 446
-  m_PreferredHeight: 142
+  m_PreferredWidth: 445
+  m_PreferredHeight: 100
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
 --- !u!222 &22249916

@@ -37,11 +37,9 @@ public class NewRoundScreen : GameScreen {
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "New Round") {
 			instructions.Content = "Get ready!";
-			Debug.Log("decider: " + Player.instance.IsDecider);
-			Debug.Log("won: " + Player.instance.Won);
-			if (Player.instance.IsDecider && Player.instance.Won) {
+			//if (Player.instance.IsDecider && Player.instance.Won) {
+			if (Player.instance.Won) {
 				AppendVariableElements (CreateBottomButton ("Next", "", "bottomPink", Side.Right));
-				Debug.Log("heard");
 				allowContinue = true;
 			}
 		}

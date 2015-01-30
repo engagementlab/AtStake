@@ -21,6 +21,10 @@ public class GameScreen {
 		get { return elements; }
 	}
 
+	public virtual TextAnchor Alignment {
+		get { return TextAnchor.MiddleCenter; }
+	}
+
 	public GameScreen (GameState state, string name) {
 		this.state = state;
 		this.name = name;

@@ -17,6 +17,7 @@ public class BeanPoolManager : MonoBehaviour {
 
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
+		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 	}
 
 	public void UpdateMyScore () {
@@ -96,5 +97,10 @@ public class BeanPoolManager : MonoBehaviour {
 
 		// This should be its own function, but... eghhh
 		Events.instance.Raise (new UpdatedPlayerScoresEvent (namesArr, scoresArr));
+	}
+
+	void OnGameEndEvent (GameEndEvent e) {
+		names.Clear ();
+		scores.Clear ();
 	}
 }

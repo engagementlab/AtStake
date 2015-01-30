@@ -93,12 +93,9 @@ public class StageScreen : GameScreen {
 	}
 
 	void HandleTimerPress () {
-		Debug.Log("decider: " + Player.instance.IsDecider);
 		if (Player.instance.IsDecider) {
 			if (StartTimer ()) {
 				Timer.instance.AllStartCountDown (timerDuration);
-			} else {
-				Debug.Log("can't start timer");
 			}
 		} else {
 			AddTime ();

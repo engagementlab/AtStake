@@ -8,6 +8,10 @@ public class LobbyScreen : GameScreen {
 	int minPlayers = 2;		// the number of players that must join before we show the play button TODO: the screen drawer should probably handle this
 	string[] playerNames = new string[0];
 
+	public override TextAnchor Alignment {
+		get { return TextAnchor.UpperCenter; }
+	}
+
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		SetStaticElements (new ScreenElement[] {
 			new LabelElement ("Lobby", 0, new HeaderTextStyle ()),

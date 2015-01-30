@@ -26,6 +26,7 @@ public class FinalScoreboardScreen : GameScreen {
 			MultiplayerManager.instance.DisconnectGame ();
 			GotoScreen ("Start", "Start");
 			Events.instance.Raise (new GameEndEvent ());
+			ClearScreen ();
 		}
 	}
 }

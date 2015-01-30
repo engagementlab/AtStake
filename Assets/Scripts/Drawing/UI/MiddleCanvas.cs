@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class MiddleCanvas : MonoBehaviour {
 
+	public VerticalLayoutGroup buttonGroup;
+	public RectTransform buttonGroupTransform;
 	public MiddleButtonManager buttonManager;
 	public MiddleLabelManager labelManager;
 	public MiddleTextFieldManager textFieldManager;
@@ -18,6 +20,25 @@ public class MiddleCanvas : MonoBehaviour {
 	void Awake () {
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
+		AlignMiddle ();
+	}
+
+	public void AlignMiddle () {
+		buttonGroup.padding.top = 0;
+		buttonGroup.childAlignment = TextAnchor.MiddleCenter;
+		buttonGroupTransform.pivot = new Vector2 (0.5f, 0.5f);
+		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 0.5f);
+		buttonGroupTransform.anchorMax = new Vector2 (0.5f, 0.5f); 
+		buttonGroupTransform.anchoredPosition = new Vector2 (0, -38);
+	}
+
+	public void AlignUpper () {
+		buttonGroup.padding.top = 120;
+		buttonGroup.childAlignment = TextAnchor.UpperCenter;
+		buttonGroupTransform.pivot = new Vector2 (0.5f, 1);
+		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 1);
+		buttonGroupTransform.anchorMax = new Vector2 (0.5f, 1); 
+		buttonGroupTransform.anchoredPosition = new Vector2 (0, -200);
 	}
  
 	public void OnButtonPress (MiddleButton button) {
@@ -70,9 +91,19 @@ public class MiddleCanvas : MonoBehaviour {
 		}
 	}
 
+	void UpdateAlignment (TextAnchor alignment) {
+		if (alignment == TextAnchor.MiddleCenter) {
+			AlignMiddle ();
+		}
+		if (alignment == TextAnchor.UpperCenter) {
+			AlignUpper ();
+		}
+	}
+
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
 		screen = e.screen;
 		elements = screen.Elements;
+		UpdateAlignment (screen.Alignment);
 		UpdateScreen ();
 	}
 
@@ -154,6 +185,10 @@ public class MiddleLabelManager : ElementManager {
 		go.transform.SetSiblingIndex (label.Position);
 		Text t = go.GetComponent<Text> ();
 		label.SetText (t);
+
+		if (t.text == "") {
+			go.SetActive (false);
+		}
 	}
 
 	GameObject CreateLabel () {
