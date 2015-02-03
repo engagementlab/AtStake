@@ -52,6 +52,5 @@ public class GamePlayer {
 
 	public void OnGameEndEvent (GameEndEvent e) {
 		ClearPlayers ();
-		Debug.Log(PlayerCount);
 	}
 }

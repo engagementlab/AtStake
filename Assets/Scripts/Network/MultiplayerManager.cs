@@ -95,6 +95,10 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 
+	public void StartGame () {
+		networkManager.StartGame ();
+	}
+
 	/**
 	 *	Messages
 	 */

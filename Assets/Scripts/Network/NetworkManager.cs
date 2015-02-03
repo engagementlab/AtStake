@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class NetworkManager : MonoBehaviour {
 		public bool secureServer;
 		public float timeoutDuration;
 
-		public Settings (int maxConnections = 6, bool secureServer = false, float timeoutDuration = 10f) {
+		public Settings (int maxConnections = 5, bool secureServer = false, float timeoutDuration = 10f) {
 			this.maxConnections = maxConnections;
 			this.secureServer = secureServer;
 			this.timeoutDuration = timeoutDuration;
@@ -21,7 +22,7 @@ public class NetworkManager : MonoBehaviour {
 	Settings settings;
 
 	void Awake () {
-		settings = new Settings (6, false, 15f);
+		settings = new Settings (2, false, 15f);
 		MasterServer.ClearHostList ();
 	}
 
@@ -46,6 +47,10 @@ public class NetworkManager : MonoBehaviour {
 		Network.Disconnect ();
 		MasterServer.UnregisterHost ();
 		ResetHosts ();
+	}
+
+	public void StartGame () {
+		Network.maxConnections = -1;
 	}
 
 	/**
@@ -97,7 +102,14 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	void OnFoundGames () {
-		Events.instance.Raise (new FoundGamesEvent (hosts));
+		List<HostData> joinable = new List<HostData> ();
+		for (int i = 0; i < hosts.Length; i ++) {
+			HostData host = hosts[i];
+			if (host.playerLimit != 0 && host.connectedPlayers < host.playerLimit) {
+				joinable.Add (host);
+			}
+		}
+		Events.instance.Raise (new FoundGamesEvent (joinable.ToArray ()));
 	}
 
 	public void ConnectToHost (HostData host) {
