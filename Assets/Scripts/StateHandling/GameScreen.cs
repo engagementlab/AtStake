@@ -18,7 +18,22 @@ public class GameScreen {
 	
 	ScreenElement[] elements = new ScreenElement[0];
 	public ScreenElement[] Elements {
-		get { return elements; }
+		get {
+			if (ScreenElements.Empty) {
+				return elements; 
+			} else {
+				return ScreenElements.Elements;
+			}
+		}
+	}
+
+	// New way of handling ScreenElements
+	ScreenElements screenElements = new ScreenElements ();
+	public ScreenElements ScreenElements { 
+		get { return screenElements; }
+		protected set {
+			screenElements = value;
+		}
 	}
 
 	public virtual TextAnchor Alignment {

@@ -10,23 +10,20 @@ public class GamesListScreen : GameScreen {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
-		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Choose a game to join", 0),
-			nameTaken,
-			CreateBottomButton ("Back")
-		});
+		ScreenElements.AddEnabled ("copy", new LabelElement ("Choose a game to join", 0));
+		ScreenElements.AddDisabled ("nameTaken", nameTaken);
+		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
+		ScreenElements.Disable ("nameTaken");
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		hosts = e.hosts;
-		ScreenElement[] se = new ScreenElement[hosts.Length];
-		for (int i = 0; i < se.Length; i ++) {
+		for (int i = 0; i < hosts.Length; i ++) {
 			string gameName = hosts[i].gameName;
-			se[i] = CreateButton (i.ToString () + "__" + gameName, i+2, gameName);
+			ScreenElements.AddEnabled (gameName, CreateButton (i.ToString () + "__" + gameName, i+2, gameName));
 		}
-		SetVariableElements (se);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -46,5 +43,6 @@ public class GamesListScreen : GameScreen {
 
 	void OnNameTakenEvent (NameTakenEvent e) {
 		nameTaken.Content = string.Format ("There's already someone named {0} in this game. Please go back and choose a different name", Player.instance.Name);
+		ScreenElements.Enable ("nameTaken");
 	}
 }

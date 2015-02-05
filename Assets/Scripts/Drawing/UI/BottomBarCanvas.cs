@@ -51,7 +51,9 @@ public class BottomBarCanvas : MonoBehaviour {
 	}
 
 	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
-		elements = screen.Elements;
-		UpdateScreen ();
+		if (elements != null) {
+			elements = screen.Elements;
+			UpdateScreen ();
+		}
 	}
 }

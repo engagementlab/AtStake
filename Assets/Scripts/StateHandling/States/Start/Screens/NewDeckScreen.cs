@@ -4,10 +4,12 @@ using System.Collections;
 public class NewDeckScreen : GameScreen {
 	
 	public NewDeckScreen (GameState state, string name = "New Deck") : base (state, name) {
-		SetStaticElements (new ScreenElement[] {
+		/*SetStaticElements (new ScreenElement[] {
 			new LabelElement (Copy.NewDeck, 0),
 			CreateBottomButton ("Back", "", "bottomOrange", Side.Left)
-		});
+		});*/
+		ScreenElements.AddEnabled ("copy", new LabelElement (Copy.NewDeck, 0));
+		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back", "", "bottomOrange", Side.Left));
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

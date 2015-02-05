@@ -3,24 +3,16 @@ using System.Collections;
 
 public class HostJoinScreen : GameScreen {
 
-	LabelElement label;
-	string defaultText = "Select host or join";
-
 	public HostJoinScreen (GameState state, string name = "Host or Join") : base (state, name) {
-		label = new LabelElement (defaultText, 0);
-		SetStaticElements (new ScreenElement[] {
-			label,
-			CreateButton ("Host", 1),
-			CreateButton ("Join", 2),
-			CreateBottomButton ("Back")
-		});
+		ScreenElements.AddEnabled ("copy", new LabelElement ("Select host or join", 0));
+		ScreenElements.AddDisabled ("searching", new LabelElement ("searching for games...", 1));
+		ScreenElements.AddDisabled ("nogames", new LabelElement ("no games found :(", 2));
+		ScreenElements.AddEnabled ("host", CreateButton ("Host", 3));
+		ScreenElements.AddEnabled ("join", CreateButton ("Join", 4));
+		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 
 		Events.instance.AddListener<JoinTimeoutEvent> (OnJoinTimeoutEvent);
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
-	}
-
-	public override void OnScreenStart (bool hosting, bool isDecider) {
-		label.Content = defaultText;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -31,7 +23,7 @@ public class HostJoinScreen : GameScreen {
 				break;
 			case "Join": 
 				MultiplayerManager.instance.JoinGame (); 
-				label.Content = "searching for games...";
+				ScreenElements.Enable ("searching");
 				break;
 			case "Back": 
 				GotoScreen ("Enter Name"); 
@@ -40,10 +32,11 @@ public class HostJoinScreen : GameScreen {
 	}
 
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
-		label.Content = "no games found :(";
+		ScreenElements.Disable ("searching");
+		ScreenElements.Enable ("nogames");
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		label.Content = "";
+		ScreenElements.Disable ("nogames");
 	}
 }
