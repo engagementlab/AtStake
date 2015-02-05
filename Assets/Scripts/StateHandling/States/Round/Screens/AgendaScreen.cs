@@ -16,12 +16,10 @@ public class AgendaScreen : GameScreen {
 		yesButton = CreateButton ("yah", 2);
 		noButton = CreateButton ("nah", 3);
 
-		SetStaticElements (new ScreenElement[] {
-			progress,
-			description,
-			yesButton,
-			noButton
-		});
+		ScreenElements.AddEnabled ("progress", progress);
+		ScreenElements.AddEnabled ("description", description);
+		ScreenElements.AddEnabled ("yes", yesButton);
+		ScreenElements.AddEnabled ("no", noButton);
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {

@@ -48,24 +48,26 @@ public class PitchScreen : StageScreen {
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
 		currentPitcher = new LabelElement ("", 5);
 		nextPitcher = new LabelElement ("", 6);
+		ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
+		ScreenElements.AddEnabled ("nextPitcher", nextPitcher);
 		InitStageScreen (TimerValues.pitch);
 	}
 
 	protected override void OnScreenStartDecider () {
 		InitDeciderScreen ();
 		UpdatePitcherLabels ();
-		AppendVariableElements (new ScreenElement[] {
+		/*AppendVariableElements (new ScreenElement[] {
 			currentPitcher,
 			nextPitcher
-		});
+		});*/
 	}
 
 	protected override void OnScreenStartPlayer () {
 		InitPlayerScreen ();
-		AppendVariableElements (new ScreenElement[] {
+		/*AppendVariableElements (new ScreenElement[] {
 			currentPitcher,
 			nextPitcher
-		});
+		});*/
 	}
 
 	protected override bool StartTimer () {

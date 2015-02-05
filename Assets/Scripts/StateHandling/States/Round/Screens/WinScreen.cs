@@ -7,10 +7,9 @@ public class WinScreen : GameScreen {
 
 	public WinScreen (GameState state, string name = "Win") : base (state, name) {
 		winner = new LabelElement ("", 0, new CenterWhiteTextStyle ());
-		SetStaticElements (new ScreenElement[] {
-			winner,
-			new ImageElement ("applause", 1, Color.white)
-		});
+		ScreenElements.AddEnabled ("winner", winner);
+		ScreenElements.AddEnabled ("applause", new ImageElement ("applause", 1, Color.white));
+		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 	}
 
 	protected override void OnScreenStartPlayer () {
@@ -21,14 +20,13 @@ public class WinScreen : GameScreen {
 			winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 			BeanPotManager.instance.OnLose ();
 		}
+		ScreenElements.Disable ("next");
 	}
 
 	protected override void OnScreenStartDecider () {
 		BeanPotManager.instance.OnLose ();
 		winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
-		SetVariableElements (new ScreenElement[] {
-			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
-		});
+		ScreenElements.Enable ("next");
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

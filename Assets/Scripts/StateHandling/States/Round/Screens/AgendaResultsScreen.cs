@@ -8,18 +8,17 @@ public class AgendaResultsScreen : GameScreen {
 	string defaultDescription = "please wait while everyone finishes voting :)";
 
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
+		
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
+		
 		description = new LabelElement (defaultDescription, 0);
-		SetStaticElements (new ScreenElement[] {
-			description
-		});
+		ScreenElements.AddEnabled ("description", description);
+		ScreenElements.AddEnabled ("wait", new ImageElement ("wait", 1, Color.white));
+		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 	}
 
 	public override void OnScreenStart (bool isHosting, bool isDecider) {
-		SetVariableElements (new ScreenElement[] {
-			new ImageElement ("wait", 1, Color.white)
-		});
 		MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
 	}
 
@@ -29,19 +28,20 @@ public class AgendaResultsScreen : GameScreen {
 			return;
 		}
 
-		ClearScreen ();
 		Player player = Player.instance;
-
-		// Show the winning agenda items
+		ScreenElements.SuspendUpdating ();
+		ScreenElements.DisableAll ();
+		ScreenElements.Enable ("description");
+		ScreenElements.Enable ("next");
 		description.Content = "Winning Agenda Items:";
 		List<AgendaItem> winningItems = AgendaItemsManager.instance.WinningItems;
-		ScreenElement[] se = new ScreenElement[winningItems.Count];
-		for (int i = 0; i < se.Length; i ++) {
-			se[i] = new LabelElement (string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus), i+1);
+
+		for (int i = 0; i < winningItems.Count; i ++) {
+			string item = string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus);
+			ScreenElements.Add<LabelElement> ("item" + i.ToString(), new LabelElement (item, i+1)).Content = item;
 		}
 
-		SetVariableElements (se);
-		AppendVariableElements (CreateBottomButton ("Next", "", "bottomPink", Side.Right));
+		ScreenElements.EnableUpdating ();
 
 		// Update score
 		List<AgendaItem> myWinningItems = AgendaItemsManager.instance.MyWinningItems;
@@ -63,7 +63,10 @@ public class AgendaResultsScreen : GameScreen {
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
+		ScreenElements.SuspendUpdating ();
+		ScreenElements.DisableAll ();
+		ScreenElements.Enable ("description");
+		ScreenElements.Enable ("wait");
 		description.Content = defaultDescription;
-		ClearScreen ();
 	}
 }

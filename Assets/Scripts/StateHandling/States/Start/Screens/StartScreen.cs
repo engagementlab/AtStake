@@ -5,7 +5,7 @@ public class StartScreen : GameScreen {
 
 	public StartScreen (GameState state, string name = "Start") : base (state, name) {
 		ScreenElements.AddEnabled ("play", CreateButton ("Play", 0));
-		ScreenElements.AddEnabled ("about", CreateButton ("About", 1));
+		ScreenElements.AddEnabled ("about", CreateButton ("About", 1, "", "green"));
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

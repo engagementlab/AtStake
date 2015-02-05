@@ -9,16 +9,11 @@ public class RoleScreen : GameScreen {
 		Events.instance.AddListener<UpdateRoleEvent> (OnUpdateRoleEvent);
 	}
 
-	//public override void OnScreenStart (bool hosting, bool isDecider) {}
-
 	protected void CreateRoleCard () {
 		
 		Player player = Player.instance;
 		Role playerRole = player.MyRole;
 		playerName = player.Name;
-
-		//AppendVariableElements (RoleDescription (playerName, playerRole.name, playerRole.bio));
-		//AppendVariableElements (RoleAgendaItems (playerRole.MyAgenda.items));
 
 		CreateBeans ();
 		CreateBio (playerName, playerRole.name, playerRole.bio);
@@ -63,33 +58,6 @@ public class RoleScreen : GameScreen {
 		ScreenElements.EnableUpdating ();
 	}
 
-	/*protected ScreenElement[] RoleDescription (string playerName, string playerRole, string bio) {
-		string title = string.Format ("{0} the {1}", playerName, playerRole);
-		return new ScreenElement[] {
-			new BeanPoolElement (),
-			new BeanPotElement (),
-			new LabelElement (title, 0),
-			new LabelElement (bio, 1)
-		};
-	}
-
-	protected ScreenElement[] RoleAgendaItems (AgendaItem[] items) {
-		ScreenElement[] se = new ScreenElement[items.Length*2+1];
-		int index = 0;
-		se[0] = new LabelElement ("Agenda", 2, new DefaultCenterTextStyle ());
-		for (int i = 1; i < se.Length; i += 2) {
-			AgendaItem item = items[index];
-			se[i] = new LabelElement (item.description, i+2, new SmallTextStyle ());
-			se[i+1] = new LabelElement (string.Format ("Bonus: +{0} points", item.bonus), i+3, new BonusTextStyle ());
-			index ++;
-		}
-		return se;
-	}
-
-	protected virtual void AddBackButton () {
-		AppendVariableElements (CreateBottomButton ("Back"));
-	}*/
-
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
 			GameStateController.instance.GotoPreviouslyVisitedScreen ();
@@ -97,11 +65,6 @@ public class RoleScreen : GameScreen {
 	}
 
 	protected virtual void OnUpdateRoleEvent (UpdateRoleEvent e) {
-		/*if (!Player.instance.IsDecider) {
-			ClearScreen ();
-			CreateRoleCard ();
-			AddBackButton ();
-		}*/
 		if (Player.instance.IsDecider) {
 			ScreenElements.Disable ("back");
 		} else {

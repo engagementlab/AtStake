@@ -22,7 +22,8 @@ public class ButtonElement : ScreenElement {
 		get { return color; }
 		set { 
 			color = value;
-			middleButton.SetColor (color);
+			if (middleButton != null)
+				middleButton.SetColor (color);
 		}
 	}
 

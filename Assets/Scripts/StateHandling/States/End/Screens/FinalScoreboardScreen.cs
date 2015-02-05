@@ -5,20 +5,19 @@ public class FinalScoreboardScreen : GameScreen {
 	
 	public FinalScoreboardScreen (GameState state, string name = "Final Scoreboard") : base (state, name) {
 		Events.instance.AddListener<UpdatedPlayerScoresEvent> (OnUpdatedPlayerScoresEvent);
-		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("Final Scores", 0)
-		});
+		ScreenElements.AddEnabled ("title", new LabelElement ("Scoreboard", 0));
+		ScreenElements.AddEnabled ("menu", CreateButton ("Main Menu", 6));
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {}
 
 	void OnUpdatedPlayerScoresEvent (UpdatedPlayerScoresEvent e) {
-		ScreenElement[] se = new ScreenElement[e.playerNames.Length+1];
-		for (int i = 0; i < se.Length-1; i ++) {
-			se[i] = new LabelElement (string.Format ("{0}: {1} beans", e.playerNames[i], e.playerScores[i]), i+1);
+		ScreenElements.SuspendUpdating ();
+		for (int i = 0; i < e.playerNames.Length; i ++) {
+			string entry = string.Format ("{0}: {1} beans", e.playerNames[i], e.playerScores[i]);
+			ScreenElements.Add<LabelElement> ("name" + i.ToString (), new LabelElement (entry, i+1)).Content = entry;
 		}
-		se[se.Length-1] = CreateButton ("Main Menu", se.Length+1);
-		SetVariableElements (se);
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

@@ -8,7 +8,7 @@ public class HostJoinScreen : GameScreen {
 		ScreenElements.AddDisabled ("searching", new LabelElement ("searching for games...", 1));
 		ScreenElements.AddDisabled ("nogames", new LabelElement ("no games found :(", 2));
 		ScreenElements.AddEnabled ("host", CreateButton ("Host", 3));
-		ScreenElements.AddEnabled ("join", CreateButton ("Join", 4));
+		ScreenElements.AddEnabled ("join", CreateButton ("Join", 4, "", "green"));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 
 		Events.instance.AddListener<JoinTimeoutEvent> (OnJoinTimeoutEvent);

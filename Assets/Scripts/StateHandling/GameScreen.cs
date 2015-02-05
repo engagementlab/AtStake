@@ -5,17 +5,20 @@ public class GameScreen {
 
 	public readonly string name = "";
 	public readonly GameState state;
-
+	
+	// deprecate this
 	ScreenElement[] staticElements = new ScreenElement[0];
 	public ScreenElement[] StaticElements {
 		get { return staticElements; }
 	}
-
+	
+	// deprecate this
 	ScreenElement[] variableElements = new ScreenElement[0];
 	public ScreenElement[] VariableElements {
 		get { return variableElements; }
 	}
 	
+	// deprecate this	
 	ScreenElement[] elements = new ScreenElement[0];
 	public ScreenElement[] Elements {
 		get {
@@ -52,6 +55,7 @@ public class GameScreen {
 	 */
 
 	// Call this in the constructor to create elements that never change
+	// deprecate this
 	protected void SetStaticElements (ScreenElement[] staticElements) {
 		if (this.staticElements.Length > 0) {
 			Debug.LogWarning ("SetStaticElements() should only be called once per instance of GameScreen.");
@@ -61,16 +65,19 @@ public class GameScreen {
 	}
 
 	// Call this whenever to create & manipulate elements that move/change
+	// deprecate this
 	protected void SetVariableElements (ScreenElement[] variableElements) {
 		this.variableElements = variableElements;
 		RefreshElements ();
 		Events.instance.Raise (new UpdateDrawerEvent ());
 	}
 
+	// deprecate this
 	protected void AppendVariableElements (ScreenElement screenElement) {
 		AppendVariableElements (new ScreenElement[] { screenElement });
 	}
 
+	// deprecate this
 	protected void AppendVariableElements (ScreenElement[] appendedElements) {
 		
 		ScreenElement[] tempElements = variableElements;
@@ -90,10 +97,12 @@ public class GameScreen {
 		Events.instance.Raise (new UpdateDrawerEvent ());
 	}
 
+	// deprecate this
 	protected void RemoveLastElement () {
 		RemoveVariableElement (variableElements.Length-1);
 	}
 
+	// deprecate this
 	protected void RemoveVariableElement (int index) {
 		ScreenElement[] newElements = new ScreenElement[variableElements.Length];
 		int count = 0;
@@ -112,10 +121,10 @@ public class GameScreen {
 		GameStateController.instance.GotoScreen (screenName, stateName);
 	}
 
-	protected ButtonElement CreateButton (string id, int position, string content="") {
+	protected ButtonElement CreateButton (string id, int position, string content="", string color="blue") {
 		if (content == "")
 			content = id;
-		return new ButtonElement (this, id, content, position);
+		return new ButtonElement (this, id, content, position, color);
 	}
 
 	protected BottomButtonElement CreateBottomButton (string id, string content="", string color="", Side side=Side.Left) {
@@ -134,6 +143,7 @@ public class GameScreen {
 		OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
 	}
 
+	// deprecate this
 	protected void ClearScreen () {
 		SetVariableElements (new ScreenElement[0]);
 	}
@@ -182,6 +192,7 @@ public class GameScreen {
 	 *	Private functions
 	 */
 
+	// deprecate this
 	void RefreshElements () {
 		
 		int sel = staticElements.Length;
@@ -199,6 +210,7 @@ public class GameScreen {
 		SetElements (se);
 	}
 
+	// deprecate this
 	void SetElements (ScreenElement[] elements) {
 		this.elements = elements;
 	}

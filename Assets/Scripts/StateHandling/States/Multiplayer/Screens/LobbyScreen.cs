@@ -14,7 +14,6 @@ public class LobbyScreen : GameScreen {
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		ScreenElements.AddEnabled ("title", new LabelElement ("Lobby", 0, new HeaderTextStyle ()));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
-
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 

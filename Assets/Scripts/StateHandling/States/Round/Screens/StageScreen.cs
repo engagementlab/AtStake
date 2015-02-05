@@ -43,12 +43,19 @@ public class StageScreen : GameScreen {
 		playerName = round.PlayerName;
 		topLabel = new LabelElement (round.Question, 0);
 		
-		SetStaticElements (new ScreenElement[] {
+		/*SetStaticElements (new ScreenElement[] {
 			topLabel,
 			timer,
 			new BeanPoolElement (),
 			new BeanPotElement ()
-		});
+		});*/
+		ScreenElements.AddEnabled ("topLabel", new LabelElement (round.Question, 0));
+		ScreenElements.AddEnabled ("timer", CreateTimer ("Timer", 1, name));
+		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
+		ScreenElements.AddEnabled ("pot", new BeanPotElement ());
+		ScreenElements.AddDisabled ("roleCard", CreateButton ("Role Card", 3));
+		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
+		timer = ScreenElements.Get<TimerElement> ("timer");
 	}
 
 	protected override void OnScreenStartPlayer () {
@@ -63,20 +70,32 @@ public class StageScreen : GameScreen {
 		if (!addTimeEnabled) {
 			OnDisableAddTime ();
 		}
-		topLabel.Content = round.Question;
+		/*topLabel.Content = round.Question;
 		SetVariableElements (new ScreenElement[] {
 			CreateButton ("Role Card", 3)
-		});
+		});*/
+		ScreenElements.SuspendUpdating ();
+		ScreenElements.Disable ("next");
+		ScreenElements.Get<LabelElement> ("topLabel").Content = round.Question;
+		ScreenElements.Enable ("roleCard");
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected void InitDeciderScreen () {
 		players = round.Players;
-		topLabel.Content = Copy.GetInstructions (name);
+		/*topLabel.Content = Copy.GetInstructions (name);
 		timer.Content = name;
 		timer.Interactable = true;
 		SetVariableElements (new ScreenElement[] {
 			CreateBottomButton ("Next", "", "bottomPink", Side.Right)
-		});
+		});*/
+		ScreenElements.SuspendUpdating ();
+		ScreenElements.Disable ("roleCard");
+		ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.GetInstructions (name);
+		timer.Content = name;
+		timer.Interactable = true;
+		ScreenElements.Enable ("next");
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
