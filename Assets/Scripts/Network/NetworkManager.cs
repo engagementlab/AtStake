@@ -9,20 +9,23 @@ public class NetworkManager : MonoBehaviour {
 
 	struct Settings {
 
-		public int maxConnections;
-		public bool secureServer;
-		public float timeoutDuration;
+		public readonly int maxConnections;
+		public readonly bool secureServer;
+		public readonly float timeoutDuration;
+		public readonly int attempts;
 
-		public Settings (int maxConnections = 5, bool secureServer = false, float timeoutDuration = 10f) {
+		public Settings (int maxConnections=5, bool secureServer=false, float timeoutDuration=10f, int attempts=3) {
 			this.maxConnections = maxConnections;
 			this.secureServer = secureServer;
 			this.timeoutDuration = timeoutDuration;
+			this.attempts = attempts;
 		}
 	}
+	
 	Settings settings;
 
 	void Awake () {
-		settings = new Settings (2, false, 15f);
+		settings = new Settings (2, false, 3f, 3);
 		MasterServer.ClearHostList ();
 	}
 
@@ -58,40 +61,32 @@ public class NetworkManager : MonoBehaviour {
 	 */
 
 	public void JoinGame () {
-		RefreshHostList ();
+		MasterServer.ClearHostList ();
+		StartCoroutine (FindHostsWrapper ());
 	}
 
-	void RefreshHostList () {
+	IEnumerator FindHostsWrapper () {
+		int attempts = settings.attempts;
+		float timeout = settings.timeoutDuration;
+		while (attempts > 0) {
+			attempts --;
+			yield return StartCoroutine (FindHosts (timeout, attempts == 0));
+		}
+	}
+
+	IEnumerator FindHosts (float timeout, bool finalAttempt) {
+			
 		MasterServer.RequestHostList (gameName);
-		StartCoroutine (FindHosts ());
-	}
 
-	IEnumerator FindHosts () {
-
-		ResetHosts ();
-		OnFoundGames ();
-		
-		// TODO: This doesn't seem to be working
-		int attempts = 3;
-		float timeout = settings.timeoutDuration / attempts;
-
-		for (int i = 0; i < attempts; i ++) {
-			while (hosts.Length == 0 && timeout > 0f) {
-				hosts = MasterServer.PollHostList ();
-				timeout -= Time.deltaTime;
-				yield return null;
-			}
-			if (timeout <= 0f) {
-				if (i == attempts-1) {
-					OnTimeout ();
-					break;
-				} else {
-					MasterServer.RequestHostList (gameName);
-				}
-			} else {
-				OnFoundGames ();
-				break;
-			}
+		while (hosts.Length == 0 && timeout > 0f) {
+			hosts = MasterServer.PollHostList ();
+			timeout -= Time.deltaTime;
+			yield return null;
+		} 
+		if (timeout <= 0f) {
+			if (finalAttempt) OnTimeout ();
+		} else {
+			OnFoundGames ();
 		}
 
 		MasterServer.ClearHostList ();
@@ -105,11 +100,15 @@ public class NetworkManager : MonoBehaviour {
 		List<HostData> joinable = new List<HostData> ();
 		for (int i = 0; i < hosts.Length; i ++) {
 			HostData host = hosts[i];
-			if (host.playerLimit != 0 && host.connectedPlayers < host.playerLimit) {
+			if (host.playerLimit != 0 && host.playerLimit != -1 && host.connectedPlayers < host.playerLimit) {
 				joinable.Add (host);
 			}
 		}
-		Events.instance.Raise (new FoundGamesEvent (joinable.ToArray ()));
+		if (joinable.Count > 0) {
+			Events.instance.Raise (new FoundGamesEvent (joinable.ToArray ()));
+		} else {
+			OnTimeout ();
+		}
 	}
 
 	public void ConnectToHost (HostData host) {

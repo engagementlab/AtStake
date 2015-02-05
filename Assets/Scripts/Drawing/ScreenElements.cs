@@ -19,10 +19,6 @@ public class ScreenElements {
 		get { return Elements.Length == 0; }
 	}
 
-	public int Count {
-		get { return Elements.Length; }
-	}
-
 	bool canUpdate = true;
 
 	public void Init (Dictionary<string, ScreenElement> elements) {
