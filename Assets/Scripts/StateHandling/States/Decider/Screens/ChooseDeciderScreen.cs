@@ -8,9 +8,7 @@ public class ChooseDeciderScreen : GameScreen {
 	List<ButtonElement> buttons = new List<ButtonElement> ();
 
 	public ChooseDeciderScreen (GameState state, string name = "Choose Decider") : base (state, name) {
-		SetStaticElements (new ScreenElement[] {
-			new LabelElement ("The Decider gets 5 beans instead of 3. Please choose the first Decider.", 0)
-		});
+		ScreenElements.AddEnabled ("instructions", new LabelElement ("The Decider gets 5 beans instead of 3. Please choose the first Decider.", 0));
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
@@ -20,15 +18,15 @@ public class ChooseDeciderScreen : GameScreen {
 		
 		buttons.Clear ();
 		string[] names = e.playerNames;
-		ScreenElement[] se = new ScreenElement[names.Length];
 		for (int i = 0; i < names.Length; i ++) {
 			string name = names[i];
+			string id = "name" + i.ToString ();
+			ScreenElements.Remove (id);
 			ButtonElement button = CreateButton ("Name-Decider-" + name, i+2, name);
+			ScreenElements.AddEnabled (id, button);
+			button.Color = "blue";
 			buttons.Add (button);
-			se[i] = button; 
 		}
-
-		SetVariableElements (se);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

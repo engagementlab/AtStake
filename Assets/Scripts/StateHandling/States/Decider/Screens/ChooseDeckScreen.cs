@@ -10,34 +10,32 @@ public class ChooseDeckScreen : GameScreen {
 	public ChooseDeckScreen (GameState state, string name = "Choose Deck") : base (state, name) {
 		Events.instance.AddListener<UpdateDeckListEvent> (OnUpdateDeckListEvent);
 		title = new LabelElement ("Please wait while the host chooses a deck", 0);
-		SetStaticElements (new ScreenElement[] {
-			title	
-		});
+		ScreenElements.AddEnabled ("title", title);
 	}
 	
 	protected override void OnScreenStartHost () {
 
+		ScreenElements.SuspendUpdating ();
 		title.Content = "Choose a deck";
 
 		int localDecksCount = dl.LocalDecks.Count;
 		int hostedDecksCount = dl.HostedDecks.Count;
-		int elementsCount = localDecksCount + hostedDecksCount+2;
-		ScreenElement[] se = new ScreenElement[elementsCount];
+		int elementsCount = localDecksCount + hostedDecksCount;//+2;
 
-		se[0] = new LabelElement ("Local decks", 1);
-		int offset = 1;
-		for (int i = offset; i < localDecksCount+offset; i ++) {
-			string name = dl.LocalDecks[i-offset].name;
-			se[i] = CreateButton ("deck_l_" + name, i+2, name);
+		for (int i = 0; i < localDecksCount; i ++) {
+			string name = dl.LocalDecks[i].name;
+			string id = "button" + i.ToString ();
+			ScreenElements.Remove (id);
+			ScreenElements.AddEnabled (id, CreateButton ("deck_l_" + name, i+2, name));
 		}
-
-		offset = localDecksCount+2;
-		se[localDecksCount+1] = new LabelElement ("Hosted decks", offset+3);
-		for (int i = offset; i < elementsCount; i ++) {
-			string name = dl.HostedDecks[i-offset].name;
-			se[i] = CreateButton ("deck_h_" + name, i+4, name);
+		
+		for (int i = localDecksCount; i < elementsCount; i ++) {
+			string name = dl.HostedDecks[i-localDecksCount].name;
+			string id = "button" + i.ToString ();
+			ScreenElements.Remove (id);
+			ScreenElements.AddEnabled (id, CreateButton ("deck_l_" + name, i+2, name));
 		}
-		SetVariableElements (se);
+		ScreenElements.EnableUpdating ();
 	}
 
 	void OnUpdateDeckListEvent (UpdateDeckListEvent e) {

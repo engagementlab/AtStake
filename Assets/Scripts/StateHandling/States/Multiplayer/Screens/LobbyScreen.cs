@@ -14,6 +14,7 @@ public class LobbyScreen : GameScreen {
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		ScreenElements.AddEnabled ("title", new LabelElement ("Lobby", 0, new HeaderTextStyle ()));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
+		ScreenElements.AddDisabled ("play", CreateButton ("Play", 6));
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
@@ -27,10 +28,24 @@ public class LobbyScreen : GameScreen {
 		bool showPlay = hosting && namesCount > minPlayers;
 		int elementCount = showPlay ? namesCount+1 : namesCount;
 
-		for (int i = 0; i < namesCount; i ++) {
-			ScreenElements.AddEnabled (playerNames[i], new LabelElement (playerNames[i], i+1));
+		ScreenElements.SuspendUpdating ();
+		for (int i = 0; i < 5; i ++) {
+			string id = "name" + i.ToString ();
+			ScreenElements.Remove (id);
 		}
-		if (showPlay) ScreenElements.AddEnabled ("play", CreateButton ("Play", elementCount+1));
+
+		for (int i = 0; i < namesCount; i ++) {
+			string id = "name" + i.ToString ();
+			ScreenElements.Remove (id);
+			ScreenElements.AddEnabled (id, new LabelElement (playerNames[i], i+1));
+		}
+		
+		if (showPlay) {
+			ScreenElements.Enable ("play"); 
+		} else {
+			ScreenElements.Disable ("play");
+		}
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

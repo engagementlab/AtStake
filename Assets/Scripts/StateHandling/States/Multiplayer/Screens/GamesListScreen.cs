@@ -19,11 +19,15 @@ public class GamesListScreen : GameScreen {
 	public override void OnScreenStart (bool hosting, bool isDecider) {}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
+		ScreenElements.SuspendUpdating ();
 		hosts = e.hosts;
 		for (int i = 0; i < hosts.Length; i ++) {
 			string gameName = hosts[i].gameName;
-			ScreenElements.AddEnabled (gameName, CreateButton (i.ToString () + "__" + gameName, i+2, gameName));
+			string id = "game" + i.ToString ();
+			ScreenElements.Remove (id);
+			ScreenElements.AddEnabled (id, CreateButton (i.ToString () + "__" + gameName, i+2, gameName));
 		}
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

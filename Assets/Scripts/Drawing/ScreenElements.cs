@@ -19,6 +19,10 @@ public class ScreenElements {
 		get { return Elements.Length == 0; }
 	}
 
+	public int Count {
+		get { return Elements.Length; }
+	}
+
 	bool canUpdate = true;
 
 	public void Init (Dictionary<string, ScreenElement> elements) {
@@ -59,8 +63,8 @@ public class ScreenElements {
 	}
 
 	public void Remove (string id) {
-		elements.Clear ();
-		visibleElements.Clear ();
+		elements.Remove (id);
+		visibleElements.Remove (id);
 	}
 
 	public T Get<T> (string id) where T : ScreenElement {
