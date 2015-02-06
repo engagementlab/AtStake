@@ -48,6 +48,7 @@ public class Player : MonoBehaviour {
 		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<SetRoleEvent> (OnSetRoleEvent);
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
+		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 	}
 
 	public void OnRoundStart () {
@@ -56,6 +57,10 @@ public class Player : MonoBehaviour {
 
 	void OnEnterNameEvent (EnterNameEvent e) {
 		name = e.name;
+	}
+
+	void OnNameTakenEvent (NameTakenEvent e) {
+		name = "";
 	}
 
 	void OnSetRoleEvent (SetRoleEvent e) {

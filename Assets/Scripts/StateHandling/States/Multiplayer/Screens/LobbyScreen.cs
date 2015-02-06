@@ -26,7 +26,6 @@ public class LobbyScreen : GameScreen {
 		hosting = MultiplayerManager.instance.Hosting;
 		int namesCount = playerNames.Length;
 		bool showPlay = hosting && namesCount > minPlayers;
-		int elementCount = showPlay ? namesCount+1 : namesCount;
 
 		ScreenElements.SuspendUpdating ();
 		for (int i = 0; i < 5; i ++) {

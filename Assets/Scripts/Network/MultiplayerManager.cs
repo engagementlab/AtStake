@@ -32,6 +32,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	GamePlayer player;
+	HostData hostAttempt = null;
 
 	public static MultiplayerManager instance;
 
@@ -83,7 +84,15 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public void ConnectToHost (HostData host) {
+		hostAttempt = host;
 		networkManager.ConnectToHost (host);
+	}
+
+	public void ConnectToHost () {
+		if (hostAttempt != null) {
+			player = new GameClient (PlayerName);
+			networkManager.ConnectToHost (hostAttempt);
+		}
 	}
 
 	public void ExitLobby () {
@@ -184,7 +193,8 @@ public class MultiplayerManager : MonoBehaviour {
 	void RejectPlayer (string clientName) {
 		if (playerName == clientName) {
 			DisconnectGame ();
-			Events.instance.Raise (new NameTakenEvent ());
+			playerName = "";
+			Events.instance.Raise (new NameTakenEvent (Player.instance.Name));
 		}
 	}
 

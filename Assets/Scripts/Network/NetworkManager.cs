@@ -42,12 +42,13 @@ public class NetworkManager : MonoBehaviour {
 			Network.InitializeSecurity ();
 
 		// Use NAT punchthrough if no public IP present
-		Network.InitializeServer (settings.maxConnections, 25003, !Network.HavePublicAddress ());
+		Network.InitializeServer (settings.maxConnections, 25001, !Network.HavePublicAddress ());
 		MasterServer.RegisterHost (gameName, gameInstanceName);
 	}
 
 	public void StopServer () {
 		Network.Disconnect ();
+		Network.maxConnections = settings.maxConnections;
 		MasterServer.UnregisterHost ();
 		ResetHosts ();
 	}

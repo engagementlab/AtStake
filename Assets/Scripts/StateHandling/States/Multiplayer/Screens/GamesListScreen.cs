@@ -46,7 +46,8 @@ public class GamesListScreen : GameScreen {
 	}
 
 	void OnNameTakenEvent (NameTakenEvent e) {
-		nameTaken.Content = string.Format ("There's already someone named {0} in this game. Please go back and choose a different name", Player.instance.Name);
-		ScreenElements.Enable ("nameTaken");
+		/*nameTaken.Content = string.Format ("There's already someone named {0} in this game. Please enter a new name:", Player.instance.Name);
+		ScreenElements.Enable ("nameTaken");*/
+		GotoScreen ("Name Taken");
 	}
 }

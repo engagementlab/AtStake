@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class EnterNameScreen : GameScreen {
-
+	
 	public EnterNameScreen (GameState state, string name = "Enter Name") : base (state, name) {
 		ScreenElements.AddEnabled ("copy", new LabelElement ("Please type your name:", 0));
 		ScreenElements.AddEnabled ("textfield", new TextFieldElement (1));

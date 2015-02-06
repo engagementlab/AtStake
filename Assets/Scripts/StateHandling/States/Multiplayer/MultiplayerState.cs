@@ -12,7 +12,8 @@ public class MultiplayerState : GameState {
 			new EnterNameScreen (this),
 			new HostJoinScreen (this),
 			new GamesListScreen (this),
-			new LobbyScreen (this)
+			new LobbyScreen (this),
+			new NameTakenScreen (this)
 		};
 	}
 }

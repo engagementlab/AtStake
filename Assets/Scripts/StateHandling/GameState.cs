@@ -72,7 +72,6 @@ public class GameState {
 	*/
 
 	void GotoScreen (int index) {
-		screen.OnScreenEnd (); // not used?
 		previouslyVisitedIndex = screenIndex;
 		screenIndex = index;
 		screen = screens[index];

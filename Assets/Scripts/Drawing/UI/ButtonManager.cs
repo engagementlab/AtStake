@@ -8,6 +8,7 @@ public class ButtonManager : MonoBehaviour {
 	public ButtonColor blue;
 	public ButtonColor green;
 	public ButtonColor orange;
+	public ButtonColor pink;
 	public ButtonColor bottomOrange;
 	public ButtonColor bottomPink;
 
