@@ -4,16 +4,13 @@ using System.Collections;
 public class GamesListScreen : GameScreen {
 
 	HostData[] hosts;
-	LabelElement nameTaken = new LabelElement ("", 1);
 
 	public GamesListScreen (GameState state, string name = "Games List") : base (state, name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		ScreenElements.AddEnabled ("copy", new LabelElement ("Choose a game to join", 0));
-		ScreenElements.AddDisabled ("nameTaken", nameTaken);
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
-		ScreenElements.Disable ("nameTaken");
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {}
@@ -46,8 +43,6 @@ public class GamesListScreen : GameScreen {
 	}
 
 	void OnNameTakenEvent (NameTakenEvent e) {
-		/*nameTaken.Content = string.Format ("There's already someone named {0} in this game. Please enter a new name:", Player.instance.Name);
-		ScreenElements.Enable ("nameTaken");*/
 		GotoScreen ("Name Taken");
 	}
 }

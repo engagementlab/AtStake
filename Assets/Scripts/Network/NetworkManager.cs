@@ -42,7 +42,7 @@ public class NetworkManager : MonoBehaviour {
 			Network.InitializeSecurity ();
 
 		// Use NAT punchthrough if no public IP present
-		Network.InitializeServer (settings.maxConnections, 25001, !Network.HavePublicAddress ());
+		Network.InitializeServer (settings.maxConnections, 25004, !Network.HavePublicAddress ());
 		MasterServer.RegisterHost (gameName, gameInstanceName);
 	}
 

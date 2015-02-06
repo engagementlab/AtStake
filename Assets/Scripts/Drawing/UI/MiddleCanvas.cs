@@ -252,6 +252,7 @@ public class MiddleTimerManager : ElementManager {
 
 	public TimerElement timerElement;
 	public GameObject timer;
+	public TimerButton timerButton;
 	public Image fill;
 	public Button button;
 	public Text text;
@@ -266,8 +267,9 @@ public class MiddleTimerManager : ElementManager {
 		timerElement.SetButton (button, fill, text);
 		timer.SetActive (true);
 		timer.transform.SetSiblingIndex (timerElement.Position);
-		TimerButton tb = timer.GetComponent<TimerButton> ();
-		tb.Set (timerElement);
+		//TimerButton tb = timer.GetComponent<TimerButton> ();
+		//tb.Set (timerElement);
+		timerButton.Set (timerElement);
 		Enabled = true;
 	}
 
