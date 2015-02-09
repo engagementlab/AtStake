@@ -63,7 +63,8 @@ public class RoundState : GameState {
 			new AgendaScreen (this),
 			new AgendaResultsScreen (this),
 			new ScoreboardScreen (this),
-			new RoleScreen (this)
+			new RoleScreen (this),
+			new AddTimeScreen (this)
 		};
 	}
 

@@ -24,7 +24,6 @@ public class BackgroundCanvas : MonoBehaviour {
 		BackgroundCanvasTheme theme = new StartTheme ();
 		switch (name) {
 			case "Start":
-			case "About":
 			case "Enter Name":
 			case "Host or Join": 
 			case "Games List":
@@ -40,6 +39,7 @@ public class BackgroundCanvas : MonoBehaviour {
 			case "Pitch":
 			case "Deliberate":
 			case "Decide": theme = new StageTheme (); break;
+			case "About":
 			case "Agenda Item":
 			case "Agenda Results":
 			case "Win": theme = new WaitTheme (); break;
