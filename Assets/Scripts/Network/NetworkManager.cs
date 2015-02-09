@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#undef DEBUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,6 +27,10 @@ public class NetworkManager : MonoBehaviour {
 
 	void Awake () {
 		settings = new Settings (2, false, 3f, 3);
+		MasterServer.ipAddress = "54.149.47.87";
+		MasterServer.port = 23466;
+		Network.natFacilitatorIP = "54.149.47.87";
+		Network.natFacilitatorPort = 50005;
 		MasterServer.ClearHostList ();
 	}
 
@@ -42,8 +47,10 @@ public class NetworkManager : MonoBehaviour {
 			Network.InitializeSecurity ();
 
 		// Use NAT punchthrough if no public IP present
-		Network.InitializeServer (settings.maxConnections, 25004, !Network.HavePublicAddress ());
+		Network.InitializeServer (settings.maxConnections, 25001, !Network.HavePublicAddress ());
 		MasterServer.RegisterHost (gameName, gameInstanceName);
+
+		StartCoroutine (Test ());
 	}
 
 	public void StopServer () {
@@ -124,11 +131,49 @@ public class NetworkManager : MonoBehaviour {
 		}
 	}
 
+	void ResetHosts () {
+		hosts = new HostData[0];
+	}
+
+	/**
+	 *	Events
+	 */
+
 	void OnConnectedToServer () {
 		Events.instance.Raise (new ConnectedToServerEvent ());
 	}
 
-	void ResetHosts () {
-		hosts = new HostData[0];
+	/**
+	 *	Debugging
+	 */
+
+	IEnumerator Test () {
+		
+		float timeout = 1000f;
+		ConnectionTesterStatus status = Network.TestConnection ();
+
+		while (status == ConnectionTesterStatus.Undetermined && timeout > 0f) {
+			timeout -= Time.deltaTime;
+			status = Network.TestConnection ();
+			yield return null;
+		}
+
+		#if UNITY_EDITOR && DEBUG
+		Debug.Log (status);
+		#endif
 	}
+
+	#if UNITY_EDITOR && DEBUG
+	void OnMasterServerEvent (MasterServerEvent e) {
+		if (e == MasterServerEvent.RegistrationSucceeded) {
+			Debug.Log ("Registered game at " + MasterServer.ipAddress);
+			return;
+		}
+		Debug.Log (e);
+	}
+
+	void OnFailedToConnectToMasterServer (NetworkConnectionError info) {
+		Debug.Log ("Could not connect to Master Server: " + info);
+	}
+	#endif
 }
