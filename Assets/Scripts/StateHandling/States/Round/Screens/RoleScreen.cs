@@ -7,6 +7,7 @@ public class RoleScreen : GameScreen {
 
 	public RoleScreen (GameState state, string name = "Role") : base (state, name) {
 		Events.instance.AddListener<UpdateRoleEvent> (OnUpdateRoleEvent);
+		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
 
 	protected void CreateRoleCard () {
@@ -18,8 +19,6 @@ public class RoleScreen : GameScreen {
 		CreateBeans ();
 		CreateBio (playerName, playerRole.name, playerRole.bio);
 		CreateAgenda (playerRole.MyAgenda.items);
-
-		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
 
 	protected void CreateBeans () {
@@ -60,7 +59,7 @@ public class RoleScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
-			GameStateController.instance.GotoPreviouslyVisitedScreen ();
+			GotoScreen (StageScreen.CurrentStage);
 		}
 	}
 

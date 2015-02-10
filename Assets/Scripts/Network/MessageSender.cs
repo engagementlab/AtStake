@@ -30,6 +30,10 @@ public class MessageSender : MonoBehaviour {
 		get { return messages[0]; }
 	}
 
+	bool Connected {
+		get { return Network.isClient || Network.isServer; }
+	}
+
 	static public MessageSender instance;
 
 	void Awake () {
@@ -51,12 +55,21 @@ public class MessageSender : MonoBehaviour {
 		if (Network.isServer) {
 			AddMessage (message);
 		} else {
-			networkView.RPC ("HostAddMessage", RPCMode.Server, message.name, message.message1, message.message2, message.val);
+			if (Connected) {
+				networkView.RPC ("HostAddMessage", RPCMode.Server, message.name, message.message1, message.message2, message.val);
+			} else {
+				messages = new List<NetworkMessage> (new NetworkMessage[] {message});
+				HostSendMessage ();
+			}
 		}
 	}
 
 	public void SendMessageToAll (string id, string message1="", string message2="", int val=-1) {
-		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2, val);
+		if (Connected) {
+			networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2, val);
+		} else {
+			AllReceiveMessage (id, message1, message2, val);
+		}
 	}
 
 	/**
@@ -89,7 +102,7 @@ public class MessageSender : MonoBehaviour {
 
 	void HostSendMessage () {
 		Events.instance.Raise (new HostSendMessageEvent (CurrentMessage.name, CurrentMessage.message1, CurrentMessage.message2, CurrentMessage.val));
-		networkView.RPC ("RequestClientConfirmation", RPCMode.Others, CurrentMessage.name);
+		if (Connected) networkView.RPC ("RequestClientConfirmation", RPCMode.Others, CurrentMessage.name);
 	}
 
 	/**
@@ -123,17 +136,4 @@ public class MessageSender : MonoBehaviour {
 	void AllReceiveMessage (string id, string message1, string message2, int val) {
 		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2, val));
 	}
-
-	/**
-	 *	Debugging
-	 */
-
-	/*void Update () {
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			ScheduleMessage ("Quanna");
-		}
-		if (Input.GetKeyDown (KeyCode.A)) {
-			ScheduleMessage ("Anna");
-		}
-	}*/
 }

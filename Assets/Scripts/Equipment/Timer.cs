@@ -34,7 +34,9 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void AllStartCountDown (float duration) {
-		networkView.RPC ("ReceiveCountDown", RPCMode.All, duration);
+		if (!SendRPC ("ReceiveCountDown", RPCMode.All, duration)) {
+			ReceiveCountDown (duration);
+		}
 	}
 
 	public void StartCountDown (float duration) {
@@ -46,7 +48,10 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void AllAddSeconds (float amount) {
-		networkView.RPC ("ReceiveAddSeconds", RPCMode.All, amount);
+		//networkView.RPC ("ReceiveAddSeconds", RPCMode.All, amount);
+		if (!SendRPC ("ReceiveAddSeconds", RPCMode.All, amount)) {
+			ReceiveAddSeconds (amount);
+		}
 	}
 
 	void AddSeconds (float amount) {
@@ -74,6 +79,14 @@ public class Timer : MonoBehaviour {
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
 		if (!countingDown)
 			seconds = -1;
+	}
+
+	bool SendRPC (string name, RPCMode mode, params object[] args) {
+		if (Network.isClient || Network.isServer) {
+			networkView.RPC (name, mode, args);
+			return true;
+		}
+		return false;
 	}
 
 	[RPC]

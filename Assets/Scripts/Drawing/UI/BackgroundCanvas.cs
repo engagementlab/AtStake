@@ -38,6 +38,7 @@ public class BackgroundCanvas : MonoBehaviour {
 			case "Brainstorm":
 			case "Pitch":
 			case "Deliberate":
+			case "Add Time":
 			case "Decide": theme = new StageTheme (); break;
 			case "About":
 			case "Agenda Item":

@@ -11,10 +11,7 @@ public class StartScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Play": GotoScreen ("Enter Name", "Multiplayer"); break;
-			//case "Instructions": GotoScreen ("Instructions"); break;
-			//case "Deck": GotoScreen ("New Deck"); break;
 			case "About": GotoScreen ("About"); break;
-			//case "timer": Timer.instance.StartCountDown (10f); break;
 		}
 	}
 }

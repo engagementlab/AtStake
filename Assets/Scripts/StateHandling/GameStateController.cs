@@ -107,10 +107,22 @@ public class GameStateController : MonoBehaviour {
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.name == "OnGotoNextScreen") {
-			networkView.RPC ("OnSendPlayersToNextScreen", RPCMode.All);
+			if (!SendRPC ("OnSendPlayersToNextScreen", RPCMode.All)) {
+				OnSendPlayersToNextScreen ();
+			}
 		} else if (e.name == "OnGotoScreen") {
-			networkView.RPC ("OnSendPlayersToScreen", RPCMode.All, e.message1, e.message2);
+			if (!SendRPC ("OnSendPlayersToScreen", RPCMode.All, e.message1, e.message2)) {
+				OnSendPlayersToScreen (e.message1, e.message2);
+			}
 		}
+	}
+
+	bool SendRPC (string name, RPCMode mode, params object[] args) {
+		if (Network.isClient || Network.isServer) {
+			networkView.RPC (name, mode, args);
+			return true;
+		}
+		return false;
 	}
 
 	[RPC]

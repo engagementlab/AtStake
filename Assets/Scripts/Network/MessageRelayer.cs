@@ -16,6 +16,10 @@ public class MessageRelayer : MonoBehaviour {
 		get { return receivedCount >= clientCount; }
 	}
 
+	bool Connected {
+		get { return Network.isClient || Network.isServer; }
+	}
+
 	static public MessageRelayer instance;
 
 	/**
@@ -49,30 +53,34 @@ public class MessageRelayer : MonoBehaviour {
 
 	// Send to everyone except the Decider
 	public void SendMessageToPlayers (string message1, string message2="") {
-		networkView.RPC ("PlayersReceiveMessage", RPCMode.All, message1, message2);
+		if (Connected) networkView.RPC ("PlayersReceiveMessage", RPCMode.All, message1, message2);
 	}
 
 	// Send to the Decider
 	public void SendMessageToDecider (string id, string message1="", string message2="") {
-		networkView.RPC ("DeciderReceiveMessage", RPCMode.All, id, message1, message2);
+		if (Connected) networkView.RPC ("DeciderReceiveMessage", RPCMode.All, id, message1, message2);
 	}
 
 	// Send to a specific player
 	public void SendMessageToPlayer (string playerName, string message="") {
-		networkView.RPC ("PlayerReceiveMessage", RPCMode.All, playerName, message);
+		if (Connected) networkView.RPC ("PlayerReceiveMessage", RPCMode.All, playerName, message);
 	}
 
 	// Send to everyone except the Decider and a specific player
 	public void SendMessageToOthers (string playerName, string message="") {
-		networkView.RPC ("OthersReceiveMessage", RPCMode.All, playerName, message);
+		if (Connected) networkView.RPC ("OthersReceiveMessage", RPCMode.All, playerName, message);
 	}
 
 	public void SendMessageToAll (string id, string message1="", string message2="") {
-		networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
+		if (Connected) {
+			networkView.RPC ("AllReceiveMessage", RPCMode.All, id, message1, message2);
+		} else {
+			AllReceiveMessage (id, message1, message2);
+		}
 	}
 
 	public void SendMessageToHost (string id, string message1="", string message2="") {
-		networkView.RPC ("HostReceiveMessage", RPCMode.Server, id, message1, message2);
+		if (Connected) networkView.RPC ("HostReceiveMessage", RPCMode.Server, id, message1, message2);
 	}
 
 	/**
@@ -80,7 +88,7 @@ public class MessageRelayer : MonoBehaviour {
 	 */
 
 	public void ConfirmMessageReceived (string message) {
-		networkView.RPC ("ConfirmHostMessageReceived", RPCMode.Server, message);
+		if (Connected) networkView.RPC ("ConfirmHostMessageReceived", RPCMode.Server, message);
 	}
 
 	/**

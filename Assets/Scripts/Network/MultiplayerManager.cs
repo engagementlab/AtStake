@@ -24,14 +24,24 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public int PlayerCount {
-		get { return player.PlayerCount; }
+		get { 
+			if (player == null) {
+				return 0;
+			}
+			return player.PlayerCount; 
+		}
 	}
 
 	public List<string> Players {
-		get { return player.Players; }
+		get { 
+			if (player == null) {
+				return new List<string> ();
+			}
+			return player.Players; 
+		}
 	}
 
-	GamePlayer player;
+	GamePlayer player = null;
 	HostData hostAttempt = null;
 
 	public static MultiplayerManager instance;

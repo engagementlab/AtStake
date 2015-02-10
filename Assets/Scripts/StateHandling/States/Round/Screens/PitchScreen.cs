@@ -7,7 +7,8 @@ public class PitchScreen : StageScreen {
 	int currentPlayer = -1;
 	LabelElement currentPitcher;
 	LabelElement nextPitcher;
-
+	bool pitching = false;
+	
 	string CurrentPlayer {
 		get {
 			if (players.Count == 0 || currentPlayer == -1)
@@ -46,6 +47,7 @@ public class PitchScreen : StageScreen {
 	}
 
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
+		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 		currentPitcher = new LabelElement ("", 5);
 		nextPitcher = new LabelElement ("", 6);
 		ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
@@ -54,75 +56,32 @@ public class PitchScreen : StageScreen {
 	}
 
 	protected override void OnScreenStartDecider () {
-		InitDeciderScreen ();
+		base.OnScreenStartDecider ();
 		UpdatePitcherLabels ();
-		/*AppendVariableElements (new ScreenElement[] {
-			currentPitcher,
-			nextPitcher
-		});*/
-	}
-
-	protected override void OnScreenStartPlayer () {
-		InitPlayerScreen ();
-		/*AppendVariableElements (new ScreenElement[] {
-			currentPitcher,
-			nextPitcher
-		});*/
 	}
 
 	protected override bool StartTimer () {
 		
-		// Do not start timer if all players have pitched
-		if (currentPlayer >= players.Count-1 || !timer.Interactable)
+		if (!timer.Interactable) {
 			return false;
+		}
 
-		string cp = CurrentPlayer;
-		if (cp != "")
-			MessageRelayer.instance.SendMessageToPlayer (cp, "DisableAddTime");
 		currentPlayer ++;
 		UpdatePitcherLabels ();
 		timer.Interactable = false;
-
 		return true;
 	}
 
 	public override void OnCountDownEnd () {
-		if (ThisScreen && Player.instance.IsDecider) {
-			MessageRelayer.instance.SendMessageToPlayers ("DisableAddTime");
-			MessageRelayer.instance.SendMessageToPlayer (CurrentPlayer, "EnableAddTime");
-			if (currentPlayer < players.Count-1) {
-				timer.Interactable = true;
-			}
+		if (ThisScreen && pitching) {
+			GotoScreen ("Add Time");
 		}
 	}
 
 	void UpdatePitcherLabels () {
 		currentPitcher.Content = CurrentLabel;
 		nextPitcher.Content = NextLabel;
-		MessageRelayer.instance.SendMessageToPlayers (CurrentPlayer, NextLabel);
-	}
-
-	protected override void OnPlayersReceiveMessage (string message1, string message2) {
-		
-		// This whole function is pretty ugly
-		if (message1 == "EnableAddTime" || message1 == "DisableAddTime")
-			return;
-
-		string playerName = message1;
-		if (playerName == Player.instance.Name) {
-			currentPitcher.Content = "Your turn!";
-		} else {
-			if (message1 == "") {
-				currentPitcher.Content = "";
-			} else {
-				currentPitcher.Content = message1 + "'s turn";
-			}
-		}
-		nextPitcher.Content = message2;
-	}
-
-	protected override void OnPlayerReceiveMessageEvent (PlayerReceiveMessageEvent e) {
-		ToggleEnableAddTime (e.message);
+		MessageSender.instance.SendMessageToAll ("UpdatePitcher", CurrentPlayer, NextLabel);
 	}
 
 	protected override void OnPressNext () {
@@ -130,8 +89,32 @@ public class PitchScreen : StageScreen {
 			GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
 	}
 
-	protected override void OnGameEndEvent (GameEndEvent e) {
-		base.OnGameEndEvent (e);
+	void OnGameEndEvent (GameEndEvent e) {
 		currentPlayer = -1;
+	}
+
+	protected override void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		
+		if (!ThisScreen) return;
+
+		if (e.id == "UpdatePitcher") {
+			currentPitcher.Content = e.message1;
+			nextPitcher.Content = e.message2;
+			pitching = (e.message1 == Player.instance.Name);
+		}
+
+		if (e.id == "YesAddTime") {
+			Timer.instance.AllAddSeconds (TimerValues.extraTime);
+		}
+
+		if (e.id == "NoAddTime") {
+			if (Player.instance.IsDecider) {
+				if (currentPlayer >= players.Count-1) {
+					ScreenElements.Enable ("next");
+				} else {
+					timer.Interactable = true;
+				}
+			}
+		}
 	}
 }

@@ -38,7 +38,11 @@ public class BeanPotManager : MonoBehaviour {
 	}
 
 	void SendSetBeanPotMessage () {
-		networkView.RPC ("SetBeanPot", RPCMode.All, beanPot.BeanCount);
+		if (Network.isClient || Network.isServer) {
+			networkView.RPC ("SetBeanPot", RPCMode.All, beanPot.BeanCount);
+		} else {
+			SetBeanPot (beanPot.BeanCount);
+		}
 	}
 
 	[RPC]

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class QuestionManager : MonoBehaviour {
 
-	string[] questions;
+	string[] questions = null;
 
 	static public QuestionManager instance;
 
@@ -17,6 +17,9 @@ public class QuestionManager : MonoBehaviour {
 	}
 
 	public string GetQuestion (int roundNumber) {
+		if (questions == null) {
+			return "Error: Questions not loaded";
+		}
 		return questions[roundNumber];
 	}
 }
