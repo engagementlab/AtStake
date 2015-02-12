@@ -16,6 +16,10 @@ public class AddTimeScreen : GameScreen {
 		}
 	}
 
+	protected override void OnScreenStartPlayer () {
+		ScreenElements.Get<ButtonElement> ("done").Color = "blue";
+	}
+
 	void AddTime () {
 		string currentStage = StageScreen.CurrentStage;
 		if (Player.instance.MyBeanPool.OnAddTime ()) {

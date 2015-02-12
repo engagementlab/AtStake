@@ -5,12 +5,13 @@ using System.Collections.Generic;
 public class AgendaResultsScreen : GameScreen {
 
 	LabelElement description;
-	string defaultDescription = "please wait while everyone finishes voting :)";
+	string defaultDescription = "please !! wait while everyone finishes voting :)";
 
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
 		
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
+		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		
 		description = new LabelElement (defaultDescription, 0);
 		ScreenElements.AddEnabled ("description", description);
@@ -55,7 +56,7 @@ public class AgendaResultsScreen : GameScreen {
 		if (e.id == "Next") {
 			RoundState round = state as RoundState;
 			if (round.RoundNumber < 3) {
-				GotoScreen ("Scoreboard");
+				MessageMatcher.instance.SetMessage ("Agenda Results Next", "true");
 			} else {
 				GotoScreen ("Final Scoreboard", "End");
 			}
@@ -68,5 +69,12 @@ public class AgendaResultsScreen : GameScreen {
 		ScreenElements.Enable ("description");
 		ScreenElements.Enable ("wait");
 		description.Content = defaultDescription;
+	}
+
+	void OnMessagesMatchEvent (MessagesMatchEvent e) {
+		if (e.id == "Agenda Results Next") {
+			Events.instance.Raise (new RoundEndEvent ());
+			GameStateController.instance.GotoState ("Round");
+		}
 	}
 }

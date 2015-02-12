@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Deprecated ??? 
 public class NewRoundScreen : GameScreen {
 
 	LabelElement instructions = new LabelElement ("Please wait for other players to confirm they're ready :)", 1);
@@ -31,7 +32,7 @@ public class NewRoundScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Next" && allowContinue) {
-			GameStateController.instance.AllPlayersGotoScreen ("Bio", "Round");
+			GameStateController.instance.GotoState ("Round");
 			allowContinue = false;
 		}
 	}

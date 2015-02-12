@@ -45,8 +45,10 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	void GotoState (int index) {
-		if (stateIndex == index)
+		if (stateIndex == index) {
+			state.OnStateStart ();
 			return;
+		}
 		stateIndex = index;
 		state = states.GetState (index);
 		state.OnStateStart ();
@@ -61,6 +63,7 @@ public class GameStateController : MonoBehaviour {
 
 	public void GotoState (string name) {
 		GotoState (states.GetStateIndex (name));
+		state.GotoFirstScreen ();
 	}
 
 	public void GotoNextScreen () {

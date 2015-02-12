@@ -34,16 +34,25 @@ public class RoundState : GameState {
 	}
 
 	public RoundState (string name = "Round") : base (name) {
-		Events.instance.AddListener<RoundEndEvent> (OnRoundEndEvent);
 		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 	}
 
 	public override void OnStateStart () {
+		
+		// Reset the player list and assign a new Decider
+		players.Clear ();
+		if (Player.instance.Won) {
+			DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
+		}
+
+		// Set the round number & question for the round
 		Events.instance.Raise (new RoundStartEvent ());
 		if (roundNumber == 3) {
 			roundNumber = 0;
 		}
 		question = QuestionManager.instance.GetQuestion (roundNumber);
+		
+		// Update the player
 		Player player = Player.instance;
 		playerName = player.Name;
 		if (roundNumber == 0) player.OnRoundStart ();
@@ -52,6 +61,7 @@ public class RoundState : GameState {
 	
 	public override GameScreen[] SetScreens () {
 		return new GameScreen[] {
+			new ScoreboardScreen (this),
 			new IntroBioScreen (this),
 			new IntroAgendaScreen (this),
 			new QuestionScreen (this),
@@ -62,14 +72,9 @@ public class RoundState : GameState {
 			new WinScreen (this),
 			new AgendaScreen (this),
 			new AgendaResultsScreen (this),
-			new ScoreboardScreen (this),
 			new RoleScreen (this),
 			new AddTimeScreen (this)
 		};
-	}
-
-	void OnRoundEndEvent (RoundEndEvent e) {
-		players.Clear ();
 	}
 
 	void OnGameEndEvent (GameEndEvent e) {

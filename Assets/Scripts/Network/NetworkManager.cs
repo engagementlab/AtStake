@@ -26,7 +26,7 @@ public class NetworkManager : MonoBehaviour {
 	Settings settings;
 
 	void Awake () {
-		settings = new Settings (2, false, 3f, 3);
+		settings = new Settings (3, false, 3f, 3);
 		MasterServer.ipAddress = "54.149.47.87";
 		MasterServer.port = 23466;
 		Network.natFacilitatorIP = "54.149.47.87";

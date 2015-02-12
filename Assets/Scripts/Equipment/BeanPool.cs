@@ -18,6 +18,8 @@ public class BeanPool : IBeanPool {
 
 	public virtual void OnRoundStart (bool isDecider=false) {
 		SetBeans (isDecider ? BeanValues.deciderStart : BeanValues.playerStart);
+		Player player = Player.instance;
+		MessageSender.instance.SendMessageToAll ("UpdatePlayerScore", player.Name, "", player.MyBeanPool.BeanCount);
 	}
 
 	public bool OnAddTime () {
