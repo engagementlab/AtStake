@@ -267,8 +267,6 @@ public class MiddleTimerManager : ElementManager {
 		timerElement.SetButton (button, fill, text);
 		timer.SetActive (true);
 		timer.transform.SetSiblingIndex (timerElement.Position);
-		//TimerButton tb = timer.GetComponent<TimerButton> ();
-		//tb.Set (timerElement);
 		timerButton.Set (timerElement);
 		Enabled = true;
 	}

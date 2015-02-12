@@ -11,15 +11,15 @@ public class AgendaResultsScreen : GameScreen {
 		
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
-		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		
 		description = new LabelElement (defaultDescription, 0);
 		ScreenElements.AddEnabled ("description", description);
 		ScreenElements.AddEnabled ("wait", new ImageElement ("wait", 1, Color.white));
-		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
+		ScreenElements.AddDisabled ("next", CreateNextButton ());
 	}
 
 	public override void OnScreenStart (bool isHosting, bool isDecider) {
+		base.OnScreenStart (isHosting, isDecider);
 		MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
 	}
 
@@ -52,11 +52,11 @@ public class AgendaResultsScreen : GameScreen {
 		BeanPoolManager.instance.UpdateMyScore ();
 	}
 
-	protected override void OnButtonPress (ButtonPressEvent e) {
-		if (e.id == "Next") {
+	protected override void OnButtonPressEvent (ButtonPressEvent e) {
+		if (e.screen == this && e.id == "Next") { 
 			RoundState round = state as RoundState;
 			if (round.RoundNumber < 3) {
-				MessageMatcher.instance.SetMessage ("Agenda Results Next", "true");
+				MessageMatcher.instance.SetMessage ("Agenda Results next", "next screen");
 			} else {
 				GotoScreen ("Final Scoreboard", "End");
 			}
@@ -71,10 +71,8 @@ public class AgendaResultsScreen : GameScreen {
 		description.Content = defaultDescription;
 	}
 
-	void OnMessagesMatchEvent (MessagesMatchEvent e) {
-		if (e.id == "Agenda Results Next") {
-			Events.instance.Raise (new RoundEndEvent ());
-			GameStateController.instance.GotoState ("Round");
-		}
+	protected override void OnMessagesMatch () {
+		Events.instance.Raise (new RoundEndEvent ());
+		GameStateController.instance.GotoState ("Round");
 	}
 }

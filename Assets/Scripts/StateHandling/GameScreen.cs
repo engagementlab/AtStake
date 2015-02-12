@@ -6,6 +6,11 @@ public class GameScreen {
 	public readonly string name = "";
 	public readonly GameState state;
 
+	BottomButtonElement nextButton = null;
+	bool HasNext {
+		get { return (nextButton != null); }
+	}
+
 	ScreenElements screenElements = new ScreenElements ();
 	public ScreenElements ScreenElements { 
 		get { return screenElements; }
@@ -49,6 +54,11 @@ public class GameScreen {
 		return new BottomButtonElement (this, id, content, color, side);
 	}
 
+	protected BottomButtonElement CreateNextButton () {
+		nextButton = CreateBottomButton ("Next", "", "bottomPink", Side.Right);
+		return nextButton;
+	}
+
 	protected TimerElement CreateTimer (string id, int position, string content="") {
 		if (content == "")
 			content = id;
@@ -65,6 +75,10 @@ public class GameScreen {
 
 	// Host and clients hear this
 	public virtual void OnScreenStart (bool hosting, bool isDecider) {
+		if (HasNext) {
+			Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
+			nextButton.Content = "Next";
+		}
 		if (hosting) {
 			OnScreenStartHost ();
 		} else {
@@ -94,16 +108,35 @@ public class GameScreen {
 
 	public virtual void OnCountDownEnd () {}
 
+	public virtual void OnScreenEnd () {
+		Events.instance.RemoveListener<MessagesMatchEvent> (OnMessagesMatchEvent);
+	}
+
 	/**
 	 *	Messages
 	 */
 
-	void OnButtonPressEvent (ButtonPressEvent e) {
-		if (e.screen == this)
+	protected virtual void OnButtonPressEvent (ButtonPressEvent e) {
+		if (e.screen == this) {
+			if (e.id == "Next" && HasNext) {
+				nextButton.Content = "Wait";
+				MessageMatcher.instance.SetMessage (name + " next", "next screen");
+			}
 			OnButtonPress (e);
+		}
 	}
 
 	void OnCountDownEndEvent (CountDownEndEvent e) {
 		OnCountDownEnd ();
+	}
+
+	protected virtual void OnMessagesMatchEvent (MessagesMatchEvent e) {
+		if (e.id == name + " next") {
+			OnMessagesMatch ();
+		}
+	}
+
+	protected virtual void OnMessagesMatch () {
+		GameStateController.instance.GotoNextScreen ();
 	}
 }

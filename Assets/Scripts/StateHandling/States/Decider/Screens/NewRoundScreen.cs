@@ -37,7 +37,7 @@ public class NewRoundScreen : GameScreen {
 		}
 	}
 
-	void OnMessagesMatchEvent (MessagesMatchEvent e) {
+	protected override void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "New Round") {
 			instructions.Content = "Get ready!";
 			if (Player.instance.Won) {

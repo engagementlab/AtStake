@@ -40,6 +40,11 @@ public class BottomBarCanvas : MonoBehaviour {
 			if (element is BottomButtonElement) {
 				BottomButtonElement b = element as BottomButtonElement;
 				SetButton (b.Side, b);
+				if (b.Side == Side.Left) {
+					b.MiddleButton = buttonLeft;
+				} else {
+					b.MiddleButton = buttonRight;
+				}
 			}
 		}
 	}

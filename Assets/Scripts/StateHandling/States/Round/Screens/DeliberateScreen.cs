@@ -29,9 +29,11 @@ public class DeliberateScreen : StageScreen {
 		}
 	}
 
-	void OnMessagesMatchEvent (MessagesMatchEvent e) {
-		if (ThisScreen && e.id == "NoAddTime") {
+	protected override void OnMessagesMatchEvent (MessagesMatchEvent e) {
+		if (e.id == "NoAddTime") {
 			GameStateController.instance.AllPlayersGotoScreen ("Decide");
 		}
 	}
+
+	public override void OnScreenEnd () {}
 }

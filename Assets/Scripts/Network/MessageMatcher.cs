@@ -67,13 +67,13 @@ public class MessageMatcher : MonoBehaviour {
 		messages[GetPlayerIndex (playerName)] = message;
 		if (MessagesMatch ()) {
 			networkView.RPC ("RaiseMessagesMatch", RPCMode.All, id, message);
-			Clear ();
 		}
 	}
 
 	[RPC]
 	void RaiseMessagesMatch (string id, string message) {
 		Events.instance.Raise (new MessagesMatchEvent (id, message));
+		Clear ();
 	}
 
 	/**
