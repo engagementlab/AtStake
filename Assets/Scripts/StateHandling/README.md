@@ -1,3 +1,1 @@
-GameStates divide the flow of the game. They contain GameScreens and can contain logic (for example, a GameState could perform some action every time it begins)
-
-GameScreens control what gets shown on the display. Logic should exist outside of GameScreens.
+The flow of the game is divided into GameStates and GameScreens. A State is a collection of Screens, and it's somewhat arbitrary which State a Screen belongs to (it's mostly for organizational purposes). Each Screen contains a collection of ScreenElements. It's able to enable and disable these ScreenElements, and handle feedback from them (e.g. when a button is pressed).
