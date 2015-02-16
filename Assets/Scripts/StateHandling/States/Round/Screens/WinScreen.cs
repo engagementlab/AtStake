@@ -9,10 +9,11 @@ public class WinScreen : GameScreen {
 		winner = new LabelElement ("", 0, new CenterWhiteTextStyle ());
 		ScreenElements.AddEnabled ("winner", winner);
 		ScreenElements.AddEnabled ("applause", new ImageElement ("applause", 1, Color.white));
-		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
+		ScreenElements.AddEnabled ("next", CreateNextButton ());
 	}
 
 	protected override void OnScreenStartPlayer () {
+		if (AgendaVotingType.All) ScreenElements.Disable ("next");
 		if (Player.instance.Won) {
 			winner.Content = "You won this round!";
 			Player.instance.MyBeanPool.OnWin ();
@@ -20,18 +21,31 @@ public class WinScreen : GameScreen {
 			winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
 			BeanPotManager.instance.OnLose ();
 		}
-		ScreenElements.Disable ("next");
 	}
 
 	protected override void OnScreenStartDecider () {
+		if (AgendaVotingType.All) ScreenElements.Enable ("next");
 		BeanPotManager.instance.OnLose ();
 		winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
-		ScreenElements.Enable ("next");
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		if (e.id == "Next") {
-			GameStateController.instance.AllPlayersGotoNextScreen ();
+		if (AgendaVotingType.All) {
+			if (e.id == "Next") {
+				if (AgendaVotingType.All) {
+					GameStateController.instance.AllPlayersGotoNextScreen ();
+				} 
+			}
+		}
+	}
+
+	protected override void OnMessagesMatch () {
+		if (AgendaVotingType.Decider) {
+			if (Player.instance.IsDecider) {
+				GameStateController.instance.GotoNextScreen ();
+			} else {
+				GotoScreen ("Agenda Wait");
+			}
 		}
 	}
 }

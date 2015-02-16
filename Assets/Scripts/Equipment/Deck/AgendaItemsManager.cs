@@ -115,6 +115,17 @@ public class AgendaItemsManager : MonoBehaviour {
 		return null;
 	}
 
+	public void CalculateDeciderVotes () {
+
+		// Only count the Decider's votes
+		for (int i = 0; i < votableItems.Count; i ++) {
+			if (votableItems[i].VoteCount == 1) {
+				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, votableItems[i].playerName, votableItems[i].description);
+			}
+		}
+		MessageSender.instance.SendMessageToAll ("FinishReceivingWins");
+	}
+
 	void OnDeciderReceiveMessageEvent (DeciderReceiveMessageEvent e) {
 		if (e.id == "AddVote")
 			AddVote (GetVotableItem (e.message1, e.message2));
@@ -135,9 +146,6 @@ public class AgendaItemsManager : MonoBehaviour {
 				if (votableItems[i].VoteCount >= majority) {
 					won = true;
 				}
-				/*if (votableItems[i].VoteCount == majority && votableItems[i].DeciderVote) {
-					won = true;
-				}*/
 			} else {
 				if (votableItems[i].VoteCount >= majority) {
 					won = true;

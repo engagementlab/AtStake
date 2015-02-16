@@ -45,7 +45,12 @@ public class AgendaScreen : GameScreen {
 		if (AgendaItemsManager.instance.HasNextItem) {
 			RefreshScreen ();
 		} else {
-			GotoScreen ("Agenda Results");
+			if (AgendaVotingType.All) {
+				GotoScreen ("Agenda Results");
+			} else if (AgendaVotingType.Decider) {
+				AgendaItemsManager.instance.CalculateDeciderVotes ();
+				GameStateController.instance.AllPlayersGotoScreen ("Agenda Results");
+			}
 		}
 	}
 

@@ -20,7 +20,9 @@ public class AgendaResultsScreen : GameScreen {
 
 	public override void OnScreenStart (bool isHosting, bool isDecider) {
 		base.OnScreenStart (isHosting, isDecider);
-		MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
+		if (AgendaVotingType.All) {
+			MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
+		}
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
@@ -56,7 +58,8 @@ public class AgendaResultsScreen : GameScreen {
 		if (e.screen == this && e.id == "Next") { 
 			RoundState round = state as RoundState;
 			if (round.RoundNumber < 3) {
-				MessageMatcher.instance.SetMessage ("Agenda Results next", "next screen");
+				nextButton.Content = "Wait";
+				MessageMatcher.instance.SetMessage (name + " next", "next screen");
 			} else {
 				GotoScreen ("Final Scoreboard", "End");
 			}
