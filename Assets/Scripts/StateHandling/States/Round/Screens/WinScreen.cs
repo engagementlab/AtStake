@@ -6,7 +6,7 @@ public class WinScreen : GameScreen {
 	LabelElement winner;
 
 	public WinScreen (GameState state, string name = "Win") : base (state, name) {
-		winner = new LabelElement ("", 0, new CenterWhiteTextStyle ());
+		winner = new LabelElement ("", 0, new WhiteTextStyle ());
 		ScreenElements.AddEnabled ("winner", winner);
 		ScreenElements.AddEnabled ("applause", new ImageElement ("applause", 1, Color.white));
 		ScreenElements.AddEnabled ("next", CreateNextButton ());

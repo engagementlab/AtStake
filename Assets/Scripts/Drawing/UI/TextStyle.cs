@@ -68,7 +68,7 @@ public class HeaderTextStyle : TextStyle {
 	}
 }
 
-public class CenterWhiteTextStyle : TextStyle {
+public class WhiteTextStyle : TextStyle {
 	public override int Size {
 		get { return 36; }
 	}

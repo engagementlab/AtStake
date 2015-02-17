@@ -43,7 +43,7 @@ public class StageScreen : GameScreen {
 		round = state as RoundState;
 		playerName = round.PlayerName;
 		
-		ScreenElements.AddEnabled ("topLabel", new LabelElement (round.Question, 0));
+		ScreenElements.AddEnabled ("topLabel", new LabelElement (round.Question, 0, new WhiteTextStyle ()));
 		ScreenElements.AddEnabled ("timer", CreateTimer ("Timer", 1, name));
 		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
 		ScreenElements.AddEnabled ("pot", new BeanPotElement ());

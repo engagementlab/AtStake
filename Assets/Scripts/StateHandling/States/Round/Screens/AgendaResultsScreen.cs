@@ -58,7 +58,7 @@ public class AgendaResultsScreen : GameScreen {
 		if (e.screen == this && e.id == "Next") { 
 			RoundState round = state as RoundState;
 			if (round.RoundNumber < 3) {
-				nextButton.Content = "Wait";
+				ScreenElements.Get<ButtonElement> ("next").Content = "Wait";
 				MessageMatcher.instance.SetMessage (name + " next", "next screen");
 			} else {
 				GotoScreen ("Final Scoreboard", "End");
