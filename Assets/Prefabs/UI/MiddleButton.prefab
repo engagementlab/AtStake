@@ -90,7 +90,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11497024, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      - m_Target: {fileID: 11485150, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
         m_MethodName: OnButtonPress
         m_Mode: 2
         m_Arguments:

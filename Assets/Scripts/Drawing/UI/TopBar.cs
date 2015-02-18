@@ -13,8 +13,6 @@ public class TopBar : MonoBehaviour {
 	ScreenElement[] elements;
 
 	void Awake () {
-		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
-		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 		SetPoolEnabled (false);
 		SetPotEnabled (false);
 	}
@@ -52,13 +50,13 @@ public class TopBar : MonoBehaviour {
 		}
 	}
 
-	void OnChangeScreenEvent (ChangeScreenEvent e) {
+	public void OnChangeScreenEvent (ChangeScreenEvent e) {
 		screen = e.screen;
 		elements = screen.Elements;
 		UpdateScreen ();		
 	}
 
-	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
+	public void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		if (elements != null) {
 			elements = screen.Elements;
 			UpdateScreen ();

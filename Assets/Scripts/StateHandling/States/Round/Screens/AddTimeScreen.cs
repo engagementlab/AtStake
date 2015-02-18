@@ -38,7 +38,7 @@ public class AddTimeScreen : GameScreen {
 			MessageMatcher.instance.SetMessage ("NoAddTime", "true");
 			ScreenElements.Get<ButtonElement> ("done").Color = "green";
 		} else {
-			GotoScreen (currentStage);
+			GoBackScreen (currentStage);
 			MessageSender.instance.SendMessageToAll ("NoAddTime");
 		}
 	}

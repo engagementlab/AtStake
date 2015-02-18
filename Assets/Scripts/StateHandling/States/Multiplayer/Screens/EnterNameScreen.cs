@@ -9,7 +9,7 @@ public class EnterNameScreen : GameScreen {
 		ScreenElements.AddEnabled ("enter", CreateButton ("Enter", 2));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
-	
+
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Enter": 
@@ -19,7 +19,7 @@ public class EnterNameScreen : GameScreen {
 					GotoScreen ("Host or Join");
 				}
 				break;
-			case "Back": GotoScreen ("Start", "Start"); break;
+			case "Back": GotoScreen ("Start", "Start", true); break;
 		}
 	}
 }

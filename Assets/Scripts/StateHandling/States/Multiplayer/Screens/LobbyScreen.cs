@@ -56,7 +56,7 @@ public class LobbyScreen : GameScreen {
 
 	void GoBack () {
 		MultiplayerManager.instance.ExitLobby ();
-		GotoScreen (hosting ? "Host or Join" : "Games List");
+		GoBackScreen (hosting ? "Host or Join" : "Games List");
 	}
 
 	void PlayGame () {

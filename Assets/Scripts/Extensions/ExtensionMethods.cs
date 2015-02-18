@@ -35,4 +35,8 @@ public static class ExtensionMethods {
 	public static void SetHeight (this RectTransform rect, float height) {
 		rect.sizeDelta = new Vector2 (rect.sizeDelta.x, height);
 	}
+
+	public static void SetXPosition (this Transform transform, float x) {
+		transform.position = new Vector3 (x, transform.position.y, transform.position.z);
+	}
 }

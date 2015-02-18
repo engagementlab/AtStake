@@ -26,11 +26,11 @@ public class NetworkManager : MonoBehaviour {
 	Settings settings;
 
 	void Awake () {
-		settings = new Settings (3, false, 3f, 3);
-		MasterServer.ipAddress = "54.149.47.87";
-		MasterServer.port = 23466;
-		Network.natFacilitatorIP = "54.149.47.87";
-		Network.natFacilitatorPort = 50005;
+		settings = new Settings (5, false, 3f, 3);
+		MasterServer.ipAddress = ServerSettings.IP;
+		MasterServer.port = ServerSettings.MasterServerPort;
+		Network.natFacilitatorIP = ServerSettings.IP;
+		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;
 		MasterServer.ClearHostList ();
 	}
 
@@ -108,7 +108,7 @@ public class NetworkManager : MonoBehaviour {
 		List<HostData> joinable = new List<HostData> ();
 		for (int i = 0; i < hosts.Length; i ++) {
 			HostData host = hosts[i];
-			if (host.playerLimit != 0 && host.playerLimit != -1 && host.connectedPlayers < host.playerLimit) {
+			if (host.playerLimit != 0 && host.playerLimit != -1 && host.connectedPlayers < host.playerLimit-1) {
 				joinable.Add (host);
 			}
 		}
@@ -164,6 +164,20 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	#if UNITY_EDITOR && DEBUG
+
+	int maxConnectionsCache = 0;
+	int connectionsCache = 0;
+	void Update () {
+		if (maxConnectionsCache != Network.maxConnections) {
+			maxConnectionsCache = Network.maxConnections;
+			Debug.Log ("Max: " + maxConnectionsCache);
+		}
+		if (connectionsCache != Network.connections.Length) {
+			connectionsCache = Network.connections.Length;
+			Debug.Log ("Connections: " + connectionsCache);
+		}
+	}
+
 	void OnMasterServerEvent (MasterServerEvent e) {
 		if (e == MasterServerEvent.RegistrationSucceeded) {
 			Debug.Log ("Registered game at " + MasterServer.ipAddress);

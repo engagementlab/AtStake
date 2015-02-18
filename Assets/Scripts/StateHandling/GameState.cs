@@ -31,10 +31,10 @@ public class GameState {
 	*	Public functions
 	*/
 
-	public void GotoScreen (string screenName) {
+	public void GotoScreen (string screenName, bool back) {
 		for (int i = 0; i < screens.Length; i ++) {
 			if (screens[i].name == screenName) {
-				GotoScreen (i);
+				GotoScreen (i, back);
 				return;
 			}
 		}
@@ -42,42 +42,42 @@ public class GameState {
 	}
 
 	public void GotoFirstScreen () {
-		GotoScreen (0);
+		GotoScreen (0, false);
 	}
 
 	public void GotoLastScreen () {
-		GotoScreen (screens.Length - 1);
+		GotoScreen (screens.Length - 1, false);
 	}
 
 	public bool GotoNextScreen () {
 		if (screenIndex + 1 > screens.Length - 1)
 			return false;
-		GotoScreen (screenIndex + 1);
+		GotoScreen (screenIndex + 1, false);
 		return true;
 	}
 
 	public bool GotoPreviousScreen () {
 		if (screenIndex == 0)
 			return false;
-		GotoScreen (screenIndex - 1);
+		GotoScreen (screenIndex - 1, true);
 		return true;
 	}
 
 	public void GotoPreviouslyVisitedScreen () {
-		GotoScreen (previouslyVisitedIndex);
+		GotoScreen (previouslyVisitedIndex, true);
 	}
 
 	/**
 	*	Private functions
 	*/
 
-	void GotoScreen (int index) {
+	void GotoScreen (int index, bool back) {
 		screen.OnScreenEnd ();
 		previouslyVisitedIndex = screenIndex;
 		screenIndex = index;
 		screen = screens[index];
 		screen.OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
-		Events.instance.Raise (new ChangeScreenEvent (screen));
+		Events.instance.Raise (new ChangeScreenEvent (screen, back));
 	}
 
 	/**

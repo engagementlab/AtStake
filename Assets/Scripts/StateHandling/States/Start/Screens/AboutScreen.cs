@@ -11,7 +11,7 @@ public class AboutScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
-			GotoScreen ("Start");
+			GoBackScreen ("Start");
 		}
 	}
 }

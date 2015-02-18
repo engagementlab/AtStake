@@ -40,7 +40,7 @@ public class GameStateController : MonoBehaviour {
 
 		// Each GameState normally handles this message, but GameStateController is sending it here
 		// so that we don't get a bunch of messages at the start of the game
-		Events.instance.Raise (new ChangeScreenEvent (Screen));
+		Events.instance.Raise (new ChangeScreenEvent (Screen, true));
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
@@ -55,15 +55,15 @@ public class GameStateController : MonoBehaviour {
 		Events.instance.Raise (new ChangeStateEvent (state));
 	}
 
-	public void GotoScreen (string screenName, string stateName = "") {
+	public void GotoScreen (string screenName, string stateName="", bool back=false) {
 		if (stateName != "")
 			GotoState (stateName);
-		state.GotoScreen (screenName);
+		state.GotoScreen (screenName, back);
 	}
 
 	public void GotoState (string name) {
 		GotoState (states.GetStateIndex (name));
-		state.GotoFirstScreen ();
+		//state.GotoFirstScreen ();
 	}
 
 	public void GotoNextScreen () {
@@ -104,7 +104,7 @@ public class GameStateController : MonoBehaviour {
 		MessageSender.instance.ScheduleMessage ("OnGotoNextScreen");
 	}
 
-	public void AllPlayersGotoScreen (string screenName, string stateName = "") {
+	public void AllPlayersGotoScreen (string screenName, string stateName="") {
 		MessageSender.instance.ScheduleMessage (new NetworkMessage ("OnGotoScreen", screenName, stateName));
 	}
 
@@ -130,11 +130,11 @@ public class GameStateController : MonoBehaviour {
 
 	[RPC]
 	void OnSendPlayersToNextScreen () {
-		GameStateController.instance.GotoNextScreen ();
+		GotoNextScreen ();
 	}
 
 	[RPC]
 	void OnSendPlayersToScreen (string screenName, string stateName) {
-		GameStateController.instance.GotoScreen (screenName, stateName);
+		GotoScreen (screenName, stateName);
 	}
 }

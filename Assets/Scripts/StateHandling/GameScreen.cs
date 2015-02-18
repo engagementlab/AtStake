@@ -38,8 +38,12 @@ public class GameScreen {
 	 *	Protected functions
 	 */
 
-	protected void GotoScreen (string screenName, string stateName = "") {
-		GameStateController.instance.GotoScreen (screenName, stateName);
+	protected void GoBackScreen (string screenName) {
+		GameStateController.instance.GotoScreen (screenName, "", true);
+	}
+
+	protected void GotoScreen (string screenName, string stateName="", bool back=false) {
+		GameStateController.instance.GotoScreen (screenName, stateName, back);
 	}
 
 	protected ButtonElement CreateButton (string id, int position, string content="", string color="blue") {

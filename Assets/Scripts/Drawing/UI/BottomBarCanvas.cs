@@ -10,11 +10,6 @@ public class BottomBarCanvas : MonoBehaviour {
 	GameScreen screen;
 	ScreenElement[] elements;
 
-	void Awake () {
-		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
-		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
-	}
-
 	void SetButton (Side side, ButtonElement element) {
 		if (side == Side.Left) {
 			buttonLeft.Set (element);
@@ -49,13 +44,13 @@ public class BottomBarCanvas : MonoBehaviour {
 		}
 	}
 
-	void OnChangeScreenEvent (ChangeScreenEvent e) {
+	public void OnChangeScreenEvent (ChangeScreenEvent e) {
 		screen = e.screen;
 		elements = screen.Elements;
 		UpdateScreen ();		
 	}
 
-	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
+	public void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		if (elements != null) {
 			elements = screen.Elements;
 			UpdateScreen ();

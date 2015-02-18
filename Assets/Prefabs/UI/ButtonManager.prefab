@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &113086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 413086}
+  - 114: {fileID: 11413086}
+  m_Layer: 0
+  m_Name: ButtonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &413086
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11413086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea35ea62f082a48b5af2d92bd03642a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer:
+    source: {fileID: 21300000, guid: c0fc63efe515f490497013f4540f674f, type: 3}
+    pressed: {fileID: 21300000, guid: f8667e4c3d57b49eb8caf3c478878ede, type: 3}
+  blue:
+    source: {fileID: 21300000, guid: 2d0d4c5eec985405e8efbd2a8babb99f, type: 3}
+    pressed: {fileID: 21300000, guid: 283accdc29631430e8a1d08bc2d48ece, type: 3}
+  green:
+    source: {fileID: 21300000, guid: 5d1fc17b715f14eea843d26233a6059b, type: 3}
+    pressed: {fileID: 21300000, guid: daa3d2050e12a45f897bb35cc69a5177, type: 3}
+  orange:
+    source: {fileID: 21300000, guid: 9c902329a2caa43259503b2ffd7eb94b, type: 3}
+    pressed: {fileID: 21300000, guid: 9c72c0f3064044e6a84886d1a740e787, type: 3}
+  pink:
+    source: {fileID: 21300000, guid: f5be7bab4b77f453cbc92947e50feac2, type: 3}
+    pressed: {fileID: 21300000, guid: 18d5b2d5776ed41a1b809402fb02a618, type: 3}
+  bottomOrange:
+    source: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+    pressed: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+  bottomPink:
+    source: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+    pressed: {fileID: 21300000, guid: 4de985bd0b7224804b526062912b8396, type: 3}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 113086}
+  m_IsPrefabParent: 1
+  m_IsExploded: 1

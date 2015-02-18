@@ -10,7 +10,6 @@ public class BackgroundCanvas : MonoBehaviour {
 
 	void Awake () {
 		SetTheme (new StartTheme ());
-		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
 	}
 
 	public void SetTheme (BackgroundCanvasTheme theme) {
@@ -19,7 +18,7 @@ public class BackgroundCanvas : MonoBehaviour {
 		background.color = theme.Background;
 	}
 
-	void OnChangeScreenEvent (ChangeScreenEvent e) {
+	public void OnChangeScreenEvent (ChangeScreenEvent e) {
 		string name = e.screen.name;
 		BackgroundCanvasTheme theme = new StartTheme ();
 		switch (name) {

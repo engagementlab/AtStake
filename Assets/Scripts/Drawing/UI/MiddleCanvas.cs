@@ -18,8 +18,6 @@ public class MiddleCanvas : MonoBehaviour {
 	GameScreen screen;
 
 	void Awake () {
-		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
-		Events.instance.AddListener<UpdateDrawerEvent> (OnUpdateDrawerEvent);
 		AlignMiddle ();
 	}
 
@@ -30,6 +28,7 @@ public class MiddleCanvas : MonoBehaviour {
 		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 0.5f);
 		buttonGroupTransform.anchorMax = new Vector2 (0.5f, 0.5f); 
 		buttonGroupTransform.anchoredPosition = new Vector2 (0, -38);
+		buttonGroupTransform.sizeDelta = new Vector2 (750, 1009);
 	}
 
 	public void AlignUpper () {
@@ -39,6 +38,7 @@ public class MiddleCanvas : MonoBehaviour {
 		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 1);
 		buttonGroupTransform.anchorMax = new Vector2 (0.5f, 1); 
 		buttonGroupTransform.anchoredPosition = new Vector2 (0, -200);
+		buttonGroupTransform.sizeDelta = new Vector2 (750, 1009);
 	}
  
 	public void OnButtonPress (MiddleButton button) {
@@ -100,14 +100,14 @@ public class MiddleCanvas : MonoBehaviour {
 		}
 	}
 
-	void OnChangeScreenEvent (ChangeScreenEvent e) {
+	public void OnChangeScreenEvent (ChangeScreenEvent e) {
 		screen = e.screen;
 		elements = screen.Elements;
 		UpdateAlignment (screen.Alignment);
 		UpdateScreen ();
 	}
 
-	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
+	public void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		if (elements != null) {
 			elements = screen.Elements;
 			UpdateScreen ();

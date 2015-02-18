@@ -59,7 +59,7 @@ public class RoleScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Back") {
-			GotoScreen (StageScreen.CurrentStage);
+			GoBackScreen (StageScreen.CurrentStage);
 		}
 	}
 

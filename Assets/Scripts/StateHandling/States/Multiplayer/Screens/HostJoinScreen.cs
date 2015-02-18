@@ -31,7 +31,7 @@ public class HostJoinScreen : GameScreen {
 				ScreenElements.Enable ("searching");
 				break;
 			case "Back": 
-				GotoScreen ("Enter Name"); 
+				GoBackScreen ("Enter Name"); 
 				break;
 		}
 	}

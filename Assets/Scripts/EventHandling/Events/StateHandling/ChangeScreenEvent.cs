@@ -3,9 +3,11 @@ using System.Collections;
 
 public class ChangeScreenEvent : GameEvent {
 
-	public GameScreen screen;
+	public readonly GameScreen screen;
+	public readonly bool back = false;
 
-	public ChangeScreenEvent (GameScreen screen) {
+	public ChangeScreenEvent (GameScreen screen, bool back) {
 		this.screen = screen;
+		this.back = back;
 	}
 }

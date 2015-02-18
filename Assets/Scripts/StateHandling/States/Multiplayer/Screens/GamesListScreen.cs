@@ -7,13 +7,19 @@ public class GamesListScreen : GameScreen {
 
 	public GamesListScreen (GameState state, string name = "Games List") : base (state, name) {
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
-		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		ScreenElements.AddEnabled ("copy", new LabelElement ("Choose a game to join", 0));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
 
-	public override void OnScreenStart (bool hosting, bool isDecider) {}
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
+	}
+
+	public override void OnScreenEnd () {
+		base.OnScreenEnd ();
+		Events.instance.RemoveListener<RegisterEvent> (OnRegisterEvent);
+	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		ScreenElements.SuspendUpdating ();
@@ -29,7 +35,7 @@ public class GamesListScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
-			case "Back": GotoScreen ("Host or Join"); break;
+			case "Back": GoBackScreen ("Host or Join"); break;
 		}
 		char c = e.id[0];
 		int n = (int)char.GetNumericValue (c);

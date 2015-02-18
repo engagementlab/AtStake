@@ -127,8 +127,11 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		if (e.hosts.Length > 0)
+		if (GameStateController.instance.Screen.name == "Games List") {
+			Events.instance.Raise (new UpdateDrawerEvent ());
+		} else {
 			GotoScreen ("Games List");
+		}
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
@@ -195,7 +198,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	[RPC]
-	void SendRefreshListMessage() {
+	void SendRefreshListMessage () {
 		Events.instance.Raise (new RefreshPlayerListEvent (player.GetPlayerNames ()));
 	}
 
