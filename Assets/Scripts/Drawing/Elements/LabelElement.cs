@@ -35,5 +35,6 @@ public class LabelElement : ScreenElement {
 		text.fontSize = style.Size;
 		text.alignment = style.Anchor;
 		text.color = style.Color;
+		text.fontStyle = style.FontStyle;
 	}
 }

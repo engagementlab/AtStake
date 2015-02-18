@@ -9,18 +9,18 @@ public class ChooseDeckScreen : GameScreen {
 
 	public ChooseDeckScreen (GameState state, string name = "Choose Deck") : base (state, name) {
 		Events.instance.AddListener<UpdateDeckListEvent> (OnUpdateDeckListEvent);
-		title = new LabelElement ("Please wait while the host chooses a deck", 0);
+		title = new LabelElement (Copy.ChooseDeckClient, 0);
 		ScreenElements.AddEnabled ("title", title);
 	}
 	
 	protected override void OnScreenStartHost () {
 
 		ScreenElements.SuspendUpdating ();
-		title.Content = "Choose a deck";
+		title.Content = Copy.ChooseDeckHost;
 
 		int localDecksCount = dl.LocalDecks.Count;
 		int hostedDecksCount = dl.HostedDecks.Count;
-		int elementsCount = localDecksCount + hostedDecksCount;//+2;
+		int elementsCount = localDecksCount + hostedDecksCount;
 
 		for (int i = 0; i < localDecksCount; i ++) {
 			string name = dl.LocalDecks[i].name;

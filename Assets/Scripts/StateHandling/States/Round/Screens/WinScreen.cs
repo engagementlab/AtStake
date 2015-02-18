@@ -15,10 +15,10 @@ public class WinScreen : GameScreen {
 	protected override void OnScreenStartPlayer () {
 		if (AgendaVotingType.All) ScreenElements.Disable ("next");
 		if (Player.instance.Won) {
-			winner.Content = "You won this round!";
+			winner.Content = Copy.YouWin; 
 			Player.instance.MyBeanPool.OnWin ();
 		} else {
-			winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
+			winner.Content = Copy.PlayerWin;
 			BeanPotManager.instance.OnLose ();
 		}
 	}
@@ -26,7 +26,7 @@ public class WinScreen : GameScreen {
 	protected override void OnScreenStartDecider () {
 		if (AgendaVotingType.All) ScreenElements.Enable ("next");
 		BeanPotManager.instance.OnLose ();
-		winner.Content = string.Format ("{0} won this round", Player.instance.WinningPlayer);
+		winner.Content = Copy.PlayerWin;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

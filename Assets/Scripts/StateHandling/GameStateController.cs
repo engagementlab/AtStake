@@ -63,7 +63,6 @@ public class GameStateController : MonoBehaviour {
 
 	public void GotoState (string name) {
 		GotoState (states.GetStateIndex (name));
-		//state.GotoFirstScreen ();
 	}
 
 	public void GotoNextScreen () {

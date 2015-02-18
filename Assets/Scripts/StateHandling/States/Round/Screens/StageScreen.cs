@@ -30,6 +30,10 @@ public class StageScreen : GameScreen {
 		}
 	}
 
+	protected virtual string TimerText {
+		get { return ""; }
+	}
+
 	public StageScreen (GameState state, string name) : base (state, name) {}
 
 	protected void InitStageScreen (float timerDuration) {
@@ -44,10 +48,11 @@ public class StageScreen : GameScreen {
 		playerName = round.PlayerName;
 		
 		ScreenElements.AddEnabled ("topLabel", new LabelElement (round.Question, 0, new WhiteTextStyle ()));
-		ScreenElements.AddEnabled ("timer", CreateTimer ("Timer", 1, name));
+		ScreenElements.AddEnabled ("timer", CreateTimer ("Timer", 1, TimerText));
 		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
 		ScreenElements.AddEnabled ("pot", new BeanPotElement ());
-		ScreenElements.AddDisabled ("roleCard", CreateButton ("Role Card", 3));
+		ScreenElements.AddDisabled ("roleCard", CreateButton ("View Role Card", 3));
+		ScreenElements.AddDisabled ("timesUp", new LabelElement ("", 4, new WhiteTextStyle ()));
 		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 		timer = ScreenElements.Get<TimerElement> ("timer");
 	}
@@ -65,6 +70,7 @@ public class StageScreen : GameScreen {
 	protected void InitPlayerScreen () {
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("next");
+		ScreenElements.Disable ("timesUp");
 		ScreenElements.Get<LabelElement> ("topLabel").Content = round.Question;
 		ScreenElements.Enable ("roleCard");
 		timer.Interactable = false;
@@ -76,8 +82,9 @@ public class StageScreen : GameScreen {
 		players = round.Players;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("roleCard");
+		ScreenElements.Disable ("timesUp");
 		ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.GetInstructions (name);
-		timer.Content = name;
+		timer.Content = TimerText;
 		timer.Interactable = true;
 		ScreenElements.Disable ("next");
 		ScreenElements.EnableUpdating ();
@@ -85,7 +92,7 @@ public class StageScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
-			case "Role Card": GotoScreen ("Role"); break;
+			case "View Role Card": GotoScreen ("Role"); break;
 			case "Next": OnPressNext (); break;
 			case "Timer": HandleTimerPress (); break;
 		}

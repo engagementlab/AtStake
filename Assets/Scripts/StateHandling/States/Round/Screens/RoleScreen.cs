@@ -36,7 +36,7 @@ public class RoleScreen : GameScreen {
 
 	protected void CreateAgenda (AgendaItem[] items) {
 		ScreenElements.SuspendUpdating ();
-		ScreenElements.AddEnabled ("agendaTitle", new LabelElement ("Agenda", 2, new DefaultCenterTextStyle ()));
+		ScreenElements.AddEnabled ("agendaTitle", new LabelElement ("Secret Agenda", 2, new DefaultCenterTextStyle ()));
 		int index = 0;
 		int position = 3;
 		for (int i = 0; i < items.Length; i ++) {
@@ -46,7 +46,7 @@ public class RoleScreen : GameScreen {
 			string descriptionID = "description" + i.ToString ();
 			string description = item.description;
 			string bonusID = "bonus" + i.ToString ();
-			string bonus = string.Format ("Bonus: +{0} points", item.bonus);
+			string bonus = string.Format ("Bonus: +{0} coins", item.bonus);
 
 			ScreenElements.Add<LabelElement> (descriptionID, new LabelElement (description, position, new SmallTextStyle ())).Content = description;
 			position ++;

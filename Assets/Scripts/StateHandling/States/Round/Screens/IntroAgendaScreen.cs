@@ -4,7 +4,7 @@ using System.Collections;
 public class IntroAgendaScreen : IntroductionScreen {
 
 	public IntroAgendaScreen (GameState state, string name = "Agenda") : base (state, name) {
-		ScreenElements.AddDisabled ("description", new LabelElement ("Have everyone silently review their secret agenda, then press next.", 0));
+		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroAgenda, 0));
 	}
 
 	protected override void OnScreenStartDecider () {

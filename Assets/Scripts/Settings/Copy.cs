@@ -3,40 +3,50 @@ using System.Collections;
 
 public static class Copy {
 
-	static public string About {
+	static public readonly string About = 
+		"@Stake is a game that fosters democracy, empathy, " + 
+		"and creative problem solving for civic issues. " +
+		"Players take on a variety of roles and pitch ideas " +
+		"under a time pressure, competing to produce the best " +
+		"idea in the eyes of the table's \"Decider.\"" + 
+		"\n\nDesigned by the Engagement Lab at Emerson College";
+
+	static public readonly string EnterName 			= "Type in your name";
+	static public readonly string NewDeck 				= "Here's where people will build new desks";
+	static public readonly string ChooseDeckHost 		= "Please choose a deck:";
+	static public readonly string ChooseDeckClient 		= "Please wait while the host chooses a deck.";
+	static public readonly string ChooseDecider 		= string.Format ("Please select your Decider. The Decider gets {0} coins while everyone else will get {1}.", BeanValues.deciderStart, BeanValues.playerStart);
+	static public readonly string IntroBio				= "Have everyone introduce themselves, then press next.";
+	static public readonly string IntroAgenda			= "Have everyone silently review their secret agenda, then press next.";
+	static public readonly string QuestionInstructions	= "Decider Instructions: Give all players some time to read the question. When everyone is ready hit next.";
+	static public readonly string BrainstormTimeDecider = "Time's up, press next.";
+	static public readonly string BrainstormTimePlayer	= "Time's up, pencils down.";
+	static public readonly string AddTime				= string.Format ("Time's up but you can buy an extra {0} seconds for {1} coins.", TimerValues.extraTime, BeanValues.addTime);
+	static public readonly string AddTimeAdd			= string.Format ("+{0} Seconds", TimerValues.extraTime);
+	static public readonly string AddTimeDone			= "I'm Done";
+	static public readonly string DecideScreenPlayer 	= "Please wait while the Decider chooses the winning proposal";
+	static public readonly string DecideScreenDecider 	= "Decider Instructions: Choose the player with the best proposal";
+	static public readonly string YouWin				= "You won this round! You are the next round's Decider!";
+	static public readonly string AgendaWait			= "Decider is ruling on Agendas. Feel free to weigh in.";
+
+	static public string PlayerWin {
 		get {
-			return "@Stake is a game that fosters democracy, empathy, and creative problem solving for civic issues. Players take on a variety of roles and pitch ideas under a time pressure, competing to produce the best idea in the eyes of the table's \"Decider.\"";
+			return string.Format ("{0} won this round! They are the next round's Decider!", Player.instance.WinningPlayer);
 		}
 	}
 
-	static public string Instructions {
-		get {
-			return "Instructions on how to play the game:\n1) purchase a new microwave and\n2) reconnect with your older sister";
-		}
+	static public string AgendaItemVote (string playerName, string description) {
+		return string.Format ("Decider Instructions: Press yes if you think {0}'s plan included this agenda item:\n{1}", playerName, description);
 	}
 
-	static public string NewDeck {
-		get {
-			return "Here's where people will build new desks";
-		}
-	}
-
-	static public string DecideScreenPlayer {
-		get {
-			return "Please wait while the Decider chooses the winning proposal";
-		}
-	}
-
-	static public string DecideScreenDecider {
-		get {
-			return "Choose the player with the best proposal";
-		}
+	static public string ScoreboardPot (int coinCount) {
+		return string.Format ("In the pot: {0} coins", coinCount);
 	}
 
 	static public string[,] stageInstructions = new string[,] {
-		{ "Brainstorm", string.Format ("All players brainstorm silently for {0} seconds", TimerValues.brainstorm) },
-		{ "Pitch", string.Format ("Now have each player pitch their idea for {0} seconds.", TimerValues.pitch) },
-		{ "Deliberate", string.Format ("Have players discuss their pitches for {0} seconds.", TimerValues.deliberate) }
+		{ "Brainstorm", string.Format ("Decider Instructions: Press play to start \"Think\" timer.") },
+		{ "Pitch", string.Format ("Decider Instructions: Press play to start {0} pitch.", "Player 1's") },
+		{ "Deliberate", string.Format ("Decider Instructions: You will now lead a conversation about the players' pitches. Press play to start the Deliberation timer.") }
 	};
 
 	static public string GetInstructions (string stageName) {

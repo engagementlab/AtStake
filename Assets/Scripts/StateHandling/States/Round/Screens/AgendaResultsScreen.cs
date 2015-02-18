@@ -6,6 +6,7 @@ public class AgendaResultsScreen : GameScreen {
 
 	LabelElement description;
 	string defaultDescription = "please !! wait while everyone finishes voting :)";
+	List<AgendaItem> winningItems;
 
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
 		
@@ -18,8 +19,8 @@ public class AgendaResultsScreen : GameScreen {
 		ScreenElements.AddDisabled ("next", CreateNextButton ());
 	}
 
-	public override void OnScreenStart (bool isHosting, bool isDecider) {
-		base.OnScreenStart (isHosting, isDecider);
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		base.OnScreenStart (hosting, isDecider);
 		if (AgendaVotingType.All) {
 			MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
 		}
@@ -31,13 +32,18 @@ public class AgendaResultsScreen : GameScreen {
 			return;
 		}
 
+		winningItems = AgendaItemsManager.instance.WinningItems;
+		Update ();
+	}
+
+	void Update () {
+
 		Player player = Player.instance;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.DisableAll ();
 		ScreenElements.Enable ("description");
 		ScreenElements.Enable ("next");
 		description.Content = "Winning Agenda Items:";
-		List<AgendaItem> winningItems = AgendaItemsManager.instance.WinningItems;
 
 		for (int i = 0; i < winningItems.Count; i ++) {
 			string item = string.Format ("{0}: {1} +{2} points", winningItems[i].playerName, winningItems[i].description, winningItems[i].bonus);
@@ -76,6 +82,6 @@ public class AgendaResultsScreen : GameScreen {
 
 	protected override void OnMessagesMatch () {
 		Events.instance.Raise (new RoundEndEvent ());
-		GameStateController.instance.GotoState ("Round");
+		GotoScreen ("Scoreboard", "Round");
 	}
 }

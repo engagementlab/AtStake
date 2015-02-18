@@ -6,6 +6,9 @@ public abstract class TextStyle {
 	public abstract int Size { get; }
 	public abstract TextAnchor Anchor { get; }
 	public abstract Color Color { get; }
+	public virtual FontStyle FontStyle { 
+		get { return FontStyle.Normal; }
+	}
 }
 
 public class DefaultTextStyle : TextStyle {
@@ -58,7 +61,7 @@ public class BonusTextStyle : TextStyle {
 
 public class HeaderTextStyle : TextStyle {
 	public override int Size {
-		get { return 100; }
+		get { return 75; }
 	}	
 	public override TextAnchor Anchor {
 		get { return TextAnchor.UpperLeft; }
@@ -77,5 +80,20 @@ public class WhiteTextStyle : TextStyle {
 	}
 	public override Color Color {
 		get { return Palette.White; }
+	}
+}
+
+public class DeciderInstructionsStyle : TextStyle {
+	public override int Size {
+		get { return 32; }
+	}
+	public override TextAnchor Anchor {
+		get { return TextAnchor.UpperLeft; }
+	}
+	public override Color Color {
+		get { return Palette.Grey; }
+	}
+	public override FontStyle FontStyle {
+		get { return FontStyle.Italic; }
 	}
 }

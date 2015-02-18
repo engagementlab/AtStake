@@ -46,10 +46,14 @@ public class PitchScreen : StageScreen {
 		}
 	}
 
+	protected override string TimerText {
+		get { return "Pitch!"; }
+	}
+
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
 		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
-		currentPitcher = new LabelElement ("", 5);
-		nextPitcher = new LabelElement ("", 6);
+		currentPitcher = new LabelElement ("", 5, new WhiteTextStyle ());
+		nextPitcher = new LabelElement ("", 6, new WhiteTextStyle ());
 		ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
 		ScreenElements.AddEnabled ("nextPitcher", nextPitcher);
 		InitStageScreen (TimerValues.pitch);
@@ -73,7 +77,8 @@ public class PitchScreen : StageScreen {
 	}
 
 	public override void OnCountDownEnd () {
-		if (ThisScreen && pitching) {
+		if (!ThisScreen) return;
+		if (pitching) {
 			GotoScreen ("Add Time");
 		}
 	}

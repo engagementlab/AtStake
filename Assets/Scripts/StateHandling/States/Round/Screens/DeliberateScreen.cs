@@ -3,6 +3,10 @@ using System.Collections;
 
 public class DeliberateScreen : StageScreen {
 	
+	protected override string TimerText {
+		get { return "Deliberate!"; }
+	}
+
 	public DeliberateScreen (GameState state, string name = "Deliberate") : base (state, name) {
 		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		InitStageScreen (TimerValues.deliberate);
@@ -18,11 +22,6 @@ public class DeliberateScreen : StageScreen {
 		}
 	}
 
-	protected override void OnPressNext () {
-		if (!Timer.instance.CountingDown)
-			GameStateController.instance.AllPlayersGotoScreen ("Decide");
-	}
-
 	protected override void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		if (ThisScreen && e.id == "YesAddTime") {
 			Timer.instance.AllAddSeconds (TimerValues.extraTime);
@@ -30,7 +29,7 @@ public class DeliberateScreen : StageScreen {
 	}
 
 	protected override void OnMessagesMatchEvent (MessagesMatchEvent e) {
-		if (e.id == "NoAddTime") {
+		if (e.id == "NoAddTime" && Player.instance.IsDecider) {
 			GameStateController.instance.AllPlayersGotoScreen ("Decide");
 		}
 	}

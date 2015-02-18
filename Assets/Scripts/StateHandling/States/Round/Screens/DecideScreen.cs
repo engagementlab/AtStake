@@ -10,8 +10,8 @@ public class DecideScreen : GameScreen {
 
 	public DecideScreen (GameState state, string name = "Decide") : base (state, name) {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
-		ScreenElements.AddDisabled ("instructionsDecider", new LabelElement (Copy.DecideScreenDecider, 0));
-		ScreenElements.AddDisabled ("instructionsPlayer", new LabelElement (Copy.DecideScreenPlayer, 0));
+		ScreenElements.AddDisabled ("instructionsDecider", new LabelElement (Copy.DecideScreenDecider, 0, new WhiteTextStyle ()));
+		ScreenElements.AddDisabled ("instructionsPlayer", new LabelElement (Copy.DecideScreenPlayer, 0, new WhiteTextStyle ()));
 		ScreenElements.AddDisabled ("wait", new ImageElement ("wait", 1, Color.black));
 		ScreenElements.AddDisabled ("confirm", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 	}

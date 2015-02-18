@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Unused
 public class InstructionsScreen : GameScreen {
 	
 	public InstructionsScreen (GameState state, string name = "Instructions") : base (state, name) {
@@ -8,7 +9,7 @@ public class InstructionsScreen : GameScreen {
 			new LabelElement (Copy.Instructions, 0),
 			CreateBottomButton ("Back", "", "bottomOrange", Side.Left)
 		});*/
-		ScreenElements.AddEnabled ("copy", new LabelElement (Copy.Instructions, 0));
+		//ScreenElements.AddEnabled ("copy", new LabelElement (Copy.Instructions, 0));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back", "", "bottomOrange", Side.Left));
 	}
 

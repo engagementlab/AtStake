@@ -4,9 +4,11 @@ using System.Collections;
 public class AddTimeScreen : GameScreen {
 
 	public AddTimeScreen (GameState state, string name = "Add Time") : base (state, name) {
-		ScreenElements.AddEnabled ("instructions", new LabelElement ("Time's up but for a couple beans I can give ya 30 more seconds!!", 0));
-		ScreenElements.AddEnabled ("add", CreateButton ("+30 Seconds", 1));
-		ScreenElements.AddEnabled ("done", CreateButton ("I'm Done", 2));
+		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
+		ScreenElements.AddEnabled ("pot", new BeanPotElement ());
+		ScreenElements.AddEnabled ("instructions", new LabelElement (Copy.AddTime, 0, new WhiteTextStyle ()));
+		ScreenElements.AddEnabled ("add", CreateButton ("+30 Seconds"/*Copy.AddTimeAdd*/, 1));
+		ScreenElements.AddEnabled ("done", CreateButton (Copy.AddTimeDone, 2));
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

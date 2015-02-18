@@ -24,6 +24,7 @@ public class NetworkManager : MonoBehaviour {
 	}
 	
 	Settings settings;
+	bool hosting = false;
 
 	void Awake () {
 		settings = new Settings (5, false, 3f, 3);
@@ -40,6 +41,7 @@ public class NetworkManager : MonoBehaviour {
 
 	public void HostGame (string instanceGameName) {
 		StartServer (instanceGameName);
+		hosting = true;
 	}
 
 	void StartServer (string gameInstanceName) {
@@ -69,6 +71,7 @@ public class NetworkManager : MonoBehaviour {
 	 */
 
 	public void JoinGame () {
+		hosting = false;
 		MasterServer.ClearHostList ();
 		StartCoroutine (FindHostsWrapper ());
 	}
@@ -76,7 +79,7 @@ public class NetworkManager : MonoBehaviour {
 	IEnumerator FindHostsWrapper () {
 		int attempts = settings.attempts;
 		float timeout = settings.timeoutDuration;
-		while (attempts > 0) {
+		while (attempts > 0 && !hosting) {
 			attempts --;
 			yield return StartCoroutine (FindHosts (timeout, attempts == 0));
 		}
@@ -86,7 +89,7 @@ public class NetworkManager : MonoBehaviour {
 			
 		MasterServer.RequestHostList (gameName);
 
-		while (hosts.Length == 0 && timeout > 0f) {
+		while (hosts.Length == 0 && timeout > 0f && !hosting) {
 			hosts = MasterServer.PollHostList ();
 			timeout -= Time.deltaTime;
 			yield return null;

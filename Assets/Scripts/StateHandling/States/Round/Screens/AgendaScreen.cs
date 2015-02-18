@@ -13,8 +13,8 @@ public class AgendaScreen : GameScreen {
 
 		progress = new LabelElement ("", 0);
 		description = new LabelElement ("", 1);
-		yesButton = CreateButton ("yah", 2);
-		noButton = CreateButton ("nah", 3);
+		yesButton = CreateButton ("Yes", 2);
+		noButton = CreateButton ("No", 3);
 
 		ScreenElements.AddEnabled ("progress", progress);
 		ScreenElements.AddEnabled ("description", description);
@@ -29,14 +29,14 @@ public class AgendaScreen : GameScreen {
 			GotoScreen ("Agenda Results");
 			return;
 		}
-		progress.Content = string.Format ("{0} of {1} items", aiManager.CurrentIndex, aiManager.TotalItems);
-		description.Content = string.Format ("Vote yes if you think {0}'s proposal {1}", Player.instance.WinningPlayer, currentItem.description);
+		progress.Content = string.Format ("{0} / {1}", aiManager.CurrentIndex, aiManager.TotalItems);
+		description.Content = Copy.AgendaItemVote (Player.instance.WinningPlayer, currentItem.description); //string.Format ("Vote yes if you think {0}'s proposal {1}", Player.instance.WinningPlayer, currentItem.description);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
-			case "yah": AddVote (); break;
-			case "nah": break;
+			case "Yes": AddVote (); break;
+			case "No": break;
 		}
 		HandleGotoScreen ();
 	}
@@ -48,8 +48,8 @@ public class AgendaScreen : GameScreen {
 			if (AgendaVotingType.All) {
 				GotoScreen ("Agenda Results");
 			} else if (AgendaVotingType.Decider) {
-				AgendaItemsManager.instance.CalculateDeciderVotes ();
 				GameStateController.instance.AllPlayersGotoScreen ("Agenda Results");
+				AgendaItemsManager.instance.CalculateDeciderVotes ();
 			}
 		}
 	}

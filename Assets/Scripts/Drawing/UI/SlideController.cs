@@ -9,6 +9,7 @@ public class SlideController : MonoBehaviour {
 	UIScreen nextScreen;
 
 	float slideTime = 0.33f;
+	bool sliding = false;
 
 	bool firstScreen = true;
 
@@ -19,22 +20,35 @@ public class SlideController : MonoBehaviour {
 		nextScreen = screen2;
 	}
 
-	void SlideLeft () {
+	IEnumerator SlideLeft () {
+		while (sliding) {
+			yield return null;
+		}
 		currentScreen.SlideLeft (slideTime);
 		nextScreen.SlideLeft (slideTime);
+		StartSlide ();
 		Invoke ("EndSlide", slideTime);
 	}
 
-	void SlideRight () {
+	IEnumerator SlideRight () {
+		while (sliding) {
+			yield return null;
+		}
 		currentScreen.SlideRight (slideTime);
 		nextScreen.SlideRight (slideTime);
+		StartSlide ();
 		Invoke ("EndSlide", slideTime);
 	}
 
-	void EndSlide () {
+	void StartSlide () {
+		sliding = true;
 		UIScreen tempScreen = currentScreen;
 		currentScreen = nextScreen;
 		nextScreen = tempScreen;
+	}
+
+	void EndSlide () {
+		sliding = false;
 	}
 
 	void OnChangeScreenEvent (ChangeScreenEvent e) {
@@ -44,9 +58,9 @@ public class SlideController : MonoBehaviour {
 		} else {
 			nextScreen.OnChangeScreenEvent (e);
 			if (e.back) {
-				SlideRight ();
+				StartCoroutine (SlideRight ());
 			} else {
-				SlideLeft ();
+				StartCoroutine (SlideLeft ());
 			}
 		}
 	}
