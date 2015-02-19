@@ -52,7 +52,7 @@ public class StageScreen : GameScreen {
 		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
 		ScreenElements.AddEnabled ("pot", new BeanPotElement ());
 		ScreenElements.AddDisabled ("roleCard", CreateButton ("View Role Card", 3));
-		ScreenElements.AddDisabled ("timesUp", new LabelElement ("", 4, new WhiteTextStyle ()));
+		ScreenElements.AddDisabled ("timesUp", new LabelElement ("", 4, new CenteredWhiteItalicsStyle ()));
 		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 		timer = ScreenElements.Get<TimerElement> ("timer");
 	}

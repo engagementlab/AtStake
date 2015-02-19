@@ -68,6 +68,7 @@ public class RoleScreen : GameScreen {
 			ScreenElements.Disable ("back");
 		} else {
 			CreateRoleCard ();
+			ScreenElements.Enable ("back");
 		}
 	}
 }

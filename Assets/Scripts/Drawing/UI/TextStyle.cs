@@ -97,3 +97,18 @@ public class DeciderInstructionsStyle : TextStyle {
 		get { return FontStyle.Italic; }
 	}
 }
+
+public class CenteredWhiteItalicsStyle : TextStyle {
+	public override int Size {
+		get { return 32; }
+	}
+	public override TextAnchor Anchor {
+		get { return TextAnchor.UpperCenter; }
+	}
+	public override Color Color {
+		get { return Palette.White; }
+	}
+	public override FontStyle FontStyle {
+		get { return FontStyle.Italic; }
+	}
+}

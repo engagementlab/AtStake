@@ -29,6 +29,7 @@ public class HostJoinScreen : GameScreen {
 			case "Join": 
 				MultiplayerManager.instance.JoinGame (); 
 				ScreenElements.Enable ("searching");
+				ScreenElements.Disable ("nogames");
 				break;
 			case "Back": 
 				GoBackScreen ("Enter Name"); 

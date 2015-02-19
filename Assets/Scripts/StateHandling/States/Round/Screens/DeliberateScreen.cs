@@ -15,6 +15,7 @@ public class DeliberateScreen : StageScreen {
 	public override void OnCountDownEnd () {
 		if (ThisScreen) {
 			if (Player.instance.IsDecider) {
+				ScreenElements.Enable ("timesUp");
 				MessageMatcher.instance.SetMessage ("NoAddTime", "true");
 			} else {
 				GotoScreen ("Add Time");

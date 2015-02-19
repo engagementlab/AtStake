@@ -1,0 +1,226 @@
+{
+	"name": "participatory",
+	"questions": [
+			"How can we create more access to public spaces for young people in the community?",
+			"How can we improve mobility of senior citizens with in the city?",
+			"How can we improve safety for women and girls?"
+	],
+	"roles": [
+		{
+			"name": "Civil Rights Activist",
+			"bio": "Has advocated for racial equality for over 50 years",
+			"agenda_items": [
+				{
+					"description": "Engagement of minority populations",
+					"bonus": 1
+				},
+				{
+					"description": "Diverse communities involved in the design",
+					"bonus": 1
+				},
+				{
+					"description": "Public transportation improvements",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Artist",
+			"bio": "Creative thinker who expresses complex ideas through art",
+			"agenda_items": [
+				{
+					"description": "Innovative use of public space for community engagement",
+					"bonus": 1
+				},
+				{
+					"description": "Venues for artists to display their work",
+					"bonus": 1
+				},
+				{
+					"description": "Artist participation in the design",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Minister",
+			"bio": "Deeply committed to social justice, leads a large church in a low-income neighborhood.",
+			"agenda_items": [
+				{
+					"description": "Intentional efforts to include diverse populations",
+					"bonus": 1
+				},
+				{
+					"description": "An important role for faith communities",
+					"bonus": 1
+				},
+				{
+					"description": "Ability to accommodate large community gatherings ",
+					"bonus": 2
+				}
+			]
+		},
+        {
+			"name": "Middle-School Principal",
+			"bio": "Running a diverse middle school for 30 years, valued community leader",
+			"agenda_items": [
+				{
+					"description": "Safety and accessibility for youth ",
+					"bonus": 1
+				},
+				{
+					"description": "Student and teacher collaboration",
+					"bonus": 1
+				},
+				{
+					"description": "Specific program opportunities for youth participation",
+					"bonus": 2
+				}
+			]
+        },
+        {
+			"name": "Sheriff",
+			"bio": "Young head of police unit, committed to low crime rates",
+			"agenda_items": [
+				{
+					"description": "Ease of visibility and entry if needed by the police",
+					"bonus": 1
+				},
+				{
+					"description": "Supports sharing emergency response resources",
+					"bonus": 1
+				},
+				{
+					"description": "Minimizes crime",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Newspaper Editor",
+			"bio": "Seasoned professional with an ear in city politics",
+			"agenda_items": [
+				{
+					"description": "Newsworthy public events",
+					"bonus": 1
+				},
+				{
+					"description": "Collaborates with local bloggers and writers",
+					"bonus": 1
+				},
+				{
+					"description": "Free publicity for media partners",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Community Organizer",
+			"bio": "Dedicated to supporting the voice of underrepresented populations",
+			"agenda_items": [
+				{
+					"description": "Development of new community leaders",
+					"bonus": 1
+				},
+				{
+					"description": "Seeks and incorporates community input",
+					"bonus": 1
+				},
+				{
+					"description": "Community groups are able to host gatherings",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Unemployed Welder",
+			"bio": "Can’t find work after 20 years in manufacturing",
+			"agenda_items": [
+				{
+					"description": "Ideas to boost employment locally ",
+					"bonus": 1
+				},
+				{
+					"description": "Opportunities for paid construction work ",
+					"bonus": 1
+				},
+				{
+					"description": "Prominent voice for people without jobs/titles",
+					"bonus": 2
+				}
+			]
+		},
+		{
+			"name": "Coffee Shop Owner",
+			"bio": "Started and runs a coffee shop where diverse people meet",
+			"agenda_items": [
+				{
+					"description": "Focus on neighborhood economic development",
+					"bonus": 1
+				},
+				{
+					"description": "Encourages people to 'buy local",
+					"bonus": 1
+				},
+				{
+					"description": "Frequent neighborhood meetings",
+					"bonus": 2
+				}
+			]
+		},
+		{
+            "name": "Parent",
+			"bio": "30-something with two young children",
+			"agenda_items": [
+				{
+					"description": "Positive impact on public schools",
+					"bonus": 1
+				},
+				{
+					"description": "Strategies making it easier for parents with children attend public                              meetings",
+					"bonus": 1
+				},
+				{
+					"description": "Supports free or low-cost after school activities",
+					"bonus": 2
+				}
+			]
+		},
+		{
+            "name": "Senior Citizen",
+			"bio": "Retired 60-year-old Veterinarian with family living across town",
+			"agenda_items": [
+				{
+					"description": "Accessibility for seniors and disabled folks",
+					"bonus": 1
+				},
+				{
+					"description": "Seniors involved in the design",
+					"bonus": 1
+				},
+				{
+					"description": "Extra hearing and/or visual cues for seniors",
+					"bonus": 2
+				}
+			]
+		},
+		{
+            "name": "Librarian",
+			"bio": "Well-connected to local community and a helpful resource",
+			"agenda_items": [
+				{
+					"description": "Utilizing the library space",
+					"bonus": 1
+				},
+				{
+					"description": "Builds off of previous neighborhood plans",
+					"bonus": 1
+				},
+				{
+					"description": "Increased learning opportunities",
+					"bonus": 2
+				}
+			]
+		}
+	]
+}

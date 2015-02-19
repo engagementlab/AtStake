@@ -54,14 +54,22 @@ public class PitchScreen : StageScreen {
 		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 		currentPitcher = new LabelElement ("", 5, new WhiteTextStyle ());
 		nextPitcher = new LabelElement ("", 6, new WhiteTextStyle ());
-		ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
-		ScreenElements.AddEnabled ("nextPitcher", nextPitcher);
+		//ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
+		//ScreenElements.AddEnabled ("nextPitcher", nextPitcher);
 		InitStageScreen (TimerValues.pitch);
 	}
+
+	/*protected override void OnScreenStartPlayer () {
+		base.OnScreenStartPlayer ();
+		if (players[currentPlayer] == Player.instance.Name) {
+			ScreenElements.Get<LabelElement> ("timesUp").Content = "Your turn!";
+		}
+	}*/
 
 	protected override void OnScreenStartDecider () {
 		base.OnScreenStartDecider ();
 		UpdatePitcherLabels ();
+		ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (players[0]);
 	}
 
 	protected override bool StartTimer () {
@@ -73,6 +81,7 @@ public class PitchScreen : StageScreen {
 		currentPlayer ++;
 		UpdatePitcherLabels ();
 		timer.Interactable = false;
+		ScreenElements.Disable ("timesUp");
 		return true;
 	}
 
@@ -80,6 +89,11 @@ public class PitchScreen : StageScreen {
 		if (!ThisScreen) return;
 		if (pitching) {
 			GotoScreen ("Add Time");
+		}
+		if (Player.instance.IsDecider) {
+			//ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (NextPlayer);
+			//ScreenElements.Enable ("timesUp");
+			ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchTimeInstructions (CurrentPlayer);
 		}
 	}
 
@@ -106,6 +120,9 @@ public class PitchScreen : StageScreen {
 			currentPitcher.Content = e.message1;
 			nextPitcher.Content = e.message2;
 			pitching = (e.message1 == Player.instance.Name);
+			/*if (pitching) {
+				ScreenElements.Get<LabelElement> ("timesUp").Content = "Your turn!";
+			}*/
 		}
 
 		if (e.id == "YesAddTime") {
@@ -116,7 +133,10 @@ public class PitchScreen : StageScreen {
 			if (Player.instance.IsDecider) {
 				if (currentPlayer >= players.Count-1) {
 					ScreenElements.Enable ("next");
+					ScreenElements.Enable ("timesUp");
+					ScreenElements.Get<LabelElement> ("timesUp").Content = Copy.PitchTimeDecider2;
 				} else {
+					ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (NextPlayer);
 					timer.Interactable = true;
 				}
 			}

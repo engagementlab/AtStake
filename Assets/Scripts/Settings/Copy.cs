@@ -21,6 +21,9 @@ public static class Copy {
 	static public readonly string QuestionInstructions	= "Decider Instructions: Give all players some time to read the question. When everyone is ready hit next.";
 	static public readonly string BrainstormTimeDecider = "Time's up, press next.";
 	static public readonly string BrainstormTimePlayer	= "Time's up, pencils down.";
+	static public readonly string DeliberateTimeDecider = "Decider Instructions: Time’s up! Give players the chance to buy more time or press, \"I'm Done.\"";
+	static public readonly string PitchTimeDecider1		= "Decider Instructions: Player 1's time is up, wait for them to press \"I'm Done\" or buy extra time";
+	static public readonly string PitchTimeDecider2		= "All players' pitches are complete. Press next.";
 	static public readonly string AddTime				= string.Format ("Time's up but you can buy an extra {0} seconds for {1} coins.", TimerValues.extraTime, BeanValues.addTime);
 	static public readonly string AddTimeAdd			= string.Format ("+{0} Seconds", TimerValues.extraTime);
 	static public readonly string AddTimeDone			= "I'm Done";
@@ -41,6 +44,18 @@ public static class Copy {
 
 	static public string ScoreboardPot (int coinCount) {
 		return string.Format ("In the pot: {0} coins", coinCount);
+	}
+
+	static public string PitchInstructions (string playerName) {
+		return string.Format ("Decider Instructions: Press play to start {0}'s pitch.", playerName);
+	}
+
+	static public string PitchTimeInstructions (string playerName) {
+		return string.Format ("Decider Instructions: {0}'s time is up, wait for them to press \"I'm Done\" or buy extra time", playerName);
+	}
+
+	static public string PitchAddTime (string playerName) {
+		return string.Format ("Decider Instructions: {0} bought {1} more seconds.", playerName, TimerValues.extraTime);
 	}
 
 	static public string[,] stageInstructions = new string[,] {
