@@ -5,13 +5,15 @@ public class IntroBioScreen : IntroductionScreen {
 
 	public IntroBioScreen (GameState state, string name = "Bio") : base (state, name) {
 		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroBio, 0));
+		// just added this
+		//ScreenElements.AddEnabled ("next", CreateNextButton ());
 	}
 
 	protected override void OnScreenStartDecider () {
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.DisableAll ();
 		ScreenElements.Enable ("description");
-		ScreenElements.Enable ("next");
+		//ScreenElements.Enable ("next");
 		ScreenElements.EnableUpdating ();
 	}
 

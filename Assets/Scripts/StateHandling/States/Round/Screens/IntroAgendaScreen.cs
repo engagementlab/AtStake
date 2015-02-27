@@ -11,7 +11,7 @@ public class IntroAgendaScreen : IntroductionScreen {
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.DisableAll ();
 		ScreenElements.Enable ("description");
-		ScreenElements.Enable ("next");
+		//ScreenElements.Enable ("next");
 		ScreenElements.EnableUpdating ();
 	}
 
