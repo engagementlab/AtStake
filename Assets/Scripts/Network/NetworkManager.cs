@@ -1,7 +1,13 @@
-﻿#undef DEBUG
+﻿#define DEBUG
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+public enum ConnectionType {
+	None,
+	Wifi,
+	Bluetooth
+}
 
 public class NetworkManager : MonoBehaviour {
 
@@ -25,14 +31,41 @@ public class NetworkManager : MonoBehaviour {
 	
 	Settings settings;
 	bool hosting = false;
+	ConnectionTesterStatus connectionStatus = ConnectionTesterStatus.Undetermined;
+	bool ServerRunning {
+		get { 
+			if (Application.internetReachability == NetworkReachability.NotReachable) {
+				return false;
+			}
+			return (connectionStatus != ConnectionTesterStatus.Undetermined &&
+					connectionStatus != ConnectionTesterStatus.PublicIPNoServerStarted &&
+					connectionStatus != ConnectionTesterStatus.Error &&
+					connectionStatus != ConnectionTesterStatus.PublicIPPortBlocked);
+		}
+	}
+
+	ConnectionType connectionType = ConnectionType.None;
+	public ConnectionType ConnectionType {
+		get { return connectionType; }
+	}
 
 	void Awake () {
 		settings = new Settings (5, false, 3f, 3);
+
+		// Wifi
 		MasterServer.ipAddress = ServerSettings.IP;
 		MasterServer.port = ServerSettings.MasterServerPort;
 		Network.natFacilitatorIP = ServerSettings.IP;
 		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;
 		MasterServer.ClearHostList ();
+		StartCoroutine (CoTestConnection ());
+
+		// Bluetooth
+		MultiPeerManager.peerDidChangeStateToConnectedEvent += peerDidChangeStateToConnectedEvent;
+	}
+
+	void AdvertiseDevice () {
+		MultiPeer.advertiseCurrentDeviceWithNearbyServiceAdvertiser (true, "atstake");
 	}
 
 	/**
@@ -40,19 +73,32 @@ public class NetworkManager : MonoBehaviour {
 	 */
 
 	public void HostGame (string instanceGameName) {
-		StartServer (instanceGameName);
+		if (ServerRunning) {
+			StartServer (instanceGameName);
+		} else {
+			StartBluetoothHost ();
+		}
 		hosting = true;
 	}
 
+	// Bluetooth
+
+	void StartBluetoothHost () {
+		connectionType = ConnectionType.Bluetooth;
+		AdvertiseDevice ();
+		MultiPeer.showPeerPicker ();
+	}
+
+	// Wifi
+
 	void StartServer (string gameInstanceName) {
+		connectionType = ConnectionType.Wifi;
 		if (settings.secureServer)
 			Network.InitializeSecurity ();
 
 		// Use NAT punchthrough if no public IP present
 		Network.InitializeServer (settings.maxConnections, 25001, !Network.HavePublicAddress ());
 		MasterServer.RegisterHost (gameName, gameInstanceName);
-
-		StartCoroutine (Test ());
 	}
 
 	public void StopServer () {
@@ -60,6 +106,7 @@ public class NetworkManager : MonoBehaviour {
 		Network.maxConnections = settings.maxConnections;
 		MasterServer.UnregisterHost ();
 		ResetHosts ();
+		connectionType = ConnectionType.None;
 	}
 
 	public void StartGame () {
@@ -72,9 +119,26 @@ public class NetworkManager : MonoBehaviour {
 
 	public void JoinGame () {
 		hosting = false;
-		MasterServer.ClearHostList ();
-		StartCoroutine (FindHostsWrapper ());
+		if (ServerRunning) {
+			MasterServer.ClearHostList ();
+			StartCoroutine (FindHostsWrapper ());
+		} else {
+			StartBluetoothJoin ();
+		}
 	}
+
+	void peerDidChangeStateToConnectedEvent (string param) {
+		connectionType = ConnectionType.Bluetooth;
+		Events.instance.Raise (new ConnectedToServerEvent ());
+	}
+
+	// Bluetooth
+
+	void StartBluetoothJoin () {
+		AdvertiseDevice ();
+	}
+
+	// Wifi
 
 	IEnumerator FindHostsWrapper () {
 		int attempts = settings.attempts;
@@ -132,6 +196,7 @@ public class NetworkManager : MonoBehaviour {
 		} else {
 			ResetHosts ();
 		}
+		connectionType = ConnectionType.None;
 	}
 
 	void ResetHosts () {
@@ -146,13 +211,9 @@ public class NetworkManager : MonoBehaviour {
 		Events.instance.Raise (new ConnectedToServerEvent ());
 	}
 
-	/**
-	 *	Debugging
-	 */
-
-	IEnumerator Test () {
+	IEnumerator CoTestConnection () {
 		
-		float timeout = 1000f;
+		float timeout = 30f; // # of seconds to test for a connection
 		ConnectionTesterStatus status = Network.TestConnection ();
 
 		while (status == ConnectionTesterStatus.Undetermined && timeout > 0f) {
@@ -161,10 +222,13 @@ public class NetworkManager : MonoBehaviour {
 			yield return null;
 		}
 
-		#if UNITY_EDITOR && DEBUG
-		Debug.Log (status);
-		#endif
+		connectionStatus = status;
 	}
+
+	/**
+	 *	Debugging
+	 */
+
 
 	#if UNITY_EDITOR && DEBUG
 

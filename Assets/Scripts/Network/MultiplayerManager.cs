@@ -41,6 +41,10 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 
+	public ConnectionType ConnectionType {
+		get { return networkManager.ConnectionType; }
+	}
+
 	GamePlayer player = null;
 	HostData hostAttempt = null;
 
@@ -122,9 +126,7 @@ public class MultiplayerManager : MonoBehaviour {
 	 *	Messages
 	 */
 	
-	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {
-		
-	}
+	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		if (GameStateController.instance.Screen.name == "Games List") {
