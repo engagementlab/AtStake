@@ -58,6 +58,17 @@ public class ServerManager : MonoBehaviour {
 		MasterServer.RegisterHost (gameName, gameInstanceName);
 	}
 
+	public void DisconnectHost () {
+		Network.Disconnect ();
+		Network.maxConnections = settings.maxConnections;
+		MasterServer.UnregisterHost ();
+		ResetHosts ();
+	}
+
+	public void StartGame () {
+		Network.maxConnections = -1;
+	}
+
 	/**
 	 *	Joining
 	 */
@@ -120,12 +131,28 @@ public class ServerManager : MonoBehaviour {
 		Network.Connect (host);
 	}
 
+	public void DisconnectFromHost () {
+		//Network.Disconnect ();
+		ResetHosts ();
+	}
+
+	void ResetHosts () {
+		hosts = new HostData[0];
+	}
+
 	/**
 	 *	Events
 	 */
 
 	void OnConnectedToServer () {
 		Events.instance.Raise (new ConnectedToServerEvent ());
+	}
+
+	void OnDisconnectedFromServer (NetworkDisconnection info) {
+		if (!hosting) {
+			DisconnectFromHost ();
+			Events.instance.Raise (new DisconnectedFromServerEvent ());
+		}
 	}
 
 	/**

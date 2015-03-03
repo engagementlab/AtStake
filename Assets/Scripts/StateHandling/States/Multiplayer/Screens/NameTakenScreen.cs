@@ -40,7 +40,7 @@ public class NameTakenScreen : GameScreen {
 				TextFieldElement tfe = ScreenElements.Get<TextFieldElement> ("textfield");
 				if (tfe.content != "") {
 					Events.instance.Raise (new EnterNameEvent (tfe.content));
-					MultiplayerManager.instance.ConnectToHost ();
+					MultiplayerManager2.instance.ConnectToHost ();
 				}
 				break;
 			case "Back": GotoScreen ("Games List"); break;

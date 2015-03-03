@@ -6,6 +6,17 @@ using System.Collections.Generic;
 public class PlayerList {
 
 	List<string> players = new List<string> ();
+	public List<string> Players {
+		get { return players; }
+	}
+
+	public string[] Names {
+		get { return players.ToArray (); }
+	}
+
+	public int Count {
+		get { return players.Count; }
+	}
 
 	public void Init (string name) {
 		Clear ();
@@ -17,6 +28,10 @@ public class PlayerList {
 			return false;
 		players.Add (name);
 		return true;
+	}
+
+	public bool Has (string name) {
+		return players.Contains (name);
 	}
 
 	public void Remove (string name) {

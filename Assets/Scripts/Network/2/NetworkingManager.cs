@@ -2,6 +2,8 @@
 using System.Collections;
 
 // new network manager
+// acts as a dispatcher between ServerManager and BluetoothManager:
+// if the server's up, use the ServerManager; otherwise, use the BluetoothManager
 public class NetworkingManager : MonoBehaviour {
 
 	public ServerManager serverManager;
@@ -39,6 +41,12 @@ public class NetworkingManager : MonoBehaviour {
 		}
 	}
 
+	public void DisconnectHost () {
+		if (Wifi) {
+			serverManager.DisconnectHost ();
+		}
+	}
+
 	/**
 	 *	Joining
 	 */
@@ -54,6 +62,18 @@ public class NetworkingManager : MonoBehaviour {
 	public void ConnectToHost (HostData hostData) {
 		if (Wifi) {
 			serverManager.ConnectToHost (hostData);
+		}
+	}
+
+	public void DisconnectFromHost () {
+		if (Wifi) {
+			serverManager.DisconnectFromHost ();
+		}
+	}
+
+	public void StartGame () {
+		if (Wifi) {
+			serverManager.StartGame ();
 		}
 	}
 

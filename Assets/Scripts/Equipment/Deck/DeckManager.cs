@@ -192,7 +192,8 @@ public class DeckManager : MonoBehaviour {
 	}
 
 	void OnLoadDeck () {
-		if (MultiplayerManager.instance.Hosting) {
+		//if (MultiplayerManager.instance.Hosting) {
+		if (MultiplayerManager2.instance.Hosting) {
 			MessageSender.instance.ScheduleMessage ("OnServerLoadDeck");
 		}
 		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");

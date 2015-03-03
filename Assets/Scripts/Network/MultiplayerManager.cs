@@ -86,7 +86,7 @@ public class MultiplayerManager : MonoBehaviour {
 	public void HostGame () {
 		player = new GameHost (PlayerName);
 		networkManager.HostGame (PlayerName);
-		SendRefreshListMessage ();
+		//SendRefreshListMessage ();
 	}
 
 	public void JoinGame () {
@@ -130,11 +130,11 @@ public class MultiplayerManager : MonoBehaviour {
 	void OnJoinTimeoutEvent (JoinTimeoutEvent e) {}
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
-		if (GameStateController.instance.Screen.name == "Games List") {
+		/*if (GameStateController.instance.Screen.name == "Games List") {
 			Events.instance.Raise (new UpdateDrawerEvent ());
 		} else {
 			GotoScreen ("Games List");
-		}
+		}*/
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
@@ -142,12 +142,12 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnDisconnectedFromServer (NetworkDisconnection info) {
-		if (player is GameClient) {
+		/*if (player is GameClient) {
 			networkManager.DisconnectFromHost ();
 			if (GetScreen () == "Lobby") {
 				GotoScreen ("Host or Join");
 			}
-		}
+		}*/
 	}
 
 	bool HasName (string clientName) {
@@ -162,7 +162,7 @@ public class MultiplayerManager : MonoBehaviour {
 	 *	RPCs
 	 */
 
-	[RPC]
+	/*[RPC]
 	void RegisterPlayer (string clientName) {
 		if (HasName (clientName)) {
 			networkView.RPC ("RejectPlayer", RPCMode.Others, clientName);
@@ -219,17 +219,17 @@ public class MultiplayerManager : MonoBehaviour {
 		if (playerName == clientName) {
 			Events.instance.Raise (new RegisterEvent ());
 		}
-	}
+	}*/
 
 	/**
 	 *	Debugging
 	 */
 
-	public void DebugCreateClient () {
+	/*public void DebugCreateClient () {
 		player = new GameClient (PlayerName);
 	}
 
 	public void DebugCreateHost () {
 		player = new GameHost (PlayerName);	
-	}
+	}*/
 }

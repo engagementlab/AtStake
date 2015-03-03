@@ -18,7 +18,14 @@ public class LobbyScreen : GameScreen {
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
-	public override void OnScreenStart (bool hosting, bool isDecider) {}
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+	}
+
+	public override void OnScreenEnd () {
+		base.OnScreenEnd ();
+		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+	}
 
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
 		
@@ -55,12 +62,18 @@ public class LobbyScreen : GameScreen {
 	}
 
 	void GoBack () {
-		MultiplayerManager.instance.ExitLobby ();
+		//MultiplayerManager.instance.ExitLobby ();
+		MultiplayerManager2.instance.Disconnect ();
 		GoBackScreen (hosting ? "Host or Join" : "Games List");
 	}
 
 	void PlayGame () {
-		MultiplayerManager.instance.StartGame ();
+		//MultiplayerManager.instance.StartGame ();
+		MultiplayerManager2.instance.StartGame ();
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
+	}
+
+	void OnDisconnectedFromServerEvent (DisconnectedFromServerEvent e) {
+		GotoScreen ("Host or Join");
 	}
 }

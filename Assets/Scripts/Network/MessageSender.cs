@@ -72,6 +72,10 @@ public class MessageSender : MonoBehaviour {
 		}
 	}
 
+	public void SendMessageToHost (string id, string message1="", string message2="", int val=-1) {
+		networkView.RPC ("HostReceiveMessage", RPCMode.Server, id, message1, message2);
+	}
+
 	/**
 	 *	Private functions
 	 */
@@ -135,5 +139,10 @@ public class MessageSender : MonoBehaviour {
 	[RPC]
 	void AllReceiveMessage (string id, string message1, string message2, int val) {
 		Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2, val));
+	}
+
+	[RPC]
+	void HostReceiveMessage (string id, string message1, string message2) {
+		Events.instance.Raise (new HostReceiveMessageEvent (id, message1, message2));
 	}
 }
