@@ -16,11 +16,15 @@ public class NetworkingManager : MonoBehaviour {
 		Bluetooth
 	}
 
-	bool Wifi { get { return connectionType == ConnectionType.Wifi; } }
-	bool Bluetooth { get 
-		{ 
-			return connectionType == ConnectionType.Bluetooth || 
-				   connectionType == ConnectionType.None; 
+	public bool Wifi { get { return connectionType == ConnectionType.Wifi; } }
+	public bool Bluetooth { 
+		get {
+			// If the game is still trying to determine the connection type,
+			// default to Bluetooth
+			if (connectionType == ConnectionType.None) {
+				connectionType = ConnectionType.Bluetooth;
+			} 
+			return connectionType == ConnectionType.Bluetooth;
 		} 
 	}
 
@@ -37,7 +41,7 @@ public class NetworkingManager : MonoBehaviour {
 		if (Wifi) {
 			serverManager.HostGame (playerName);
 		} else if (Bluetooth) {
-			//bluetoothManager.HostGame (playerName):
+			bluetoothManager.HostGame (playerName);
 		}
 	}
 
@@ -55,7 +59,7 @@ public class NetworkingManager : MonoBehaviour {
 		if (Wifi) {
 			serverManager.JoinGame ();
 		} else if (Bluetooth) {
-			//bluetoothManager.JoinGame ();
+			bluetoothManager.JoinGame ();
 		}
 	}
 
@@ -68,6 +72,8 @@ public class NetworkingManager : MonoBehaviour {
 	public void DisconnectFromHost () {
 		if (Wifi) {
 			serverManager.DisconnectFromHost ();
+		} else {
+			bluetoothManager.DisconnectFromHost ();
 		}
 	}
 

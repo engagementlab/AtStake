@@ -21,6 +21,9 @@ public class MultiplayerManager2 : MonoBehaviour {
 	public List<string> Players {
 		get { return playerList.Players; }
 	}
+	public bool UsingWifi {
+		get { return networkingManager.Wifi; }
+	}
 
 	void Awake () {
 		
