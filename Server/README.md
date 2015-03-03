@@ -1,0 +1,1 @@
+If setting up a new server, upload both of these zips to an EC2 instance and unzip. The game tries to connect to the IP address and ports set [here](https://github.com/engagementgamelab/AtStake/blob/master/Assets/Scripts/Settings/ServerSettings.cs).
