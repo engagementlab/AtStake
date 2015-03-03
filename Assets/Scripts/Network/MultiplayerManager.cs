@@ -20,7 +20,8 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public bool Hosting {
-		get { return player is GameHost; }
+		//get { return player is GameHost; }
+		get { return MultiplayerManager2.instance.Hosting; }
 	}
 
 	public int PlayerCount {
@@ -62,7 +63,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void Start () {
-		networkManager = Instantiate (networkManager) as NetworkManager;
+		//networkManager = Instantiate (networkManager) as NetworkManager;
 		messageRelayer = Instantiate (messageRelayer) as MessageRelayer;
 	}
 
@@ -137,7 +138,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
-		networkView.RPC ("RegisterPlayer", RPCMode.Server, player.playerName);
+		//networkView.RPC ("RegisterPlayer", RPCMode.Server, player.playerName);
 	}
 
 	void OnDisconnectedFromServer (NetworkDisconnection info) {

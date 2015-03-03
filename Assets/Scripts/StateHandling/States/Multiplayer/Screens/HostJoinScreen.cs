@@ -23,11 +23,13 @@ public class HostJoinScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Host": 
-				MultiplayerManager.instance.HostGame (); 
+				//MultiplayerManager.instance.HostGame (); 
+				MultiplayerManager2.instance.HostGame (); 
 				GotoScreen ("Lobby");
 				break;
 			case "Join": 
-				MultiplayerManager.instance.JoinGame (); 
+				//MultiplayerManager.instance.JoinGame (); 
+				MultiplayerManager2.instance.JoinGame (); 
 				ScreenElements.Enable ("searching");
 				ScreenElements.Disable ("nogames");
 				break;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DebugManager : MonoBehaviour {
 
-	public bool enableDebug = false;
+	/*public bool enableDebug = false;
 	public bool autoLoadDeck = false;
 	public bool host = false;
 	public bool decider = false;
@@ -46,5 +46,5 @@ public class DebugManager : MonoBehaviour {
 	IEnumerator GotoScreen () {
 		yield return new WaitForFixedUpdate ();
 		GameStateController.instance.GotoScreen (screen, state);
-	}
+	}*/
 }

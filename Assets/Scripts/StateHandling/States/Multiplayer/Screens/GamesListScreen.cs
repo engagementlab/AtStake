@@ -40,7 +40,8 @@ public class GamesListScreen : GameScreen {
 		char c = e.id[0];
 		int n = (int)char.GetNumericValue (c);
 		if (n > -1) {
-			MultiplayerManager.instance.ConnectToHost (hosts[n]);
+			//MultiplayerManager.instance.ConnectToHost (hosts[n]);
+			MultiplayerManager2.instance.ConnectToHost (hosts[n]);
 		}
 	}
 

@@ -53,12 +53,12 @@ public class NetworkManager : MonoBehaviour {
 		settings = new Settings (5, false, 3f, 3);
 
 		// Wifi
-		MasterServer.ipAddress = ServerSettings.IP;
+		/*MasterServer.ipAddress = ServerSettings.IP;
 		MasterServer.port = ServerSettings.MasterServerPort;
 		Network.natFacilitatorIP = ServerSettings.IP;
-		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;
+		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;*/
 		MasterServer.ClearHostList ();
-		StartCoroutine (CoTestConnection ());
+		//StartCoroutine (CoTestConnection ()); // this will always be 'PublicIPIsConnectable'
 
 		// Bluetooth
 		MultiPeerManager.peerDidChangeStateToConnectedEvent += peerDidChangeStateToConnectedEvent;
@@ -73,11 +73,12 @@ public class NetworkManager : MonoBehaviour {
 	 */
 
 	public void HostGame (string instanceGameName) {
-		if (ServerRunning) {
+		/*if (ServerRunning) {
 			StartServer (instanceGameName);
 		} else {
 			StartBluetoothHost ();
-		}
+		}*/
+		StartServer (instanceGameName);
 		hosting = true;
 	}
 
@@ -119,12 +120,14 @@ public class NetworkManager : MonoBehaviour {
 
 	public void JoinGame () {
 		hosting = false;
-		if (ServerRunning) {
+		/*if (ServerRunning) {
 			MasterServer.ClearHostList ();
 			StartCoroutine (FindHostsWrapper ());
 		} else {
 			StartBluetoothJoin ();
-		}
+		}*/
+		MasterServer.ClearHostList ();
+		StartCoroutine (FindHostsWrapper ());
 	}
 
 	void peerDidChangeStateToConnectedEvent (string param) {
@@ -223,6 +226,13 @@ public class NetworkManager : MonoBehaviour {
 		}
 
 		connectionStatus = status;
+		Debug.Log (connectionStatus);
+	}
+
+	void OnFailedToConnectToMasterServer (NetworkConnectionError info) {
+		if (hosting) {
+			StartBluetoothHost ();
+		}
 	}
 
 	/**
@@ -251,10 +261,6 @@ public class NetworkManager : MonoBehaviour {
 			return;
 		}
 		Debug.Log (e);
-	}
-
-	void OnFailedToConnectToMasterServer (NetworkConnectionError info) {
-		Debug.Log ("Could not connect to Master Server: " + info);
 	}
 	#endif
 }
