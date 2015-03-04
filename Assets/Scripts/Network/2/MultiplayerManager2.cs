@@ -11,7 +11,7 @@ public class MultiplayerManager2 : MonoBehaviour {
 	
 	string playerName = "";
 	PlayerList playerList = new PlayerList ();
-	HostData hostAttempt = null;
+	HostData hostAttempt = null; // TODO: Move this to NetworkingManager
 
 	public bool Hosting { get; private set; }
 	public bool Connected { get; private set; }
@@ -69,6 +69,10 @@ public class MultiplayerManager2 : MonoBehaviour {
 		RaiseRefreshPlayerList ();
 	}
 
+	public void InviteMore () {
+		networkingManager.InviteMore ();
+	}
+
 	void RequestRegistration (string clientName) {
 		if (playerList.Add (clientName)) {
 			MessageSender.instance.SendMessageToAll ("AcceptPlayer", clientName);
@@ -111,9 +115,13 @@ public class MultiplayerManager2 : MonoBehaviour {
 		networkingManager.ConnectToHost (hostAttempt);
 	}
 
-	public void ConnectToHost () {
-		if (hostAttempt != null) {
-			networkingManager.ConnectToHost (hostAttempt);
+	public void NewNameEntered () {
+		if (UsingWifi) {
+			if (hostAttempt != null) {
+				networkingManager.ConnectToHost (hostAttempt);
+			}
+		} else {
+			MessageSender.instance.SendMessageToHost ("RequestRegistration", playerName);
 		}
 	}
 
@@ -131,7 +139,9 @@ public class MultiplayerManager2 : MonoBehaviour {
 
 	void RejectPlayer (string clientName) {
 		if (!Connected && !Hosting && playerName == clientName) {
-			DisconnectFromHost ();
+			if (UsingWifi) {
+				DisconnectFromHost ();
+			}
 			Events.instance.Raise (new NameTakenEvent (playerName));
 			playerName = "";
 		}

@@ -8,6 +8,7 @@ public class BluetoothManager : MonoBehaviour {
 
 	void Awake () {
 		MultiPeerManager.peerDidChangeStateToConnectedEvent += peerDidChangeStateToConnectedEvent;
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	/**
@@ -17,7 +18,16 @@ public class BluetoothManager : MonoBehaviour {
 	public void HostGame (string playerName) {
 		hosting = true;
 		AdvertiseDevice ();
-		MultiPeer.showPeerPicker();
+		MultiPeer.showPeerPicker ();
+	}
+
+	public void DisconnectHost () {
+		MessageSender.instance.SendMessageToAll ("OnDisconnectedFromServer");
+		MultiPeer.disconnectAndEndSession ();
+	}
+
+	public void InviteMore () {
+		MultiPeer.showPeerPicker ();
 	}
 
 	/**
@@ -30,17 +40,31 @@ public class BluetoothManager : MonoBehaviour {
 	}
 
 	public void DisconnectFromHost () {
-		Debug.Log ("disconnect");
-		MultiPeer.disconnectAndEndSession();
+		MultiPeer.disconnectAndEndSession ();
 	}
-
+	
 	void AdvertiseDevice () {
 		MultiPeer.advertiseCurrentDevice (true, gameName);
 	}
 
 	void peerDidChangeStateToConnectedEvent (string param) {
-		// both host and client hear this
-		Debug.Log ("connected to server");
-		Events.instance.Raise (new ConnectedToServerEvent ());
+		if (!hosting) {
+			Events.instance.Raise (new ConnectedToServerEvent ());
+		}
+	}
+
+	/**
+	 *	Events
+	 */
+
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "OnDisconnectedFromServer") {
+			OnDisconnectedFromServer ();
+		}
+	}
+
+	void OnDisconnectedFromServer () {
+		DisconnectFromHost ();
+		Events.instance.Raise (new DisconnectedFromServerEvent ());		
 	}
 }

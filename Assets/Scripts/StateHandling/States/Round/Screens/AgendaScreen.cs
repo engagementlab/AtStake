@@ -58,7 +58,8 @@ public class AgendaScreen : GameScreen {
 		if (Player.instance.IsDecider) {
 			AgendaItemsManager.instance.AddVote (currentItem, true);
 		} else {
-			MessageRelayer.instance.SendMessageToDecider ("AddVote", currentItem.playerName, currentItem.description);
+			//MessageRelayer.instance.SendMessageToDecider ("AddVote", currentItem.playerName, currentItem.description);
+			MessageSender.instance.SendMessageToDecider ("AddVote", currentItem.playerName, currentItem.description);
 		}
 	}
 }

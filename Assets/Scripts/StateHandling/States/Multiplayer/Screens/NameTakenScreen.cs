@@ -40,10 +40,13 @@ public class NameTakenScreen : GameScreen {
 				TextFieldElement tfe = ScreenElements.Get<TextFieldElement> ("textfield");
 				if (tfe.content != "") {
 					Events.instance.Raise (new EnterNameEvent (tfe.content));
-					MultiplayerManager2.instance.ConnectToHost ();
+					MultiplayerManager2.instance.NewNameEntered ();
 				}
 				break;
-			case "Back": GotoScreen ("Games List"); break;
+			case "Back": 
+				MultiplayerManager2.instance.Disconnect ();
+				GotoScreen ("Games List"); 
+				break;
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof(NetworkView))]
-public class MultiplayerManager : MonoBehaviour {
+public class MultiplayerManager_deprecated : MonoBehaviour {
 
 	public NetworkManager networkManager;
 	public MessageRelayer messageRelayer;
@@ -49,7 +49,7 @@ public class MultiplayerManager : MonoBehaviour {
 	GamePlayer player = null;
 	HostData hostAttempt = null;
 
-	public static MultiplayerManager instance;
+	public static MultiplayerManager_deprecated instance;
 
 	void Awake () {
 

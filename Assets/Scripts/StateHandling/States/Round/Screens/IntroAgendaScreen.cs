@@ -11,7 +11,7 @@ public class IntroAgendaScreen : IntroductionScreen {
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.DisableAll ();
 		ScreenElements.Enable ("description");
-		//ScreenElements.Enable ("next");
+		ScreenElements.Enable ("next");
 		ScreenElements.EnableUpdating ();
 	}
 
@@ -20,6 +20,7 @@ public class IntroAgendaScreen : IntroductionScreen {
 		Player player = Player.instance;
 		Role playerRole = player.MyRole;
 		CreateAgenda (playerRole.MyAgenda.items);
+		ScreenElements.Enable ("next");
 	}
 
 	protected override void OnUpdateRoleEvent (UpdateRoleEvent e) {

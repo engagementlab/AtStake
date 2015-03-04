@@ -48,6 +48,14 @@ public class NetworkingManager : MonoBehaviour {
 	public void DisconnectHost () {
 		if (Wifi) {
 			serverManager.DisconnectHost ();
+		} else {
+			bluetoothManager.DisconnectHost ();
+		}
+	}
+
+	public void InviteMore () {
+		if (Bluetooth) {
+			bluetoothManager.InviteMore ();
 		}
 	}
 

@@ -19,11 +19,18 @@ public class HostJoinScreen : GameScreen {
 		ScreenElements.Disable ("searching");
 		ScreenElements.Disable ("nogames");
 		LabelElement searching = ScreenElements.Get<LabelElement> ("searching");
+		
 		if (MultiplayerManager2.instance.UsingWifi) {
 			searching.Content = "Searching for games...";
 		} else {
 			searching.Content = "Waiting for invite...";
+			Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		}
+	}
+
+	public override void OnScreenEnd () {
+		base.OnScreenEnd ();
+		Events.instance.RemoveListener<RegisterEvent> (OnRegisterEvent);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -53,5 +60,9 @@ public class HostJoinScreen : GameScreen {
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		ScreenElements.Disable ("searching");
 		ScreenElements.Disable ("nogames");
+	}
+
+	void OnRegisterEvent (RegisterEvent e) {
+		GotoScreen ("Lobby");
 	}
 }

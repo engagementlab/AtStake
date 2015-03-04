@@ -14,23 +14,31 @@ public class LobbyScreen : GameScreen {
 	public LobbyScreen (GameState state, string name = "Lobby") : base (state, name) {
 		ScreenElements.AddEnabled ("title", new LabelElement ("Lobby", 0, new HeaderTextStyle ()));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
-		ScreenElements.AddDisabled ("play", CreateButton ("Play", 6));
+		ScreenElements.AddDisabled ("invite", CreateButton ("Invite More", 6));
+		ScreenElements.AddDisabled ("play", CreateBottomButton ("Play", "", "bottomPink", Side.Right));
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
 		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+		if (!MultiplayerManager2.instance.UsingWifi && MultiplayerManager2.instance.Hosting) {
+			ScreenElements.Enable ("invite");
+		}
 	}
 
 	public override void OnScreenEnd () {
 		base.OnScreenEnd ();
 		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+		if (!MultiplayerManager2.instance.UsingWifi && MultiplayerManager2.instance.Hosting) {
+			ScreenElements.Disable ("invite");
+		}
 	}
 
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
 		
 		playerNames = e.playerNames;
-		hosting = MultiplayerManager.instance.Hosting;
+		//hosting = MultiplayerManager.instance.Hosting;
+		hosting = MultiplayerManager2.instance.Hosting;
 		int namesCount = playerNames.Length;
 		bool showPlay = hosting && namesCount > minPlayers;
 
@@ -58,17 +66,20 @@ public class LobbyScreen : GameScreen {
 		switch (e.id) {
 			case "Back": GoBack (); break;
 			case "Play": PlayGame (); break;
+			case "Invite More": MultiplayerManager2.instance.InviteMore (); break;
 		}
 	}
 
 	void GoBack () {
-		//MultiplayerManager.instance.ExitLobby ();
 		MultiplayerManager2.instance.Disconnect ();
-		GoBackScreen (hosting ? "Host or Join" : "Games List");
+		if (MultiplayerManager2.instance.UsingWifi) {
+			GoBackScreen (hosting ? "Host or Join" : "Games List");
+		} else {
+			GoBackScreen ("Host or Join");
+		}
 	}
 
 	void PlayGame () {
-		//MultiplayerManager.instance.StartGame ();
 		MultiplayerManager2.instance.StartGame ();
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
 	}

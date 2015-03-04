@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent (typeof(NetworkView))]
 public class DeciderSelectionManager : MonoBehaviour {
 
 	public static DeciderSelectionManager instance;

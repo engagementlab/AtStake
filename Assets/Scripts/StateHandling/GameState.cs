@@ -19,6 +19,8 @@ public class GameState {
 		get { return screens[previouslyVisitedIndex]; }
 	}
 
+	bool stateStarted = false;
+
 	public GameState (string name) {
 		this.name = name;
 		this.screens = SetScreens ();
@@ -28,8 +30,8 @@ public class GameState {
 	}
 
 	/**
-	*	Public functions
-	*/
+	 *	Public functions
+	 */
 
 	public void GotoScreen (string screenName, bool back) {
 		for (int i = 0; i < screens.Length; i ++) {
@@ -68,24 +70,33 @@ public class GameState {
 	}
 
 	/**
-	*	Private functions
-	*/
+	 *	Private functions
+	 */
 
 	void GotoScreen (int index, bool back) {
-		screen.OnScreenEnd ();
+		if (!stateStarted) {
+			stateStarted = true;
+		} else {
+			screen.OnScreenEnd ();
+		}
 		previouslyVisitedIndex = screenIndex;
 		screenIndex = index;
 		screen = screens[index];
-		screen.OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
+		screen.OnScreenStart (MultiplayerManager2.instance.Hosting, Player.instance.IsDecider);
 		Events.instance.Raise (new ChangeScreenEvent (screen, back));
 	}
 
 	/**
-	*	Virtual functions
-	*/
+	 *	Virtual functions
+	 */
 
 	public virtual GameScreen[] SetScreens () {
 		return new GameScreen[0];
+	}
+
+	public void OnStateEnd () {
+		stateStarted = false;
+		screen.OnScreenEnd ();
 	}
 
 	public virtual void OnStateStart () {}

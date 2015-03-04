@@ -22,7 +22,8 @@ public class AgendaResultsScreen : GameScreen {
 	public override void OnScreenStart (bool hosting, bool isDecider) {
 		base.OnScreenStart (hosting, isDecider);
 		if (AgendaVotingType.All) {
-			MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
+			//MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
+			MessageSender.instance.SendMessageToDecider ("FinishedVoting");
 		}
 	}
 

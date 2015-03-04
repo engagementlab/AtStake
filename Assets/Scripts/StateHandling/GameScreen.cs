@@ -70,7 +70,7 @@ public class GameScreen {
 	}
 
 	protected void RefreshScreen () {
-		OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
+		OnScreenStart (MultiplayerManager2.instance.Hosting, Player.instance.IsDecider);
 	}
 
 	/**

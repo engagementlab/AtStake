@@ -126,7 +126,7 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	void OnHostScheduleMessageEvent (HostScheduleMessageEvent e) {
-		if (MultiplayerManager.instance.Hosting) {
+		if (MultiplayerManager2.instance.Hosting) {
 			ScheduleMessage (e.message);
 		} else {
 			networkView.RPC ("HostScheduleMessage", RPCMode.Server, e.message);
@@ -134,7 +134,7 @@ public class MessageRelayer : MonoBehaviour {
 	}
 
 	void OnClientConfirmMessageEvent (ClientConfirmMessageEvent e) {
-		if (!MultiplayerManager.instance.Hosting) {
+		if (!MultiplayerManager2.instance.Hosting) {
 			ConfirmMessageReceived (e.message);
 		}
 	}

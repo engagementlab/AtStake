@@ -8,7 +8,7 @@ public class GameStateController : MonoBehaviour {
 	int stateIndex = -1;
 
 	// States represent categories of screens
-	GameState state;
+	GameState state = null;
 	public GameState State {
 		get { return state; }
 	}
@@ -45,6 +45,9 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	void GotoState (int index) {
+		if (state != null) {
+			state.OnStateEnd ();
+		}
 		if (stateIndex == index) {
 			state.OnStateStart ();
 			return;
