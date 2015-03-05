@@ -88,6 +88,7 @@ public class MessageSender : MonoBehaviour {
 		
 		if (!UsingWifi) {
 			MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerReceiveMessage", MessageToString (id, message1, message2, val));
+			Events.instance.Raise (new AllReceiveMessageEvent (id, message1, message2, val));
 			return;
 		}
 

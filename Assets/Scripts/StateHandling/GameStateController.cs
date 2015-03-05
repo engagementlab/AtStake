@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (NetworkView))]
 public class GameStateController : MonoBehaviour {
 
 	GameStates states;
@@ -42,6 +41,7 @@ public class GameStateController : MonoBehaviour {
 		// so that we don't get a bunch of messages at the start of the game
 		Events.instance.Raise (new ChangeScreenEvent (Screen, true));
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	void GotoState (int index) {
@@ -112,31 +112,33 @@ public class GameStateController : MonoBehaviour {
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.name == "OnGotoNextScreen") {
-			if (!SendRPC ("OnSendPlayersToNextScreen", RPCMode.All)) {
-				OnSendPlayersToNextScreen ();
-			}
+			MessageSender.instance.SendMessageToAll ("OnSendPlayersToNextScreen", e.message1, e.message2);
 		} else if (e.name == "OnGotoScreen") {
-			if (!SendRPC ("OnSendPlayersToScreen", RPCMode.All, e.message1, e.message2)) {
-				OnSendPlayersToScreen (e.message1, e.message2);
-			}
+			MessageSender.instance.SendMessageToAll ("OnSendPlayersToScreen", e.message1, e.message2);
 		}
 	}
 
-	bool SendRPC (string name, RPCMode mode, params object[] args) {
-		if (Network.isClient || Network.isServer) {
-			networkView.RPC (name, mode, args);
-			return true;
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		Debug.Log ("arme " + e.id + ", " + e.message1);
+		switch (e.id) {
+			
+			// Wifi
+			case "OnSendPlayersToNextScreen": OnSendPlayersToNextScreen (); break;
+			case "OnSendPlayersToScreen": OnSendPlayersToScreen (e.message1, e.message2); break;
+
+			// Bluetooth
+			case "OnGotoNextScreen": OnSendPlayersToNextScreen (); break;
+			case "OnGotoScreen": OnSendPlayersToScreen (e.message1, e.message2); break;
 		}
-		return false;
 	}
 
-	[RPC]
 	void OnSendPlayersToNextScreen () {
+		Debug.Log ("goto next screen");
 		GotoNextScreen ();
 	}
 
-	[RPC]
 	void OnSendPlayersToScreen (string screenName, string stateName) {
+		Debug.Log (screenName + ", " + stateName);
 		GotoScreen (screenName, stateName);
 	}
 }

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (NetworkView))]
 public class RoundStartManager : MonoBehaviour {
 
 	void Awake () {
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
@@ -21,20 +21,25 @@ public class RoundStartManager : MonoBehaviour {
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.name == "UpdateAgendaItems") {
-			networkView.RPC ("UpdateAgendaItems", RPCMode.All);
-		}
-		if (e.name == "SendVotableItems") {
-			networkView.RPC ("SendVotableItems", RPCMode.All);
+			MessageSender.instance.SendMessageToAll ("UpdateAgendaItems");
+		} else if (e.name == "SendVotableItems") {
+			MessageSender.instance.SendMessageToAll ("SendVotableItems");
 		}
 	}
 
-	[RPC]
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "UpdateAgendaItems") {
+			UpdateAgendaItems ();
+		} else if (e.id == "SendVotableItems") {
+			SendVotableItems ();
+		}
+	}
+
 	void UpdateAgendaItems () {
 		AgendaItemsManager.instance.UpdateMyItems ();
 		Events.instance.Raise (new UpdateRoleEvent ());
 	}
 
-	[RPC]
 	void SendVotableItems () {
 		AgendaItemsManager.instance.SendVotableItems ();
 	}

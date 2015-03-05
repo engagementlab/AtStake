@@ -4,7 +4,6 @@ using System.IO;
 using System.Collections;
 using SimpleJSON;
 
-[RequireComponent (typeof(NetworkView))]
 public class DeckManager : MonoBehaviour {
 
 	public Deck deck;
@@ -52,6 +51,7 @@ public class DeckManager : MonoBehaviour {
 
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 
 		GetLocalDeckNames ();
 		GetHostedDeckNames ();
@@ -200,7 +200,7 @@ public class DeckManager : MonoBehaviour {
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
 		if (e.name == "OnServerLoadDeck") {
-			networkView.RPC ("OnServerLoadDeck", RPCMode.Others, deckFilename, deckLocal ? 1 : 0);
+			MessageSender.instance.SendMessageToAll ("OnServerLoadDeck", deckFilename, "", deckLocal ? 1 : 0);
 		}
 	}
 
@@ -212,9 +212,12 @@ public class DeckManager : MonoBehaviour {
 		}
 	}
 
-	[RPC]
-	void OnServerLoadDeck (string filename, int isLocal) {
-		LoadDeck (filename, isLocal == 1);
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "OnServerLoadDeck" && 
+			e.message1 != "" && 
+			!MultiplayerManager2.instance.Hosting) {
+			LoadDeck (e.message1, e.val == 1);
+		}
 	}
 
 	/**

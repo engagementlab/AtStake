@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (NetworkView))]
 public class BeanPotManager : MonoBehaviour {
 
 	BeanPot beanPot = new BeanPot ();
@@ -15,6 +14,8 @@ public class BeanPotManager : MonoBehaviour {
 	void Awake () {
 		if (instance == null)
 			instance = this;
+
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	public void OnRoundStart () {
@@ -38,14 +39,15 @@ public class BeanPotManager : MonoBehaviour {
 	}
 
 	void SendSetBeanPotMessage () {
-		if (Network.isClient || Network.isServer) {
-			networkView.RPC ("SetBeanPot", RPCMode.All, beanPot.BeanCount);
-		} else {
-			SetBeanPot (beanPot.BeanCount);
+		MessageSender.instance.SendMessageToAll ("SetBeanPot", "", "", beanPot.BeanCount);
+	}
+
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "SetBeanPot") {
+			SetBeanPot (e.val);
 		}
 	}
 
-	[RPC]
 	void SetBeanPot (int beanCount) {
 		beanPot.SetBeanCount(beanCount);
 	}

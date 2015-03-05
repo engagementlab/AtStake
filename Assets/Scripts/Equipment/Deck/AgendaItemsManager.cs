@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent (typeof (NetworkView))]
 public class AgendaItemsManager : MonoBehaviour {
 
 	static public AgendaItemsManager instance;
@@ -58,6 +57,7 @@ public class AgendaItemsManager : MonoBehaviour {
 			instance = this;
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 		Events.instance.AddListener<DeciderReceiveMessageEvent> (OnDeciderReceiveMessageEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessage);
 	}
 
 	public void Populate (Deck deck) {
@@ -79,7 +79,7 @@ public class AgendaItemsManager : MonoBehaviour {
 		if (!Player.instance.IsDecider) {
 			for (int i = 0; i < myItems.Length; i ++) {
 				AgendaItem item = myItems[i];
-				networkView.RPC ("ReceiveVotableItems", RPCMode.All, item.playerName, item.description, item.bonus);
+				MessageSender.instance.SendMessageToAll ("ReceiveVotableItems", item.playerName, item.description, item.bonus);
 			}
 		}
 	}
@@ -120,7 +120,7 @@ public class AgendaItemsManager : MonoBehaviour {
 		// Only count the Decider's votes
 		for (int i = 0; i < votableItems.Count; i ++) {
 			if (votableItems[i].VoteCount == 1) {
-				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, votableItems[i].playerName, votableItems[i].description);
+				MessageSender.instance.SendMessageToAll ("ReceiveWinningAgendaItem", votableItems[i].playerName, votableItems[i].description);
 			}
 		}
 		MessageSender.instance.SendMessageToAll ("FinishReceivingWins");
@@ -152,7 +152,7 @@ public class AgendaItemsManager : MonoBehaviour {
 				}
 			}
 			if (won) {
-				networkView.RPC ("ReceiveWinningAgendaItem", RPCMode.All, votableItems[i].playerName, votableItems[i].description);
+				MessageSender.instance.SendMessageToAll ("ReceiveWinningAgendaItem", votableItems[i].playerName, votableItems[i].description);
 			}
 		}
 		MessageSender.instance.SendMessageToAll ("FinishReceivingWins");
@@ -162,14 +162,19 @@ public class AgendaItemsManager : MonoBehaviour {
 		playerCount = MultiplayerManager2.instance.PlayerCount;
 	}
 
-	[RPC]
+	void OnAllReceiveMessage (AllReceiveMessageEvent e) {
+		switch (e.id) {
+			case "ReceiveVotableItems": ReceiveVotableItems (e.message1, e.message2, e.val); break;
+			case "ReceiveWinningAgendaItem": ReceiveWinningAgendaItem (e.message1, e.message2); break;
+		}
+	}
+
 	void ReceiveVotableItems (string playerName, string description, int bonus) {
 		if (playerName != Player.instance.Name) {
 			votableItems.Add (new AgendaItem (playerName, description, bonus));
 		}
 	}
 
-	[RPC]
 	void ReceiveWinningAgendaItem (string playerName, string description) {
 		AgendaItem i;
 		if (playerName == Player.instance.Name) {
