@@ -102,7 +102,9 @@ public class MessageSender : MonoBehaviour {
 	public void SendMessageToHost (string id, string message1="", string message2="", int val=-1) {
 
 		if (!UsingWifi) {
-			MultiPeer.sendMessageToPeers( new string[] { Peers[0] }, "MessageSender", "OnMultiPeerHostReceiveMessage", MessageToString (id, message1, message2, val));
+			//MultiPeer.sendMessageToPeers (new string[] { Peers[0] }, "MessageSender", "OnMultiPeerHostReceiveMessage", MessageToString (id, message1, message2, val));
+			// TODO: Similar to Decider below, cache the name of the host
+			MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerHostReceiveMessage", MessageToString (id, message1, message2, val));
 			return;
 		}
 
@@ -183,8 +185,11 @@ public class MessageSender : MonoBehaviour {
 	}
 
 	void OnMultiPeerHostReceiveMessage (string param) {
-		NetworkMessage message = StringToMessage (param);
-		Events.instance.Raise (new HostReceiveMessageEvent (message.name, message.message1, message.message2));
+		if (MultiplayerManager2.instance.Hosting) {
+			NetworkMessage message = StringToMessage (param);
+			Debug.Log ("raise host receive message " + param);
+			Events.instance.Raise (new HostReceiveMessageEvent (message.name, message.message1, message.message2));
+		}
 	}
 
 	void OnMultiPeerDeciderReceiveMessage (string param) {

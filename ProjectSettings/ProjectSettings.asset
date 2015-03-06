@@ -86,7 +86,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 0
   iPhoneSdkVersion: 988
   iPhoneTargetOSVersion: 22
-  uIPrerenderedIcon: 0
+  uIPrerenderedIcon: 1
   uIRequiresPersistentWiFi: 0
   uIStatusBarHidden: 1
   uIExitOnSuspend: 0

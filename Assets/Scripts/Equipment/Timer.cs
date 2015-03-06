@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (NetworkView))]
 public class Timer : MonoBehaviour {
 
 	float duration = 0;
@@ -25,6 +24,7 @@ public class Timer : MonoBehaviour {
 		if (instance == null)
 			instance = this;
 		Events.instance.AddListener<ChangeScreenEvent> (OnChangeScreenEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	public void SetTime (float seconds) {
@@ -34,9 +34,7 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void AllStartCountDown (float duration) {
-		if (!SendRPC ("ReceiveCountDown", RPCMode.All, duration)) {
-			ReceiveCountDown (duration);
-		}
+		MessageSender.instance.SendMessageToAll ("ReceiveCountDown", duration.ToString ());
 	}
 
 	public void StartCountDown (float duration) {
@@ -48,10 +46,7 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void AllAddSeconds (float amount) {
-		//networkView.RPC ("ReceiveAddSeconds", RPCMode.All, amount);
-		if (!SendRPC ("ReceiveAddSeconds", RPCMode.All, amount)) {
-			ReceiveAddSeconds (amount);
-		}
+		MessageSender.instance.SendMessageToAll ("ReceiveAddSeconds", amount.ToString ());
 	}
 
 	void AddSeconds (float amount) {
@@ -89,12 +84,18 @@ public class Timer : MonoBehaviour {
 		return false;
 	}
 
-	[RPC]
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "ReceiveAddSeconds") {
+			ReceiveAddSeconds (float.Parse (e.message1));
+		} else if (e.id == "ReceiveCountDown") {
+			ReceiveCountDown (float.Parse (e.message1));
+		}
+	}
+
 	void ReceiveCountDown (float duration) {
 		StartCountDown (duration);
 	}
 
-	[RPC]
 	void ReceiveAddSeconds (float amount) {
 		AddSeconds (amount);
 	}

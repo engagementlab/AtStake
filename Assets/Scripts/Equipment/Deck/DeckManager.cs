@@ -193,7 +193,11 @@ public class DeckManager : MonoBehaviour {
 
 	void OnLoadDeck () {
 		if (MultiplayerManager2.instance.Hosting) {
-			MessageSender.instance.ScheduleMessage ("OnServerLoadDeck");
+			if (MultiplayerManager2.instance.UsingWifi) {
+				MessageSender.instance.ScheduleMessage ("OnServerLoadDeck");
+			} else {
+				MessageSender.instance.SendMessageToAll ("OnServerLoadDeck", deckFilename, "", deckLocal ? 1 : 0);
+			}
 		}
 		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
 	}

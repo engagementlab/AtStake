@@ -119,7 +119,7 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
-		Debug.Log ("arme " + e.id + ", " + e.message1);
+		
 		switch (e.id) {
 			
 			// Wifi
@@ -133,12 +133,10 @@ public class GameStateController : MonoBehaviour {
 	}
 
 	void OnSendPlayersToNextScreen () {
-		Debug.Log ("goto next screen");
 		GotoNextScreen ();
 	}
 
 	void OnSendPlayersToScreen (string screenName, string stateName) {
-		Debug.Log (screenName + ", " + stateName);
 		GotoScreen (screenName, stateName);
 	}
 }

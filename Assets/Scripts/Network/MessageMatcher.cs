@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (NetworkView))]
 public class MessageMatcher : MonoBehaviour {
 
 	string id = "";
@@ -14,14 +13,16 @@ public class MessageMatcher : MonoBehaviour {
 		if (instance == null)
 			instance = this;
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
+		Events.instance.AddListener<HostReceiveMessageEvent> (OnHostReceiveMessageEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	public void SetMessage (string id, string message) {
 		this.id = id;
-		if (Network.isServer) {
+		if (MultiplayerManager2.instance.Hosting) {
 			SetPlayerMessage (Player.instance.Name, message);
 		} else {
-			networkView.RPC ("SetPlayerMessage", RPCMode.Server, Player.instance.Name, message);
+			MessageSender.instance.SendMessageToHost ("SetPlayerMessage", Player.instance.Name, message);
 		}
 	}
 
@@ -49,6 +50,18 @@ public class MessageMatcher : MonoBehaviour {
 		}
 	}
 
+	void SetPlayerMessage (string playerName, string message) {
+		messages[GetPlayerIndex (playerName)] = message;
+		if (MessagesMatch ()) {
+			MessageSender.instance.SendMessageToAll ("RaiseMessagesMatch", id, message);
+		}
+	}
+
+	void RaiseMessagesMatch (string id, string message) {
+		Events.instance.Raise (new MessagesMatchEvent (id, message));
+		Clear ();
+	}
+
 	/**
 	 *	Events
 	 */
@@ -58,37 +71,15 @@ public class MessageMatcher : MonoBehaviour {
 		messages = new string[players.Length];
 	}
 
-	/**
-	 *	RPCs
-	 */
-
-	[RPC]
-	void SetPlayerMessage (string playerName, string message) {
-		messages[GetPlayerIndex (playerName)] = message;
-		if (MessagesMatch ()) {
-			networkView.RPC ("RaiseMessagesMatch", RPCMode.All, id, message);
+	void OnHostReceiveMessageEvent (HostReceiveMessageEvent e) {
+		if (e.id == "SetPlayerMessage") {
+			SetPlayerMessage (e.message1, e.message2);
 		}
 	}
 
-	[RPC]
-	void RaiseMessagesMatch (string id, string message) {
-		Events.instance.Raise (new MessagesMatchEvent (id, message));
-		Clear ();
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "RaiseMessagesMatch") {
+			RaiseMessagesMatch (e.message1, e.message2);
+		}
 	}
-
-	/**
-	 *	Debugging
-	 */
-
-	/*void Update () {
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			SetMessage ("Broccoli");
-		}
-		if (Input.GetKeyDown (KeyCode.A)) {
-			SetMessage ("Banana");
-		}
-		if (Input.GetKeyDown (KeyCode.Z)) {
-			SetMessage ("gorped");
-		}
-	}*/
 }
