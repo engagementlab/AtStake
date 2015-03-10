@@ -9,11 +9,11 @@ using Prime31;
 public class MultiPeer
 {
 	[DllImport("__Internal")]
-	private static extern void _multiPeerAdvertiseCurrentDevice( bool shouldAdvertise, string serviceType );
+	private static extern void _multiPeerAdvertiseCurrentDevice( bool shouldAdvertise, string serviceType, string displayName = null );
 
 	// Starts/stops advertising the current device. This method will require the user to accept the connection.
 	// Note that serviceType must be 1–15 characters long and can contain only ASCII lowercase letters, numbers, and hyphens
-	public static void advertiseCurrentDevice( bool shouldAdvertise, string serviceType )
+	public static void advertiseCurrentDevice( bool shouldAdvertise, string serviceType, string displayName = null )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
 			_multiPeerAdvertiseCurrentDevice( shouldAdvertise, serviceType );
@@ -106,7 +106,7 @@ public class MultiPeer
 	private static extern bool _multiPeerSendMessageToPeers( string peerIds, string gameObject, string method, string param, bool reliably );
 
 	// Sends a message to all the peers present in peerIds. Works much like SendMessage with regard to the GameObject, method and parameter
-	public static bool sendMessageToPeers( string[] peerIds, string gameObject, string method, string param, bool reliably = false )
+	public static bool sendMessageToPeers( string[] peerIds, string gameObject, string method, string param, bool reliably = true )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
 			return _multiPeerSendMessageToPeers( Json.encode( peerIds ), gameObject, method, param, reliably );
@@ -116,10 +116,10 @@ public class MultiPeer
 
 
 	[DllImport("__Internal")]
-	private static extern bool _multiPeerSendMessageToAllPeers( string gameObject, string method, string param, bool reliably = false );
+	private static extern bool _multiPeerSendMessageToAllPeers( string gameObject, string method, string param, bool reliably = true );
 
 	// Sends a message to all the connected peers. Works much like SendMessage with regard to the GameObject, method and parameter
-	public static bool sendMessageToAllPeers( string gameObject, string method, string param, bool reliably = false )
+	public static bool sendMessageToAllPeers( string gameObject, string method, string param, bool reliably = true )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
 			return _multiPeerSendMessageToAllPeers( gameObject, method, param, reliably );
@@ -132,7 +132,7 @@ public class MultiPeer
 	private static extern bool _multiPeerSendRawMessageToAllPeers( byte[] bytes, int length, bool reliably );
 
 	// Sends a raw byte array message to all connected devices
-	public static bool sendRawMessageToAllPeers( byte[] bytes, bool reliably = false )
+	public static bool sendRawMessageToAllPeers( byte[] bytes, bool reliably = true )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
 			return _multiPeerSendRawMessageToAllPeers( bytes, bytes.Length, reliably );
@@ -145,7 +145,7 @@ public class MultiPeer
 	private static extern bool _multiPeerSendRawMessageToPeers( string peerIds, byte[] bytes, int length, bool reliably );
 
 	// Sends a raw byte array message to all peerIds
-	public static bool sendRawMessageToPeers( string[] peerIds, byte[] bytes, bool reliably = false )
+	public static bool sendRawMessageToPeers( string[] peerIds, byte[] bytes, bool reliably = true )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
 			return _multiPeerSendRawMessageToPeers( Json.encode( peerIds ), bytes, bytes.Length, reliably );

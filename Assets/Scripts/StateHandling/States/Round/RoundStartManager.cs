@@ -11,7 +11,7 @@ public class RoundStartManager : MonoBehaviour {
 
 	void OnRoundStartEvent (RoundStartEvent e) {
 		AgendaItemsManager.instance.ClearItems ();
-		if (MultiplayerManager2.instance.Hosting) {
+		if (MultiplayerManager.instance.Hosting) {
 			BeanPotManager.instance.OnRoundStart ();
 			RoleManager.instance.SetRandomRoles ();
 			MessageSender.instance.ScheduleMessage ("UpdateAgendaItems");

@@ -159,7 +159,7 @@ public class AgendaItemsManager : MonoBehaviour {
 	}
 
 	void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		playerCount = MultiplayerManager2.instance.PlayerCount;
+		playerCount = MultiplayerManager.instance.PlayerCount;
 	}
 
 	void OnAllReceiveMessage (AllReceiveMessageEvent e) {

@@ -30,7 +30,7 @@ public class AgendaScreen : GameScreen {
 			return;
 		}
 		progress.Content = string.Format ("{0} / {1}", aiManager.CurrentIndex, aiManager.TotalItems);
-		description.Content = Copy.AgendaItemVote (Player.instance.WinningPlayer, currentItem.description); //string.Format ("Vote yes if you think {0}'s proposal {1}", Player.instance.WinningPlayer, currentItem.description);
+		description.Content = Copy.AgendaItemVote (Player.instance.WinningPlayer, currentItem.description);
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -45,9 +45,9 @@ public class AgendaScreen : GameScreen {
 		if (AgendaItemsManager.instance.HasNextItem) {
 			RefreshScreen ();
 		} else {
-			if (AgendaVotingType.All) {
+			if (AgendaVotingStyle.All) {
 				GotoScreen ("Agenda Results");
-			} else if (AgendaVotingType.Decider) {
+			} else if (AgendaVotingStyle.Decider) {
 				GameStateController.instance.AllPlayersGotoScreen ("Agenda Results");
 				AgendaItemsManager.instance.CalculateDeciderVotes ();
 			}
@@ -58,7 +58,6 @@ public class AgendaScreen : GameScreen {
 		if (Player.instance.IsDecider) {
 			AgendaItemsManager.instance.AddVote (currentItem, true);
 		} else {
-			//MessageRelayer.instance.SendMessageToDecider ("AddVote", currentItem.playerName, currentItem.description);
 			MessageSender.instance.SendMessageToDecider ("AddVote", currentItem.playerName, currentItem.description);
 		}
 	}

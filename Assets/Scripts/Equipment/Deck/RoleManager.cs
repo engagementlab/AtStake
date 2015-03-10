@@ -23,12 +23,10 @@ public class RoleManager : MonoBehaviour {
 	public void SetRandomRoles () {
 
 		// The host assigns random roles to the rest of the players
-		//if (!MultiplayerManager.instance.Hosting)
-		if (!MultiplayerManager2.instance.Hosting)
+		if (!MultiplayerManager.instance.Hosting)
 			return;
 		
-		//playerNames = MultiplayerManager.instance.Players;
-		playerNames = MultiplayerManager2.instance.Players;
+		playerNames = MultiplayerManager.instance.Players;
 		randomIndices = new int[playerNames.Count];
 		int rolesCount = deck.Roles.Length;
 		List<int> roleIndices = new List<int>();

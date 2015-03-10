@@ -22,7 +22,7 @@ public class FinalScoreboardScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Main Menu") {
-			MultiplayerManager2.instance.Disconnect ();
+			MultiplayerManager.instance.Disconnect ();
 			GotoScreen ("Start", "Start");
 			Events.instance.Raise (new GameEndEvent ());
 		}

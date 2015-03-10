@@ -23,7 +23,7 @@ public class RoundState : GameState {
 	public List<string> Players {
 		get {
 			if (players.Count == 0) {
-				foreach (string player in MultiplayerManager2.instance.Players) {//MultiplayerManager.instance.Players) {
+				foreach (string player in MultiplayerManager.instance.Players) {
 					players.Add (player);
 				}
 				if (Player.instance.IsDecider)
@@ -35,6 +35,7 @@ public class RoundState : GameState {
 
 	public RoundState (string name = "Round") : base (name) {
 		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
+		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 	}
 
 	public override void OnStateStart () {
@@ -43,20 +44,9 @@ public class RoundState : GameState {
 		players.Clear ();
 		if (Player.instance.Won) {
 			DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
+		} else if (roundNumber == 0) {
+			OnSelectDeciderEvent (null);
 		}
-
-		// Set the round number & question for the round
-		Events.instance.Raise (new RoundStartEvent ());
-		if (roundNumber == 3) {
-			roundNumber = 0;
-		}
-		question = QuestionManager.instance.GetQuestion (roundNumber);
-		
-		// Update the player
-		Player player = Player.instance;
-		playerName = player.Name;
-		if (roundNumber == 0) player.OnRoundStart ();
-		roundNumber ++;
 	}
 	
 	public override GameScreen[] SetScreens () {
@@ -81,5 +71,21 @@ public class RoundState : GameState {
 	void OnGameEndEvent (GameEndEvent e) {
 		roundNumber = 0;
 		players.Clear ();
+	}
+
+	void OnSelectDeciderEvent (SelectDeciderEvent e) {
+		
+		// Set the round number & question for the round
+		Events.instance.Raise (new RoundStartEvent ());
+		if (roundNumber == 3) {
+			roundNumber = 0;
+		}
+		question = QuestionManager.instance.GetQuestion (roundNumber);
+		
+		// Update the player
+		Player player = Player.instance;
+		playerName = player.Name;
+		if (roundNumber == 0) player.OnRoundStart ();
+		roundNumber ++;
 	}
 }

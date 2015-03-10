@@ -19,7 +19,7 @@ public class MessageMatcher : MonoBehaviour {
 
 	public void SetMessage (string id, string message) {
 		this.id = id;
-		if (MultiplayerManager2.instance.Hosting) {
+		if (MultiplayerManager.instance.Hosting) {
 			SetPlayerMessage (Player.instance.Name, message);
 		} else {
 			MessageSender.instance.SendMessageToHost ("SetPlayerMessage", Player.instance.Name, message);

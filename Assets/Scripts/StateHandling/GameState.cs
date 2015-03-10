@@ -82,7 +82,7 @@ public class GameState {
 		previouslyVisitedIndex = screenIndex;
 		screenIndex = index;
 		screen = screens[index];
-		screen.OnScreenStart (MultiplayerManager2.instance.Hosting, Player.instance.IsDecider);
+		screen.OnScreenStart (MultiplayerManager.instance.Hosting, Player.instance.IsDecider);
 		Events.instance.Raise (new ChangeScreenEvent (screen, back));
 	}
 

@@ -18,6 +18,8 @@ public class NetworkMessage {
 [RequireComponent (typeof (NetworkView))]
 public class MessageSender : MonoBehaviour {
 
+	static public MessageSender instance;
+
 	List<NetworkMessage> messages = new List<NetworkMessage>();
 	int receivedCount = 0;
 	int clientCount = 0;
@@ -38,23 +40,26 @@ public class MessageSender : MonoBehaviour {
 	bool UsingWifi {
 		get {
 			if (usingWifi == false) {
-				usingWifi = MultiplayerManager2.instance.UsingWifi;
+				usingWifi = MultiplayerManager.instance.UsingWifi;
 			}
 			return usingWifi;
 		}
 	}
 
+	// Bluetooth-specific
 	List<string> Peers {
 		get { return MultiPeer.getConnectedPeers(); }
 	}
-
-	static public MessageSender instance;
+	string hostId = "";
+	string deciderId = "";
 
 	void Awake () {
 		if (instance == null)
 			instance = this;
 
 		Events.instance.AddListener<RefreshPlayerListEvent> (OnRefreshPlayerListEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
+		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 	}
 
 	/**
@@ -102,9 +107,12 @@ public class MessageSender : MonoBehaviour {
 	public void SendMessageToHost (string id, string message1="", string message2="", int val=-1) {
 
 		if (!UsingWifi) {
-			//MultiPeer.sendMessageToPeers (new string[] { Peers[0] }, "MessageSender", "OnMultiPeerHostReceiveMessage", MessageToString (id, message1, message2, val));
-			// TODO: Similar to Decider below, cache the name of the host
-			MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerHostReceiveMessage", MessageToString (id, message1, message2, val));
+			string message = MessageToString (id, message1, message2, val);
+			if (hostId == "") {
+				MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerHostReceiveMessage", message);
+			} else {
+				MultiPeer.sendMessageToPeers (new string[] { hostId }, "MessageSender", "OnMultiPeerHostReceiveMessage", message);
+			}
 			return;
 		}
 
@@ -113,14 +121,25 @@ public class MessageSender : MonoBehaviour {
 
 	public void SendMessageToDecider (string id, string message1="", string message2="", int val=-1) {
 		
-		// TODO: When Decider is selected, set the Peer so that we can direct the message just to the Decider
-		// (instead of all players hearing the message and checking if they're the Decider)
 		if (!UsingWifi) {
-			MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerDeciderReceiveMessage", MessageToString (id, message1, message2, val));
+			string message = MessageToString (id, message1, message2, val);
+			if (deciderId == "") {
+				MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerDeciderReceiveMessage", message);
+			} else {
+				MultiPeer.sendMessageToPeers (new string[] { deciderId }, "MessageSender", "OnMultiPeerHostReceiveMessage", message);
+			}
 			return;
 		}
 
 		networkView.RPC ("DeciderReceiveMessage", RPCMode.All, id, message1, message2);
+	}
+
+	public void ResetHost () {
+		hostId = "";
+	}
+
+	public void ResetDecider () {
+		deciderId = "";
 	}
 
 	/**
@@ -156,7 +175,7 @@ public class MessageSender : MonoBehaviour {
 		if (Connected) networkView.RPC ("RequestClientConfirmation", RPCMode.Others, CurrentMessage.name);
 	}
 
-	// Specific to Bluetooth: MultiPeer only passes strings, so the message needs to be
+	// Bluetooth-specific: MultiPeer only passes strings, so the message needs to be
 	// combined into a string delimited by '|', and then split once it's received
 	string MessageToString (string id, string message1, string message2, int val) {
 		return string.Format ("{0}|{1}|{2}|{3}", id, message1, message2, val);
@@ -179,24 +198,46 @@ public class MessageSender : MonoBehaviour {
 		clientCount = e.playerNames.Length-1; // subtract 1 because we don't include the host
 	}
 
+	// Bluetooth-specific
 	void OnMultiPeerReceiveMessage (string param) {
 		NetworkMessage message = StringToMessage (param);
 		Events.instance.Raise (new AllReceiveMessageEvent (message.name, message.message1, message.message2, message.val));
 	}
 
 	void OnMultiPeerHostReceiveMessage (string param) {
-		if (MultiplayerManager2.instance.Hosting) {
+		if (MultiplayerManager.instance.Hosting) {
+			if (hostId == "") {
+				string localId = MultiPeer.getLocalPeerId ();
+				SendMessageToAll ("SetHost", localId);
+				hostId = localId;
+			}
 			NetworkMessage message = StringToMessage (param);
-			Debug.Log ("raise host receive message " + param);
 			Events.instance.Raise (new HostReceiveMessageEvent (message.name, message.message1, message.message2));
 		}
 	}
 
 	void OnMultiPeerDeciderReceiveMessage (string param) {
 		if (Player.instance.IsDecider) {
+			if (deciderId == "") {
+				string localId = MultiPeer.getLocalPeerId ();
+				SendMessageToAll ("SetDecider", localId);
+				deciderId = localId;
+			}
 			NetworkMessage message = StringToMessage (param);
 			Events.instance.Raise (new DeciderReceiveMessageEvent (message.name, message.message1, message.message2));
 		}
+	}
+
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		if (e.id == "SetHost") {
+			hostId = e.message1;    // cache host
+		} else if (e.id == "SetDecider") {
+			deciderId = e.message1;	// cache decider
+		}
+	}
+
+	void OnSelectDeciderEvent (SelectDeciderEvent e) {
+		ResetDecider ();
 	}
 
 	/**

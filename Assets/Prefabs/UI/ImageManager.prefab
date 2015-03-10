@@ -40,8 +40,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: 6b857134d2f0745c1acec83bb19651fd, type: 3}
-  - {fileID: 21300000, guid: 14d0b5deb720a4e548f9ed0c7ca86271, type: 3}
+  - {fileID: 21300000, guid: 9093daeaa6a7b4b80914a41947e97761, type: 3}
+  - {fileID: 21300000, guid: 5979856eb76c54914b0d7814a8db12fb, type: 3}
+  - {fileID: 21300000, guid: 2f1513013eea24bca9ad62bd424a7cb9, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

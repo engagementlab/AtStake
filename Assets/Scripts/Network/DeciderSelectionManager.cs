@@ -13,12 +13,14 @@ public class DeciderSelectionManager : MonoBehaviour {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
-	public void SetDecider (string deciderName) {
-		MessageSender.instance.SendMessageToAll ("New Decider", deciderName);
-	}
-
+	// First round
 	public void SelectDecider (string deciderName) {
 		MessageMatcher.instance.SetMessage ("SelectDecider", deciderName);
+	}
+
+	// Subsequent rounds
+	public void SetDecider (string deciderName) {
+		MessageSender.instance.SendMessageToAll ("New Decider", deciderName);
 	}
 
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {

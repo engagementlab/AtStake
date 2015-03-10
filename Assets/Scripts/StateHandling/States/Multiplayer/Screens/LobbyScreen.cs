@@ -21,7 +21,7 @@ public class LobbyScreen : GameScreen {
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
 		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
-		if (!MultiplayerManager2.instance.UsingWifi && MultiplayerManager2.instance.Hosting) {
+		if (!MultiplayerManager.instance.UsingWifi && MultiplayerManager.instance.Hosting) {
 			ScreenElements.Enable ("invite");
 		}
 	}
@@ -29,7 +29,7 @@ public class LobbyScreen : GameScreen {
 	public override void OnScreenEnd () {
 		base.OnScreenEnd ();
 		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
-		if (!MultiplayerManager2.instance.UsingWifi && MultiplayerManager2.instance.Hosting) {
+		if (!MultiplayerManager.instance.UsingWifi && MultiplayerManager.instance.Hosting) {
 			ScreenElements.Disable ("invite");
 		}
 	}
@@ -37,8 +37,7 @@ public class LobbyScreen : GameScreen {
 	void OnRefreshPlayerListEvent (RefreshPlayerListEvent e) {
 		
 		playerNames = e.playerNames;
-		//hosting = MultiplayerManager.instance.Hosting;
-		hosting = MultiplayerManager2.instance.Hosting;
+		hosting = MultiplayerManager.instance.Hosting;
 		int namesCount = playerNames.Length;
 		bool showPlay = hosting && namesCount > minPlayers;
 
@@ -66,13 +65,14 @@ public class LobbyScreen : GameScreen {
 		switch (e.id) {
 			case "Back": GoBack (); break;
 			case "Play": PlayGame (); break;
-			case "Invite More": MultiplayerManager2.instance.InviteMore (); break;
+			case "Invite More": MultiplayerManager.instance.InviteMore (); break;
 		}
 	}
 
 	void GoBack () {
-		MultiplayerManager2.instance.Disconnect ();
-		if (MultiplayerManager2.instance.UsingWifi) {
+		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+		MultiplayerManager.instance.Disconnect ();
+		if (MultiplayerManager.instance.UsingWifi) {
 			GoBackScreen (hosting ? "Host or Join" : "Games List");
 		} else {
 			GoBackScreen ("Host or Join");
@@ -80,7 +80,7 @@ public class LobbyScreen : GameScreen {
 	}
 
 	void PlayGame () {
-		MultiplayerManager2.instance.StartGame ();
+		MultiplayerManager.instance.StartGame ();
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
 	}
 

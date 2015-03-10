@@ -20,7 +20,7 @@ public class HostJoinScreen : GameScreen {
 		ScreenElements.Disable ("nogames");
 		LabelElement searching = ScreenElements.Get<LabelElement> ("searching");
 		
-		if (MultiplayerManager2.instance.UsingWifi) {
+		if (MultiplayerManager.instance.UsingWifi) {
 			searching.Content = "Searching for games...";
 		} else {
 			searching.Content = "Waiting for invite...";
@@ -36,13 +36,11 @@ public class HostJoinScreen : GameScreen {
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Host": 
-				//MultiplayerManager.instance.HostGame (); 
-				MultiplayerManager2.instance.HostGame (); 
+				MultiplayerManager.instance.HostGame (); 
 				GotoScreen ("Lobby");
 				break;
 			case "Join": 
-				//MultiplayerManager.instance.JoinGame (); 
-				MultiplayerManager2.instance.JoinGame (); 
+				MultiplayerManager.instance.JoinGame (); 
 				ScreenElements.Enable ("searching");
 				ScreenElements.Disable ("nogames");
 				break;

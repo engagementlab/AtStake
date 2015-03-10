@@ -13,7 +13,7 @@ public class WinScreen : GameScreen {
 	}
 
 	protected override void OnScreenStartPlayer () {
-		if (AgendaVotingType.All) ScreenElements.Disable ("next");
+		if (AgendaVotingStyle.All) ScreenElements.Disable ("next");
 		if (Player.instance.Won) {
 			winner.Content = Copy.YouWin; 
 			Player.instance.MyBeanPool.OnWin ();
@@ -24,15 +24,15 @@ public class WinScreen : GameScreen {
 	}
 
 	protected override void OnScreenStartDecider () {
-		if (AgendaVotingType.All) ScreenElements.Enable ("next");
+		if (AgendaVotingStyle.All) ScreenElements.Enable ("next");
 		BeanPotManager.instance.OnLose ();
 		winner.Content = Copy.PlayerWin;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		if (AgendaVotingType.All) {
+		if (AgendaVotingStyle.All) {
 			if (e.id == "Next") {
-				if (AgendaVotingType.All) {
+				if (AgendaVotingStyle.All) {
 					GameStateController.instance.AllPlayersGotoNextScreen ();
 				} 
 			}
@@ -40,7 +40,7 @@ public class WinScreen : GameScreen {
 	}
 
 	protected override void OnMessagesMatch () {
-		if (AgendaVotingType.Decider) {
+		if (AgendaVotingStyle.Decider) {
 			if (Player.instance.IsDecider) {
 				GameStateController.instance.GotoNextScreen ();
 			} else {

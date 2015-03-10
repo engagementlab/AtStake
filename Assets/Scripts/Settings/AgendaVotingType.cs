@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum VotingType { All, Decider }
+public enum VotingStyle { All, Decider }
 
-public static class AgendaVotingType {
+public static class AgendaVotingStyle {
 	
-	public static VotingType Type = VotingType.Decider;
+	public static VotingStyle Type = VotingStyle.Decider;
 	
 	public static bool All {
-		get { return (Type == VotingType.All); }
+		get { return (Type == VotingStyle.All); }
 	}
 
 	public static bool Decider {
-		get { return (Type == VotingType.Decider); }
+		get { return (Type == VotingStyle.Decider); }
 	}
 }

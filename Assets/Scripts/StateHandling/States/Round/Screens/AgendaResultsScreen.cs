@@ -5,15 +5,18 @@ using System.Collections.Generic;
 public class AgendaResultsScreen : GameScreen {
 
 	LabelElement description;
-	string defaultDescription = "please !! wait while everyone finishes voting :)";
+	string defaultDescription = "Please wait while everyone finishes voting";
 	List<AgendaItem> winningItems;
 
 	public AgendaResultsScreen (GameState state, string name = "Agenda Results") : base (state, name) {
 		
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
-		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		
-		description = new LabelElement (defaultDescription, 0);
+		if (AgendaVotingStyle.All) {
+			description = new LabelElement (defaultDescription, 0);
+		} else {
+			description = new LabelElement ("Loading...", 0);
+		}
 		ScreenElements.AddEnabled ("description", description);
 		ScreenElements.AddEnabled ("wait", new ImageElement ("wait", 1, Color.white));
 		ScreenElements.AddDisabled ("next", CreateNextButton ());
@@ -21,8 +24,7 @@ public class AgendaResultsScreen : GameScreen {
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
 		base.OnScreenStart (hosting, isDecider);
-		if (AgendaVotingType.All) {
-			//MessageRelayer.instance.SendMessageToDecider ("FinishedVoting");
+		if (AgendaVotingStyle.All) {
 			MessageSender.instance.SendMessageToDecider ("FinishedVoting");
 		}
 	}
@@ -73,12 +75,14 @@ public class AgendaResultsScreen : GameScreen {
 		}
 	}
 
-	void OnRoundStartEvent (RoundStartEvent e) {
-		ScreenElements.SuspendUpdating ();
-		ScreenElements.DisableAll ();
-		ScreenElements.Enable ("description");
-		ScreenElements.Enable ("wait");
-		description.Content = defaultDescription;
+	public override void OnScreenEnd () {
+		if (AgendaVotingStyle.All) {
+			ScreenElements.SuspendUpdating ();
+			ScreenElements.DisableAll ();
+			ScreenElements.Enable ("description");
+			ScreenElements.Enable ("wait");
+			description.Content = defaultDescription;
+		}
 	}
 
 	protected override void OnMessagesMatch () {

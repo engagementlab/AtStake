@@ -44,7 +44,7 @@ public class BluetoothManager : MonoBehaviour {
 	}
 	
 	void AdvertiseDevice () {
-		MultiPeer.advertiseCurrentDevice (true, gameName);
+		MultiPeer.advertiseCurrentDevice (true, gameName, Player.instance.Name);
 	}
 
 	void peerDidChangeStateToConnectedEvent (string param) {

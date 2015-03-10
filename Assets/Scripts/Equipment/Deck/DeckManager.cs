@@ -192,8 +192,8 @@ public class DeckManager : MonoBehaviour {
 	}
 
 	void OnLoadDeck () {
-		if (MultiplayerManager2.instance.Hosting) {
-			if (MultiplayerManager2.instance.UsingWifi) {
+		if (MultiplayerManager.instance.Hosting) {
+			if (MultiplayerManager.instance.UsingWifi) {
 				MessageSender.instance.ScheduleMessage ("OnServerLoadDeck");
 			} else {
 				MessageSender.instance.SendMessageToAll ("OnServerLoadDeck", deckFilename, "", deckLocal ? 1 : 0);
@@ -219,7 +219,7 @@ public class DeckManager : MonoBehaviour {
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		if (e.id == "OnServerLoadDeck" && 
 			e.message1 != "" && 
-			!MultiplayerManager2.instance.Hosting) {
+			!MultiplayerManager.instance.Hosting) {
 			LoadDeck (e.message1, e.val == 1);
 		}
 	}
