@@ -64,6 +64,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnSetRoleEvent (SetRoleEvent e) {
+		Debug.Log ("new role: " + e.role.name);
 		role = e.role;
 	}
 

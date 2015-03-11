@@ -73,7 +73,11 @@ public class MessageSender : MonoBehaviour {
 	public void ScheduleMessage (NetworkMessage message) {
 		
 		if (!UsingWifi) {
-			SendMessageToAll (message.name, message.message1, message.message2, message.val);
+			if (MultiplayerManager.instance.Hosting) {
+				AddMessage (message);
+			} else {
+				SendMessageToHost ("HostAddMessage" + message.name, message.message1, message.message2, message.val);
+			}
 			return;
 		}
 		
@@ -172,7 +176,11 @@ public class MessageSender : MonoBehaviour {
 
 	void HostSendMessage () {
 		Events.instance.Raise (new HostSendMessageEvent (CurrentMessage.name, CurrentMessage.message1, CurrentMessage.message2, CurrentMessage.val));
-		if (Connected) networkView.RPC ("RequestClientConfirmation", RPCMode.Others, CurrentMessage.name);
+		if (UsingWifi) {
+			if (Connected) networkView.RPC ("RequestClientConfirmation", RPCMode.Others, CurrentMessage.name);
+		} else {
+			SendMessageToAll ("RequestClientConfirmation", CurrentMessage.name);
+		}
 	}
 
 	// Bluetooth-specific: MultiPeer only passes strings, so the message needs to be
@@ -206,18 +214,36 @@ public class MessageSender : MonoBehaviour {
 
 	void OnMultiPeerHostReceiveMessage (string param) {
 		if (MultiplayerManager.instance.Hosting) {
+
+			// cache host
 			if (hostId == "") {
 				string localId = MultiPeer.getLocalPeerId ();
 				SendMessageToAll ("SetHost", localId);
 				hostId = localId;
 			}
+			
 			NetworkMessage message = StringToMessage (param);
-			Events.instance.Raise (new HostReceiveMessageEvent (message.name, message.message1, message.message2));
+
+			// this is very much a hack
+			// the host needs to know what type of message it's receiving (ftr the type is "HostAddMessage")
+			// but it also needs to know the name of the message to trigger
+			// so i'm combining the type and name in the first parameter, then splitting the string
+			// upon the message being received down here
+			if (message.name.Substring(0, 14) == "HostAddMessage") {
+				NetworkMessage newMessage = new NetworkMessage (message.name.Substring (14), message.message1, message.message2, message.val);
+				AddMessage (newMessage);
+			} else if (message.name == "ConfirmClientReceived") {
+				HostReceiveConfirmation (message.message1);
+			} else {
+				Events.instance.Raise (new HostReceiveMessageEvent (message.name, message.message1, message.message2));
+			}
 		}
 	}
 
 	void OnMultiPeerDeciderReceiveMessage (string param) {
 		if (Player.instance.IsDecider) {
+
+			// cache decider
 			if (deciderId == "") {
 				string localId = MultiPeer.getLocalPeerId ();
 				SendMessageToAll ("SetDecider", localId);
@@ -233,6 +259,8 @@ public class MessageSender : MonoBehaviour {
 			hostId = e.message1;    // cache host
 		} else if (e.id == "SetDecider") {
 			deciderId = e.message1;	// cache decider
+		} else if (e.id == "RequestClientConfirmation" && !MultiplayerManager.instance.Hosting) {
+			SendMessageToHost ("ConfirmClientReceived", e.message1);
 		}
 	}
 

@@ -16,7 +16,7 @@ public class MultiPeer
 	public static void advertiseCurrentDevice( bool shouldAdvertise, string serviceType, string displayName = null )
 	{
 		if( Application.platform == RuntimePlatform.IPhonePlayer )
-			_multiPeerAdvertiseCurrentDevice( shouldAdvertise, serviceType );
+			_multiPeerAdvertiseCurrentDevice( shouldAdvertise, serviceType, displayName );
 	}
 
 

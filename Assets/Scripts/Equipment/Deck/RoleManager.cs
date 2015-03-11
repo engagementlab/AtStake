@@ -54,7 +54,6 @@ public class RoleManager : MonoBehaviour {
 	}
 
 	void HostAssignRoles () {
-
 		// Each player is sent a message with a name and number. 
 		// If their name matches the messaged name, they're assigned the corresponding role
 		for (int i = 0; i < playerNames.Count; i ++) {
