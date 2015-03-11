@@ -39,9 +39,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea35ea62f082a48b5af2d92bd03642a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer:
+  timerBlue:
     source: {fileID: 21300000, guid: c0fc63efe515f490497013f4540f674f, type: 3}
     pressed: {fileID: 21300000, guid: f8667e4c3d57b49eb8caf3c478878ede, type: 3}
+  timerPink:
+    source: {fileID: 21300000, guid: dec93fa807a6b42abbad9cd492ee1b93, type: 3}
+    pressed: {fileID: 21300000, guid: 6e5f343f8f1e746a2b68273b24d96082, type: 3}
   blue:
     source: {fileID: 21300000, guid: 2d0d4c5eec985405e8efbd2a8babb99f, type: 3}
     pressed: {fileID: 21300000, guid: 283accdc29631430e8a1d08bc2d48ece, type: 3}

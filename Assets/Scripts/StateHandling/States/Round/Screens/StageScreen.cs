@@ -105,6 +105,7 @@ public class StageScreen : GameScreen {
 
 	void HandleTimerPress () {
 		if (Player.instance.IsDecider) {
+			lastPressedId = "";
 			if (StartTimer ()) {
 				Timer.instance.AllStartCountDown (timerDuration);
 			}

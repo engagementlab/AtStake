@@ -43,6 +43,7 @@ public class AgendaScreen : GameScreen {
 
 	void HandleGotoScreen () {
 		if (AgendaItemsManager.instance.HasNextItem) {
+			lastPressedId = "";
 			RefreshScreen ();
 		} else {
 			if (AgendaVotingStyle.All) {

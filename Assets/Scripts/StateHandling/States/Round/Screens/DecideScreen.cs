@@ -12,7 +12,7 @@ public class DecideScreen : GameScreen {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		ScreenElements.AddDisabled ("instructionsDecider", new LabelElement (Copy.DecideScreenDecider, 0, new WhiteTextStyle ()));
 		ScreenElements.AddDisabled ("instructionsPlayer", new LabelElement (Copy.DecideScreenPlayer, 0, new WhiteTextStyle ()));
-		ScreenElements.AddDisabled ("wait", new ImageElement ("wait", 1, Color.black));
+		ScreenElements.AddDisabled ("wait", new ImageElement ("wait", 1, Color.white));
 		ScreenElements.AddDisabled ("confirm", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 	}
 

@@ -9,6 +9,6 @@ public class TimerButton : MiddleButton {
 
 	public override void Set (ButtonElement element) {
 		base.Set (element);
-		SetColor ("timer");
+		SetColor ("timerPink");
 	}
 }

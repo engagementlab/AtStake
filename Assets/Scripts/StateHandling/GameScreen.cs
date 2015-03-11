@@ -4,7 +4,8 @@ using System.Collections;
 public class GameScreen {
 
 	public readonly string name = "";
-	public readonly GameState state;
+ 	public readonly GameState state;
+ 	protected string lastPressedId = ""; // keep track of the last button pressed to prevent jamming
 
 	BottomButtonElement nextButton = null;
 	bool HasNext {
@@ -79,6 +80,7 @@ public class GameScreen {
 
 	// Host and clients hear this
 	public virtual void OnScreenStart (bool hosting, bool isDecider) {
+		lastPressedId = "";
 		if (HasNext) {
 			Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 			nextButton.Content = "Next";
@@ -113,6 +115,7 @@ public class GameScreen {
 	public virtual void OnCountDownEnd () {}
 
 	public virtual void OnScreenEnd () {
+		lastPressedId = "";
 		Events.instance.RemoveListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 	}
 
@@ -122,10 +125,14 @@ public class GameScreen {
 
 	protected virtual void OnButtonPressEvent (ButtonPressEvent e) {
 		if (e.screen == this) {
+			if (e.id == lastPressedId) {
+				return;
+			}
 			if (e.id == "Next" && HasNext) {
 				nextButton.Content = "Wait";
 				MessageMatcher.instance.SetMessage (name + " next", "next screen");
 			}
+			lastPressedId = e.id;
 			OnButtonPress (e);
 		}
 	}

@@ -21,8 +21,12 @@ public class LobbyScreen : GameScreen {
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
 		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
-		if (!MultiplayerManager.instance.UsingWifi && MultiplayerManager.instance.Hosting) {
-			ScreenElements.Enable ("invite");
+		if (!MultiplayerManager.instance.UsingWifi) {
+			if (MultiplayerManager.instance.Hosting) {
+				ScreenElements.Enable ("invite");
+			} else {
+				ScreenElements.Disable ("invite");
+			}
 		}
 	}
 
