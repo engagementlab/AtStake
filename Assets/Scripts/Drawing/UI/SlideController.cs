@@ -3,13 +3,21 @@ using System.Collections;
 
 public class SlideController : MonoBehaviour {
 
+	public TopBar topBar;
 	public UIScreen1 screen1;
 	public UIScreen2 screen2;
 	UIScreen currentScreen;
 	UIScreen nextScreen;
 
-	float slideTime = 0.33f;
-	bool sliding = false;
+	static float slideTime = 0.33f;
+	public static float SlideTime {
+		get { return slideTime; }
+	}
+
+	static bool sliding = false; 
+	public static bool Sliding {
+		get { return sliding; }
+	}
 
 	bool firstScreen = true;
 
@@ -63,9 +71,11 @@ public class SlideController : MonoBehaviour {
 				StartCoroutine (SlideLeft ());
 			}
 		}
+		topBar.OnChangeScreenEvent (e);
 	}
 
 	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		currentScreen.OnUpdateDrawerEvent (e);
+		topBar.OnUpdateDrawerEvent (e);
 	}
 }

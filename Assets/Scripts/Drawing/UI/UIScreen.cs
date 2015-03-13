@@ -56,13 +56,11 @@ public class UIScreen : MonoBehaviour {
 
 	public void OnChangeScreenEvent (ChangeScreenEvent e) {
 		background.OnChangeScreenEvent (e);
-		topBar.OnChangeScreenEvent (e);
 		bottomBar.OnChangeScreenEvent (e);
 		middle.OnChangeScreenEvent (e);
 	}
 
 	public void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
-		topBar.OnUpdateDrawerEvent (e);
 		bottomBar.OnUpdateDrawerEvent (e);
 		middle.OnUpdateDrawerEvent (e);
 	}

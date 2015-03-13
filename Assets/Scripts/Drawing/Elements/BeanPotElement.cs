@@ -15,13 +15,23 @@ public class BeanPotElement : ScreenElement {
 	}
 	Text text = null;
 
+	int count = 0;
+	int Count {
+		get { return count; }
+		set {
+			count = value;
+			Content = count.ToString ();
+		}
+	}
+
 	public BeanPotElement () {
 		Events.instance.AddListener<UpdateBeanPotEvent> (OnUpdateBeanPotEvent);
 		UpdateContent (BeanPotManager.instance.BeanCount);
 	}
 
 	void UpdateContent (int beanCount) {
-		Content = beanCount.ToString ();
+		//Content = beanCount.ToString ();
+		CoroutineManager.Instance.IntLerp (Count, beanCount, 0.5f, (x) => Count = x);
 	}
 
 	void OnUpdateBeanPotEvent (UpdateBeanPotEvent e) {

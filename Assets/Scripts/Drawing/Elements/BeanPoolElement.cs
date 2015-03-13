@@ -15,6 +15,15 @@ public class BeanPoolElement : ScreenElement {
 	}
 	Text text = null;
 
+	int count = 0;
+	int Count {
+		get { return count; }
+		set {
+			count = value;
+			Content = count.ToString ();
+		}
+	}
+
 	public BeanPoolElement () {
 		Events.instance.AddListener<UpdateBeanPoolEvent> (OnUpdateBeanPoolEvent);
 		UpdateContent (Player.instance.MyBeanPool.BeanCount);
@@ -22,6 +31,7 @@ public class BeanPoolElement : ScreenElement {
 
 	void UpdateContent (int beanCount) {
 		Content = beanCount.ToString ();
+		CoroutineManager.Instance.IntLerp (Count, beanCount, 0.5f, (x) => Count = x);
 	}
 
 	void OnUpdateBeanPoolEvent (UpdateBeanPoolEvent e) {

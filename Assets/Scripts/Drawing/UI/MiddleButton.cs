@@ -26,7 +26,13 @@ public class MiddleButton : MonoBehaviour {
 		Element = element;
 		text.text = Content;
 		SetColor (element.Color);
+		OnSet ();
 	}
+
+	public virtual void OnSet () {
+		//transform.SetLocalScale (1);
+		//Invoke ("Expand", SlideController.SlideTime);
+ 	}
 
 	public void SetColor (string color) {
 		ButtonColor buttonColor = ButtonManager.instance.GetColor (color);
@@ -39,5 +45,30 @@ public class MiddleButton : MonoBehaviour {
 	public void SetEnabled (bool enabled) {
 		source.enabled = enabled;
 		text.enabled = enabled;
+	}
+
+	void Expand () {
+		StartCoroutine (CoExpand ());		
+	}
+
+	IEnumerator CoExpand () {
+		
+		float time = 0.5f;
+		float eTime = 0f;
+		float bulge = 0.05f;
+	
+		while (eTime < time/2) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (0, 1, eTime / time/2);
+			transform.SetLocalScale (1 + progress * bulge);
+			yield return null;
+		}
+
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			float progress = Mathf.SmoothStep (1, 0, eTime / time);
+			transform.SetLocalScale (1 + progress * bulge);
+			yield return null;
+		}
 	}
 }

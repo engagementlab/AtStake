@@ -124,6 +124,7 @@ public class GameScreen {
 	 */
 
 	protected virtual void OnButtonPressEvent (ButtonPressEvent e) {
+		if (SlideController.Sliding) return;
 		if (e.screen == this) {
 			if (e.id == lastPressedId) {
 				return;

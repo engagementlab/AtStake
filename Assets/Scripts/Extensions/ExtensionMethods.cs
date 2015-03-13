@@ -39,4 +39,8 @@ public static class ExtensionMethods {
 	public static void SetXPosition (this Transform transform, float x) {
 		transform.position = new Vector3 (x, transform.position.y, transform.position.z);
 	}
+
+	public static void SetLocalScale (this Transform transform, float scale) {
+		transform.localScale = new Vector3 (scale, scale, scale);
+	}
 }

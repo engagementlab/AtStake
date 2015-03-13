@@ -17,6 +17,8 @@ public class EnterNameScreen : GameScreen {
 				if (tfe.content != "") {
 					Events.instance.Raise (new EnterNameEvent (tfe.content));
 					GotoScreen ("Host or Join");
+				} else {
+					lastPressedId = "";
 				}
 				break;
 			case "Back": GotoScreen ("Start", "Start", true); break;
