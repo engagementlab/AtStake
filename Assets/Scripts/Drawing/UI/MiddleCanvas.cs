@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class MiddleCanvas : MonoBehaviour {
 
+	public Scrollbar scrollbar;
+	public ScrollRect scrollRect;
 	public VerticalLayoutGroup buttonGroup;
 	public RectTransform buttonGroupTransform;
 	public MiddleButtonManager buttonManager;
@@ -21,8 +23,13 @@ public class MiddleCanvas : MonoBehaviour {
 		AlignMiddle ();
 	}
 
+	void Start () {
+		ResetScrollbar ();
+		SetScrollbarActive (false);
+	}
+
 	public void AlignMiddle () {
-		buttonGroup.padding.top = 0;
+		buttonGroup.padding.top = 0; // 100
 		buttonGroup.childAlignment = TextAnchor.MiddleCenter;
 		buttonGroupTransform.pivot = new Vector2 (0.5f, 0.5f);
 		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 0.5f);
@@ -32,7 +39,7 @@ public class MiddleCanvas : MonoBehaviour {
 	}
 
 	public void AlignUpper () {
-		buttonGroup.padding.top = 120;
+		buttonGroup.padding.top = 0; // 120
 		buttonGroup.childAlignment = TextAnchor.UpperCenter;
 		buttonGroupTransform.pivot = new Vector2 (0.5f, 1);
 		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 1);
@@ -61,6 +68,8 @@ public class MiddleCanvas : MonoBehaviour {
 
 	void UpdateScreen () {
 		
+		SetScrollbarActive (false);
+
 		labelManager.RemoveLabels ();
 		textFieldManager.Hide ();
 		timerManager.Hide ();
@@ -89,6 +98,15 @@ public class MiddleCanvas : MonoBehaviour {
 				imageManager.Show (i);
 			}
 		}
+
+		CoroutineManager.Instance.WaitForFrame (OnWaitForFrame);
+	}
+
+	void OnWaitForFrame () {
+		if (buttonGroupTransform.sizeDelta.y > 750) {
+			SetScrollbarActive (true);
+			ResetScrollbar ();
+		}
 	}
 
 	void UpdateAlignment (TextAnchor alignment) {
@@ -112,6 +130,20 @@ public class MiddleCanvas : MonoBehaviour {
 			elements = screen.Elements;
 			UpdateScreen ();
 		}
+	}
+
+	void ResetScrollbar () {
+		scrollbar.value = 1;
+	}
+
+	void SetScrollbarActive (bool active) {
+		if (active) {
+			buttonGroup.padding.top = 100; 
+		} else {
+			buttonGroup.padding.top = 0;
+		}
+		scrollRect.enabled = active;
+		scrollbar.gameObject.SetActive (active);
 	}
 }
 

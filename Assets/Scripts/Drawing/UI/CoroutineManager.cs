@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public delegate void OnWaitForFrame ();
+
 public class CoroutineManager : MonoBehaviour {
 
 	static CoroutineManager instanceInternal = null;
@@ -53,5 +55,15 @@ public class CoroutineManager : MonoBehaviour {
 		}
 
 		action (to);
+	}
+
+	public void WaitForFrame (OnWaitForFrame onWaitForFrame) {
+		StartCoroutine (CoWaitForFixedUpdate (onWaitForFrame));
+	}
+
+	IEnumerator CoWaitForFixedUpdate (OnWaitForFrame onWaitForFrame) {
+		yield return new WaitForFixedUpdate ();
+		yield return new WaitForFixedUpdate ();
+		onWaitForFrame ();
 	}
 }

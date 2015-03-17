@@ -8,19 +8,16 @@ public class StartScreen : GameScreen {
 	public StartScreen (GameState state, string name = "Start") : base (state, name) {
 		ScreenElements.AddEnabled ("play", CreateButton ("Play", 0));
 		ScreenElements.AddEnabled ("about", CreateButton ("About", 1, "", "green"));
-		ScreenElements.AddEnabled ("test", CreateButton ("Test", 2,  testVal.ToString ()));
-		ScreenElements.AddEnabled ("pool", new BeanPoolElement ());
-		ScreenElements.AddEnabled ("pot", new BeanPotElement ());
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Play": GotoScreen ("Enter Name", "Multiplayer"); break;
 			case "About": GotoScreen ("About"); break;
-			case "Test": 
+			/*case "Test": 
 				//BeanPotManager.instance.OnRoundStart (); 
 				Events.instance.Raise (new UpdateBeanPotEvent (200));
-				break;
+				break;*/
 		}
 	}
 }

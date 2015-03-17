@@ -67,7 +67,7 @@ public class HeaderTextStyle : TextStyle {
 		get { return TextAnchor.UpperLeft; }
 	}
 	public override Color Color {
-		get { return Palette.White; }
+		get { return Palette.Grey; }
 	}
 }
 

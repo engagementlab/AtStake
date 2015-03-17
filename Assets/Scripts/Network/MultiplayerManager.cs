@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// new multiplayer manager
 [RequireComponent (typeof(NetworkView))]
 public class MultiplayerManager : MonoBehaviour {
 
