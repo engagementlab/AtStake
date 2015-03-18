@@ -25,10 +25,10 @@ public class BackgroundCanvas : MonoBehaviour {
 			case "Start":
 			case "Enter Name":
 			case "Host or Join": 
-			case "Games List":
-			case "Choose Decider": theme = new StartTheme (); break;
+			case "Games List": theme = new StartTheme (); break;
 			case "Scoreboard":
 			case "Choose Deck":
+			case "Choose Decider": 
 			case "Lobby": theme = new LobbyTheme (); break;
 			case "Bio":
 			case "Agenda":

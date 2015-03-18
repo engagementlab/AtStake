@@ -10,6 +10,19 @@ public class RoleScreen : GameScreen {
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
 
+	public override void OnScreenStart (bool hosting, bool isDecider) {
+		base.OnScreenStart (hosting, isDecider);
+		SetBackEnabled ();
+	}
+
+	protected virtual void SetBackEnabled () {
+		if (Player.instance.IsDecider) {
+			ScreenElements.Disable ("back");
+		} else {
+			ScreenElements.Enable ("back");
+		}
+	}
+
 	protected void CreateRoleCard () {
 		
 		Player player = Player.instance;
@@ -29,8 +42,8 @@ public class RoleScreen : GameScreen {
 	protected void CreateBio (string playerName, string playerRole, string bio) {
 		string title = string.Format ("{0} the {1}", playerName, playerRole);
 		ScreenElements.SuspendUpdating ();
-		ScreenElements.Add<LabelElement> ("title", new LabelElement (title, 0)).Content = title;
-		ScreenElements.Add<LabelElement> ("bio", new LabelElement (bio, 1)).Content = bio;
+		ScreenElements.Add<LabelElement> ("title", new LabelElement (title, 0, new DefaultCenterTextStyle ())).Content = title;
+		ScreenElements.Add<LabelElement> ("bio", new LabelElement (bio, 1, new DefaultCenterTextStyle ())).Content = bio;
 		ScreenElements.EnableUpdating ();
 	}
 
@@ -48,7 +61,7 @@ public class RoleScreen : GameScreen {
 			string bonusID = "bonus" + i.ToString ();
 			string bonus = string.Format ("Bonus: +{0} coins", item.bonus);
 
-			ScreenElements.Add<LabelElement> (descriptionID, new LabelElement (description, position, new SmallTextStyle ())).Content = description;
+			ScreenElements.Add<LabelElement> (descriptionID, new LabelElement (description, position, new AgendaItemTextStyle ())).Content = description;
 			position ++;
 			ScreenElements.Add<LabelElement> (bonusID, new LabelElement (bonus, position, new BonusTextStyle ())).Content = bonus;
 			position ++;
@@ -64,11 +77,8 @@ public class RoleScreen : GameScreen {
 	}
 
 	protected virtual void OnUpdateRoleEvent (UpdateRoleEvent e) {
-		if (Player.instance.IsDecider) {
-			ScreenElements.Disable ("back");
-		} else {
+		if (!Player.instance.IsDecider) {
 			CreateRoleCard ();
-			ScreenElements.Enable ("back");
 		}
 	}
 }

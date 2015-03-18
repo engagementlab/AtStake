@@ -26,6 +26,15 @@ public class MessageMatcher : MonoBehaviour {
 		}
 	}
 
+	public void RemoveMessage (string id) {
+		this.id = id;
+		if (MultiplayerManager.instance.Hosting) {
+			RemovePlayerMessage (Player.instance.Name);
+		} else {
+			MessageSender.instance.SendMessageToHost ("RemovePlayerMessage", Player.instance.Name);
+		}
+	}
+
 	int GetPlayerIndex (string playerName) {
 		for (int i = 0; i < players.Length; i ++) {
 			if (players[i] == playerName || players[i] == "")
@@ -57,6 +66,10 @@ public class MessageMatcher : MonoBehaviour {
 		}
 	}
 
+	void RemovePlayerMessage (string playerName) {
+		messages[GetPlayerIndex (playerName)] = "";
+	}
+
 	void RaiseMessagesMatch (string id, string message) {
 		Events.instance.Raise (new MessagesMatchEvent (id, message));
 		Clear ();
@@ -74,6 +87,8 @@ public class MessageMatcher : MonoBehaviour {
 	void OnHostReceiveMessageEvent (HostReceiveMessageEvent e) {
 		if (e.id == "SetPlayerMessage") {
 			SetPlayerMessage (e.message1, e.message2);
+		} else if (e.id == "RemovePlayerMessage") {
+			RemovePlayerMessage (e.message1);
 		}
 	}
 

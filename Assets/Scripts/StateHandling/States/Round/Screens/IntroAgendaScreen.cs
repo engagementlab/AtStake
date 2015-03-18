@@ -4,7 +4,7 @@ using System.Collections;
 public class IntroAgendaScreen : IntroductionScreen {
 
 	public IntroAgendaScreen (GameState state, string name = "Agenda") : base (state, name) {
-		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroAgenda, 0));
+		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroAgenda, 0, new DefaultCenterTextStyle ()));
 	}
 
 	protected override void OnScreenStartDecider () {
@@ -14,6 +14,8 @@ public class IntroAgendaScreen : IntroductionScreen {
 		ScreenElements.Enable ("next");
 		ScreenElements.EnableUpdating ();
 	}
+
+	protected override void SetBackEnabled () {}
 
 	void CreateAgenda () {
 		ScreenElements.DisableAll ();

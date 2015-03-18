@@ -4,7 +4,7 @@ using System.Collections;
 public class IntroBioScreen : IntroductionScreen {
 
 	public IntroBioScreen (GameState state, string name = "Bio") : base (state, name) {
-		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroBio, 0));
+		ScreenElements.AddDisabled ("description", new LabelElement (Copy.IntroBio, 0, new DefaultCenterTextStyle ()));
 	}
 
 	protected override void OnScreenStartDecider () {
@@ -14,6 +14,8 @@ public class IntroBioScreen : IntroductionScreen {
 		ScreenElements.Enable ("next");
 		ScreenElements.EnableUpdating ();
 	}
+
+	protected override void SetBackEnabled () {}
 
 	void CreateBio () {
 		Player player = Player.instance;

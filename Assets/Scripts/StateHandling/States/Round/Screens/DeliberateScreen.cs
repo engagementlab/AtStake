@@ -26,6 +26,12 @@ public class DeliberateScreen : StageScreen {
 	protected override void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		if (ThisScreen && e.id == "YesAddTime") {
 			Timer.instance.AllAddSeconds (TimerValues.extraTime);
+			if (!Player.instance.IsDecider) {
+				MessageMatcher.instance.RemoveMessage ("NoAddTime");
+			}
+			if (Player.instance.IsDecider) {
+				timer.Interactable = false;
+			}
 		}
 	}
 

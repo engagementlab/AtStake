@@ -8,9 +8,10 @@ public class Player : MonoBehaviour {
 		get { return name; }
 	}
 
-	bool isDecider;
+	//bool isDecider;
 	public bool IsDecider {
-		get { return isDecider; }
+		//get { return isDecider; }
+		get { return deciderManager.IsDecider; }
 	}
 
 	Role role = null;
@@ -40,6 +41,8 @@ public class Player : MonoBehaviour {
 
 	static public Player instance;
 
+	public DeciderManager deciderManager = new DeciderManager ();
+
 	void Awake () {
 
 		if (instance == null)
@@ -47,12 +50,12 @@ public class Player : MonoBehaviour {
 
 		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<SetRoleEvent> (OnSetRoleEvent);
-		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
+		//Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 	}
 
 	public void OnRoundStart () {
-		beanPool.OnRoundStart (isDecider);
+		beanPool.OnRoundStart (IsDecider);
 	}
 
 	void OnEnterNameEvent (EnterNameEvent e) {
@@ -64,15 +67,15 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnSetRoleEvent (SetRoleEvent e) {
-		Debug.Log ("new role: " + e.role.name);
+		//Debug.Log ("new role: " + e.role.name);
 		role = e.role;
 	}
 
-	void OnSelectDeciderEvent (SelectDeciderEvent e) {
+	/*void OnSelectDeciderEvent (SelectDeciderEvent e) {
 		if (e.name == name) {
 			isDecider = true;
 		} else {
 			isDecider = false;
 		}
-	}
+	}*/
 }

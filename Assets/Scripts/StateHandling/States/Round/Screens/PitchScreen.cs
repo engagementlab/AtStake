@@ -51,7 +51,6 @@ public class PitchScreen : StageScreen {
 	}
 
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
-		Events.instance.AddListener<GameEndEvent> (OnGameEndEvent);
 		currentPitcher = new LabelElement ("", 5, new WhiteTextStyle ());
 		nextPitcher = new LabelElement ("", 6, new WhiteTextStyle ());
 		//ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
@@ -108,7 +107,7 @@ public class PitchScreen : StageScreen {
 			GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
 	}
 
-	void OnGameEndEvent (GameEndEvent e) {
+	public override void OnScreenEnd () {
 		currentPlayer = -1;
 	}
 

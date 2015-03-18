@@ -23,9 +23,9 @@ public class DefaultTextStyle : TextStyle {
 	}
 }
 
-public class SmallTextStyle : TextStyle {
+public class DefaultCenterTextStyle : TextStyle {
 	public override int Size {
-		get { return 32; }
+		get { return 36; }
 	}
 	public override TextAnchor Anchor {
 		get { return TextAnchor.UpperCenter; }
@@ -35,9 +35,9 @@ public class SmallTextStyle : TextStyle {
 	}
 }
 
-public class DefaultCenterTextStyle : TextStyle {
+public class AgendaItemTextStyle : TextStyle {
 	public override int Size {
-		get { return 36; }
+		get { return 32; }
 	}
 	public override TextAnchor Anchor {
 		get { return TextAnchor.UpperCenter; }
