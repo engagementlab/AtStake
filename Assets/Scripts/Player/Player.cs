@@ -8,9 +8,7 @@ public class Player : MonoBehaviour {
 		get { return name; }
 	}
 
-	//bool isDecider;
 	public bool IsDecider {
-		//get { return isDecider; }
 		get { return deciderManager.IsDecider; }
 	}
 
@@ -50,7 +48,6 @@ public class Player : MonoBehaviour {
 
 		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<SetRoleEvent> (OnSetRoleEvent);
-		//Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 	}
 
@@ -67,15 +64,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnSetRoleEvent (SetRoleEvent e) {
-		//Debug.Log ("new role: " + e.role.name);
 		role = e.role;
 	}
-
-	/*void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		if (e.name == name) {
-			isDecider = true;
-		} else {
-			isDecider = false;
-		}
-	}*/
 }

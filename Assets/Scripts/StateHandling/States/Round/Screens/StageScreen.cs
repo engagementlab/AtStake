@@ -79,7 +79,6 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitDeciderScreen () {
-		Debug.Log ("stage screen start");
 		players = round.Players;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("roleCard");

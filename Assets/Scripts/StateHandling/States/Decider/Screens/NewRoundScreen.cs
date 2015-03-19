@@ -4,20 +4,21 @@ using System.Collections;
 // Deprecated ??? 
 public class NewRoundScreen : GameScreen {
 
-	LabelElement instructions = new LabelElement ("Please wait for other players to confirm they're ready :)", 1);
-	bool allowContinue = false;
+	//LabelElement instructions = new LabelElement ("Please wait for other players to confirm they're ready :)", 1);
+	//bool allowContinue = false;
 
 	public NewRoundScreen (GameState state, string name = "New Round") : base (state, name) {
 		
-		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
+		/*Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 		
 		ScreenElements.AddEnabled ("instructions", instructions);
 		ScreenElements.AddDisabled ("newDecider", new LabelElement ("You're the next Decider!", 0));
 		ScreenElements.AddDisabled ("next", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
+		*/
 	}
 
-	public override void OnScreenStart (bool hosting, bool isDecider) {
+	/*public override void OnScreenStart (bool hosting, bool isDecider) {
 		
 		MessageMatcher.instance.SetMessage ("New Round", "true");
 
@@ -49,5 +50,5 @@ public class NewRoundScreen : GameScreen {
 
 	void OnRoundStartEvent (RoundStartEvent e) {
 		instructions.Content = "Please wait for other players to confirm they're ready :)";
-	}
+	}*/
 }

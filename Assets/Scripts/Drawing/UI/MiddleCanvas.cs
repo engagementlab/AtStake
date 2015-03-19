@@ -15,6 +15,8 @@ public class MiddleCanvas : MonoBehaviour {
 	public MiddleTextFieldManager textFieldManager;
 	public MiddleTimerManager timerManager;
 	public MiddleImageManager imageManager;
+	public ScoreboardPoolManager scoreboardPoolManager;
+	public ScoreboardPotManager scoreboardPotManager;
 
 	ScreenElement[] elements;
 	GameScreen screen;
@@ -74,6 +76,8 @@ public class MiddleCanvas : MonoBehaviour {
 		textFieldManager.Hide ();
 		timerManager.Hide ();
 		imageManager.Hide ();
+		scoreboardPoolManager.Hide ();
+		scoreboardPotManager.Hide ();
 		buttonManager.RemoveButtons ();
 
 		foreach (ScreenElement element in elements) {
@@ -96,6 +100,14 @@ public class MiddleCanvas : MonoBehaviour {
 			if (element is ImageElement) {
 				ImageElement i = element as ImageElement;
 				imageManager.Show (i);
+			}
+			if (element is ScoreboardPoolElement) {
+				ScoreboardPoolElement s = element as ScoreboardPoolElement;
+				scoreboardPoolManager.Show (s);
+			}
+			if (element is ScoreboardPotElement) {
+				ScoreboardPotElement s = element as ScoreboardPotElement;
+				scoreboardPotManager.Show (s);
 			}
 		}
 
@@ -329,5 +341,69 @@ public class MiddleImageManager : ElementManager {
 
 	public void Hide () {
 		image.SetActive (false);
+	}
+}
+
+[System.Serializable]
+public class ScoreboardPoolManager : ElementManager {
+
+	public GameObject scoreboardPoolContainer;
+	List<GameObject> poolContainers = new List<GameObject> ();
+	public List<GameObject> PoolContainers {
+		get { return poolContainers; }
+	}
+
+	public void Show (ScoreboardPoolElement scoreboardPoolElement) {
+		
+		GameObject go = GetInactivePool ();
+		if (go == null) {
+			go = CreatePool ();
+			go.SetActive (true);
+		}
+		go.transform.SetSiblingIndex (scoreboardPoolElement.Position);
+		Text t = go.GetComponent<ScoreboardPoolContainer> ().text;
+		scoreboardPoolElement.SetText (t);
+	}
+
+	GameObject CreatePool () {
+		GameObject go = GameObject.Instantiate (scoreboardPoolContainer) as GameObject;
+		RectTransform t = go.transform as RectTransform;
+		t.SetParent (buttonGroupTransform);
+		t.localScale = ExtensionMethods.Vector3One;
+		poolContainers.Add (go);
+		return go;
+	}
+
+	GameObject GetInactivePool () {
+		foreach (GameObject go in poolContainers) {
+			if (!go.activeSelf) {
+				go.SetActive (true);
+				return go;
+			}
+		}
+		return null;
+	}
+
+	public void Hide () {
+		foreach (GameObject go in poolContainers) {
+			go.SetActive (false);
+		}
+	}
+}
+
+[System.Serializable]
+public class ScoreboardPotManager : ElementManager {
+
+	public GameObject scoreboardPotContainer;
+	public Text text;
+
+	public void Show (ScoreboardPotElement scoreboardPotElement) {
+		scoreboardPotContainer.SetActive (true);
+		scoreboardPotContainer.transform.SetSiblingIndex (scoreboardPotElement.Position);
+		text.text = scoreboardPotElement.Content;
+	}
+
+	public void Hide () {
+		scoreboardPotContainer.SetActive (false);
 	}
 }

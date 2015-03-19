@@ -30,7 +30,6 @@ public class BeanPotElement : ScreenElement {
 	}
 
 	void UpdateContent (int beanCount) {
-		//Content = beanCount.ToString ();
 		CoroutineManager.Instance.IntLerp (Count, beanCount, 0.5f, (x) => Count = x);
 	}
 

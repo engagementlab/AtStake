@@ -8,6 +8,9 @@ public class StartScreen : GameScreen {
 	public StartScreen (GameState state, string name = "Start") : base (state, name) {
 		ScreenElements.AddEnabled ("play", CreateButton ("Play", 0));
 		ScreenElements.AddEnabled ("about", CreateButton ("About", 1, "", "green"));
+		//ScreenElements.AddEnabled ("deb", new ScoreboardPoolElement ("deb", 200, 2));
+		//ScreenElements.AddEnabled ("pot", new ScoreboardPotElement (3));
+		//ScreenElements.AddEnabled ("test", new LabelElement ("Here is some test text", 2));
 		/*ScreenElements.AddEnabled ("test1", CreateButton ("Test1", 2));
 		ScreenElements.AddEnabled ("test2", CreateButton ("Test2", 3));
 		ScreenElements.AddEnabled ("test3", CreateButton ("Test3", 4));

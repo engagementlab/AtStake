@@ -74,7 +74,7 @@ public class RoundState : GameState {
 	}
 
 	void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		
+		Debug.Log ("round state new decider: " + e.name);
 		// Set the round number & question for the round
 		Events.instance.Raise (new RoundStartEvent ());
 		if (roundNumber == 3) {

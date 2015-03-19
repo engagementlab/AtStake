@@ -10,6 +10,7 @@ public class RoundStartManager : MonoBehaviour {
 	}
 
 	void OnRoundStartEvent (RoundStartEvent e) {
+		Debug.Log ("round started. decider ? " + Player.instance.IsDecider + ". hosting ? " + MultiplayerManager.instance.Hosting);
 		AgendaItemsManager.instance.ClearItems ();
 		if (MultiplayerManager.instance.Hosting) {
 			BeanPotManager.instance.OnRoundStart ();
