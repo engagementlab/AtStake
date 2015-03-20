@@ -11,6 +11,7 @@ public class DeciderSelectionManager : MonoBehaviour {
 			instance = this;
 		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
 	// First round
@@ -20,7 +21,14 @@ public class DeciderSelectionManager : MonoBehaviour {
 
 	// Subsequent rounds
 	public void SetDecider (string deciderName) {
-		MessageSender.instance.SendMessageToAll ("New Decider", deciderName);
+		//MessageSender.instance.SendMessageToAll ("New Decider", deciderName);
+		MessageSender.instance.ScheduleMessage (new NetworkMessage ("New Decider", deciderName));
+	}
+
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.name == "New Decider") {
+			MessageSender.instance.SendMessageToAll ("New Decider", e.message1);
+		}
 	}
 
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {

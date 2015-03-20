@@ -15,7 +15,6 @@ public class DeciderManager : System.Object {
 	}
 
 	void OnSelectDeciderEvent (SelectDeciderEvent e) {
-		Debug.Log ("new decider: " + e.name);
 		deciderName = e.name;		
 	}
 }

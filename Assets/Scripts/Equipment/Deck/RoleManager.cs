@@ -14,6 +14,7 @@ public class RoleManager : MonoBehaviour {
 		if (instance == null)
 			instance = this;
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
 	public void PopulateDeck (Deck deck) {
@@ -53,11 +54,18 @@ public class RoleManager : MonoBehaviour {
 		HostAssignRoles ();
 	}
 
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.name == "AssignRole") {
+			MessageSender.instance.SendMessageToAll ("AssignRole", e.message1, "", e.val);
+		}
+	}
+
 	void HostAssignRoles () {
 		// Each player is sent a message with a name and number. 
 		// If their name matches the messaged name, they're assigned the corresponding role
 		for (int i = 0; i < playerNames.Count; i ++) {
-			MessageSender.instance.SendMessageToAll ("AssignRole", playerNames[i], "", randomIndices[i]);
+			//MessageSender.instance.SendMessageToAll ("AssignRole", playerNames[i], "", randomIndices[i]);
+			MessageSender.instance.ScheduleMessage (new NetworkMessage ("AssignRole", playerNames[i], "", randomIndices[i]));
 		}
 	}
 
