@@ -21,7 +21,6 @@ public class DeciderSelectionManager : MonoBehaviour {
 
 	// Subsequent rounds
 	public void SetDecider (string deciderName) {
-		//MessageSender.instance.SendMessageToAll ("New Decider", deciderName);
 		MessageSender.instance.ScheduleMessage (new NetworkMessage ("New Decider", deciderName));
 	}
 

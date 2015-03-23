@@ -124,8 +124,12 @@ public class PitchScreen : StageScreen {
 			}*/
 		}
 
-		if (e.id == "YesAddTime") {
-			Timer.instance.AllAddSeconds (TimerValues.extraTime);
+		if (e.id == "YesAddTime" && !Timer.instance.CountingDown) {
+			if (Player.instance.IsDecider) {
+				timer.Interactable = false;
+				Timer.instance.AllAddSeconds (TimerValues.extraTime);
+				MessageSender.instance.SendMessageToAll ("AcceptAddTime", e.message1);
+			}
 		}
 
 		if (e.id == "NoAddTime") {
@@ -138,6 +142,12 @@ public class PitchScreen : StageScreen {
 					ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (NextPlayer);
 					timer.Interactable = true;
 				}
+			}
+		}
+
+		if (e.id == "AcceptAddTime") {
+			if (e.message1 == Player.instance.Name) {
+				Player.instance.MyBeanPool.OnAddTime ();
 			}
 		}
 	}

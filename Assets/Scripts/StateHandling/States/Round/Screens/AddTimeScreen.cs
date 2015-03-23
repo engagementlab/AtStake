@@ -24,13 +24,13 @@ public class AddTimeScreen : GameScreen {
 
 	void AddTime () {
 		string currentStage = StageScreen.CurrentStage;
-		if (Player.instance.MyBeanPool.OnAddTime ()) {
+		if (Player.instance.MyBeanPool.CanAddTime) {
 			if (currentStage == "Deliberate") {
 				GameStateController.instance.AllPlayersGotoScreen (currentStage);
 			} else {
 				GotoScreen (currentStage);
 			}
-			MessageSender.instance.SendMessageToAll ("YesAddTime");
+			MessageSender.instance.SendMessageToAll ("YesAddTime", Player.instance.Name);
 		}
 	}
 

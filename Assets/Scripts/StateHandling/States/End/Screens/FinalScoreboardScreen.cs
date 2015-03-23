@@ -14,8 +14,12 @@ public class FinalScoreboardScreen : GameScreen {
 	void OnUpdatedPlayerScoresEvent (UpdatedPlayerScoresEvent e) {
 		ScreenElements.SuspendUpdating ();
 		for (int i = 0; i < e.playerNames.Length; i ++) {
-			string entry = string.Format ("{0}: {1}", e.playerNames[i], e.playerScores[i]);
-			ScreenElements.Add<LabelElement> ("name" + i.ToString (), new LabelElement (entry, i+1)).Content = entry;
+			//string entry = string.Format ("{0}: {1}", e.playerNames[i], e.playerScores[i]);
+			//ScreenElements.Add<LabelElement> ("name" + i.ToString (), new LabelElement (entry, i+1)).Content = entry;
+			ScreenElements.Add<ScoreboardPoolElement> (
+				"name" + i.ToString (), 
+				new ScoreboardPoolElement (e.playerNames[i], e.playerScores[i], i+1)
+			).SetContent (e.playerNames[i], e.playerScores[i]);
 		}
 		ScreenElements.EnableUpdating ();
 	}

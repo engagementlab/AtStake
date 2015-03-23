@@ -124,3 +124,15 @@ public class CenteredWhiteItalicsStyle : TextStyle {
 		get { return FontStyle.Italic; }
 	}
 }
+
+public class AboutHeaderTextStyle : TextStyle {
+	public override int Size {
+		get { return 75; }
+	}	
+	public override TextAnchor Anchor {
+		get { return TextAnchor.UpperLeft; }
+	}
+	public override Color Color {
+		get { return Palette.Blue; }
+	}
+}

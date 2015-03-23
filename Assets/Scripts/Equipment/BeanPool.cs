@@ -7,6 +7,10 @@ public class BeanPool : IBeanPool {
 	public int BeanCount {
 		get { return beanCount; }
 	}
+
+	public bool CanAddTime {
+		get { return beanCount >= BeanValues.addTime; }
+	}
 	
 	public BeanPool (int beanCount) {
 		this.beanCount = beanCount;

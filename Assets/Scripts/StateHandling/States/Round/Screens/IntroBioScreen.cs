@@ -28,7 +28,6 @@ public class IntroBioScreen : IntroductionScreen {
 	}
 
 	protected override void OnUpdateRoleEvent (UpdateRoleEvent e) {
-		Debug.Log ("update role. decider ? " + Player.instance.IsDecider);
 		if (!Player.instance.IsDecider) {
 			CreateBio ();
 		}

@@ -114,7 +114,8 @@ public class ServerManager : MonoBehaviour {
 		List<HostData> joinable = new List<HostData> ();
 		for (int i = 0; i < hosts.Length; i ++) {
 			HostData host = hosts[i];
-			if (host.playerLimit != 0 && 
+			if (host.gameName != "TestConnection" &&
+				host.playerLimit != 0 && 
 				host.playerLimit != -1 && 
 				host.connectedPlayers < host.playerLimit-1) {
 				joinable.Add (host);

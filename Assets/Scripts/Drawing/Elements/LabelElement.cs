@@ -29,6 +29,8 @@ public class LabelElement : ScreenElement {
 		this.text = text;
 		this.text.text = content;
 		StyleText ();
+		/*text.color = new Color (text.color.r, text.color.g, text.color.b, 0f);
+		CoroutineManager.Instance.WaitForSeconds (SlideController.SlideTime, FadeText);*/
 	}
 
 	void StyleText () {
@@ -36,5 +38,14 @@ public class LabelElement : ScreenElement {
 		text.alignment = style.Anchor;
 		text.color = style.Color;
 		text.fontStyle = style.FontStyle;
+	}
+
+	void FadeText () {
+		CoroutineManager.Instance.FloatLerp (0, 1, 0.5f, OnFloatLerp);
+	}
+
+	void OnFloatLerp (float progress) {
+		Color color = text.color;
+		text.color = new Color (color.r, color.g, color.b, progress);
 	}
 }

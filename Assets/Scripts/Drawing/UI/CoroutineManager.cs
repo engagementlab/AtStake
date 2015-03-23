@@ -2,6 +2,7 @@
 using System.Collections;
 
 public delegate void OnWaitForFrame ();
+public delegate void OnWaitForSeconds ();
 
 public class CoroutineManager : MonoBehaviour {
 
@@ -65,5 +66,14 @@ public class CoroutineManager : MonoBehaviour {
 		yield return new WaitForFixedUpdate ();
 		yield return new WaitForFixedUpdate ();
 		onWaitForFrame ();
+	}
+
+	public void WaitForSeconds (float seconds, OnWaitForSeconds onWaitForSeconds) {
+		StartCoroutine (CoWaitForSeconds (seconds, onWaitForSeconds));
+	}
+
+	IEnumerator CoWaitForSeconds (float seconds, OnWaitForSeconds onWaitForSeconds) {
+		yield return new WaitForSeconds (seconds);
+		onWaitForSeconds ();
 	}
 }

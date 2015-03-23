@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: ed3c9f48bc10549f3b5e69075486fdfd, type: 3}
-    m_FontSize: 48
+    m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -1470,11 +1470,11 @@ MonoBehaviour:
     buttonGroupTransform: {fileID: 893012212}
     image: {fileID: 1421330127}
   scoreboardPoolManager:
-    buttonGroupTransform: {fileID: 0}
+    buttonGroupTransform: {fileID: 893012212}
     scoreboardPoolContainer: {fileID: 131734, guid: 782e0651465984ff0a15195de0cfb802,
       type: 2}
   scoreboardPotManager:
-    buttonGroupTransform: {fileID: 0}
+    buttonGroupTransform: {fileID: 893012212}
     scoreboardPotContainer: {fileID: 782626101}
     text: {fileID: 718053483}
 --- !u!114 &289160808
@@ -1585,7 +1585,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: ed3c9f48bc10549f3b5e69075486fdfd, type: 3}
-    m_FontSize: 48
+    m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1908334529}
   m_HandleRect: {fileID: 1908334528}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4053,7 +4053,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1591800515}
   m_HandleRect: {fileID: 1591800514}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7555,6 +7555,10 @@ Prefab:
       propertyPath: m_Color.b
       value: .250980407
       objectReference: {fileID: 0}
+    - target: {fileID: 11485144, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 42
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 262574080}
@@ -7662,6 +7666,7 @@ MonoBehaviour:
   topBar: {fileID: 0}
   bottomBar: {fileID: 1795235788}
   middle: {fileID: 262574085}
+  scrollView: {fileID: 67883488}
 --- !u!1 &1552723648
 GameObject:
   m_ObjectHideFlags: 0
@@ -8749,6 +8754,18 @@ Prefab:
       propertyPath: m_Color.b
       value: .250980407
       objectReference: {fileID: 0}
+    - target: {fileID: 11485150, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: scoreboardPotManager.buttonGroupTransform
+      value: 
+      objectReference: {fileID: 893012212}
+    - target: {fileID: 11485150, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: scoreboardPoolManager.buttonGroupTransform
+      value: 
+      objectReference: {fileID: 893012212}
+    - target: {fileID: 11485144, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 42
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 289160805}
@@ -9809,6 +9826,7 @@ MonoBehaviour:
   topBar: {fileID: 0}
   bottomBar: {fileID: 1364056359}
   middle: {fileID: 289160807}
+  scrollView: {fileID: 993292821}
 --- !u!1 &2098273019
 GameObject:
   m_ObjectHideFlags: 0

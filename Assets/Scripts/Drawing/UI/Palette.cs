@@ -18,7 +18,6 @@ public static class Palette {
 		get { return blue; }
 	}
 
-	//static Color ltBlue = new Color (0.557f, 0.807f, 0.855f);
 	static Color ltBlue = new Color (0.475f, 0.843f, 0.91f);
 	public static Color LtBlue {
 		get { return ltBlue; }

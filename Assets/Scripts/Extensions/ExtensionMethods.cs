@@ -40,6 +40,10 @@ public static class ExtensionMethods {
 		transform.position = new Vector3 (x, transform.position.y, transform.position.z);
 	}
 
+	public static void SetXLocalPosition (this Transform transform, float x) {
+		transform.localPosition = new Vector3 (x, transform.localPosition.y, transform.localPosition.z);
+	}
+
 	public static void SetLocalScale (this Transform transform, float scale) {
 		transform.localScale = new Vector3 (scale, scale, scale);
 	}

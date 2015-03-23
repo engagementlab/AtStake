@@ -10,6 +10,9 @@ public class PlayerList {
 		get { return players; }
 	}
 
+	// Just used for checking if names exist in the above list
+	List<string> lowerPlayers = new List<string> ();
+
 	public string[] Names {
 		get { return players.ToArray (); }
 	}
@@ -24,9 +27,10 @@ public class PlayerList {
 	}
 
 	public bool Add (string name) {
-		if (players.Contains (name))
+		if (lowerPlayers.Contains (name))
 			return false;
 		players.Add (name);
+		lowerPlayers.Add (name.ToLower ());
 		return true;
 	}
 
@@ -36,6 +40,7 @@ public class PlayerList {
 
 	public void Remove (string name) {
 		players.Remove (name);
+		lowerPlayers.Remove (name.ToLower ());
 	}
 
 	public void Clear () {

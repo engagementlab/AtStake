@@ -24,13 +24,23 @@ public class DeliberateScreen : StageScreen {
 	}
 
 	protected override void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
-		if (ThisScreen && e.id == "YesAddTime") {
-			Timer.instance.AllAddSeconds (TimerValues.extraTime);
+		
+		if (!ThisScreen) return;
+		
+		if (e.id == "YesAddTime" && !Timer.instance.CountingDown) {
 			if (!Player.instance.IsDecider) {
 				MessageMatcher.instance.RemoveMessage ("NoAddTime");
 			}
 			if (Player.instance.IsDecider) {
 				timer.Interactable = false;
+				Timer.instance.AllAddSeconds (TimerValues.extraTime);
+				MessageSender.instance.SendMessageToAll ("AcceptAddTime", e.message1);
+			}
+		}
+
+		if (e.id == "AcceptAddTime") {
+			if (e.message1 == Player.instance.Name) {
+				Player.instance.MyBeanPool.OnAddTime ();
 			}
 		}
 	}
