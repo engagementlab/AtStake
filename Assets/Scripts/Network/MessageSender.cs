@@ -112,11 +112,14 @@ public class MessageSender : MonoBehaviour {
 
 		if (!UsingWifi) {
 			string message = MessageToString (id, message1, message2, val);
-			if (hostId == "") {
+			MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerHostReceiveMessage", message);
+			// TODO: caching the host id is broken (not sure why?)
+			// MultiPeer doesn't seem to like the host id that gets passed in
+			/*if (hostId == "") {
 				MultiPeer.sendMessageToAllPeers ("MessageSender", "OnMultiPeerHostReceiveMessage", message);
 			} else {
 				MultiPeer.sendMessageToPeers (new string[] { hostId }, "MessageSender", "OnMultiPeerHostReceiveMessage", message);
-			}
+			}*/
 			return;
 		}
 

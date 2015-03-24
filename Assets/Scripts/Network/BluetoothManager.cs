@@ -50,7 +50,7 @@ public class BluetoothManager : MonoBehaviour {
 	void peerDidChangeStateToConnectedEvent (string param) {
 		if (!hosting) {
 			Events.instance.Raise (new ConnectedToServerEvent ());
-		}
+		} 
 	}
 
 	/**

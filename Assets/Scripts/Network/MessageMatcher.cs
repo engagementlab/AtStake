@@ -60,6 +60,7 @@ public class MessageMatcher : MonoBehaviour {
 	}
 
 	void SetPlayerMessage (string playerName, string message) {
+		Debug.Log (playerName + ", " + message + " index = " + GetPlayerIndex (playerName));
 		messages[GetPlayerIndex (playerName)] = message;
 		if (MessagesMatch ()) {
 			MessageSender.instance.SendMessageToAll ("RaiseMessagesMatch", id, message);

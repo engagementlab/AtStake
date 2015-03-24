@@ -27,10 +27,11 @@ public class PlayerList {
 	}
 
 	public bool Add (string name) {
-		if (lowerPlayers.Contains (name))
+		string lowerName = name.ToLower ();
+		if (lowerPlayers.Contains (lowerName))
 			return false;
 		players.Add (name);
-		lowerPlayers.Add (name.ToLower ());
+		lowerPlayers.Add (lowerName);
 		return true;
 	}
 
@@ -45,5 +46,6 @@ public class PlayerList {
 
 	public void Clear () {
 		players.Clear ();
+		lowerPlayers.Clear ();
 	}
 }

@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// new network manager
-// acts as a dispatcher between ServerManager and BluetoothManager:
-// if the server's up, use the ServerManager; otherwise, use the BluetoothManager
 public class NetworkingManager : MonoBehaviour {
 
 	public ServerManager serverManager;

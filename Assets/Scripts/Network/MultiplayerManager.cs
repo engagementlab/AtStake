@@ -200,4 +200,8 @@ public class MultiplayerManager : MonoBehaviour {
 			case "ListRefreshed": RaiseRefreshPlayerList (); break;
 		}
 	}
+
+	void OnApplicationQuit () {
+		Disconnect ();
+	}
 }

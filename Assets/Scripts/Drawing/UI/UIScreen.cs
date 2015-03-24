@@ -60,7 +60,7 @@ public class UIScreen : MonoBehaviour {
 			transform.SetXPosition (xPos);
 
 			// Middle content
-			float progress2 = progress * (progress * (4 * progress - 9) + 6);
+			float progress2 = 2 * progress - Mathf.Pow (progress, 2);
 			float scrollPos = Map (progress2, 0, 1, scrollStart, scrollEnd);
 			
 			scrollView.SetXLocalPosition (scrollPos);

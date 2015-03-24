@@ -34,7 +34,7 @@ public class ServerManager : MonoBehaviour {
 
 	void Awake () {
 
-		settings = new Settings (5, false, 3f, 3);
+		settings = new Settings (4, false, 3f, 3);
 
 		/*MasterServer.ipAddress = ServerSettings.IP;
 		MasterServer.port = ServerSettings.MasterServerPort;

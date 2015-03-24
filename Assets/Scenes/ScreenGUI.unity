@@ -2542,7 +2542,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterLimit: 15
   m_EndEdit:
     m_PersistentCalls:
       m_Calls:
@@ -7559,6 +7559,10 @@ Prefab:
       propertyPath: m_FontData.m_FontSize
       value: 42
       objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_CharacterLimit
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 262574080}
@@ -8766,6 +8770,10 @@ Prefab:
       propertyPath: m_FontData.m_FontSize
       value: 42
       objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_CharacterLimit
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 289160805}
@@ -9585,7 +9593,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterLimit: 15
   m_EndEdit:
     m_PersistentCalls:
       m_Calls:

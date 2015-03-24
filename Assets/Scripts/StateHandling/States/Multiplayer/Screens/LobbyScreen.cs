@@ -62,6 +62,14 @@ public class LobbyScreen : GameScreen {
 		} else {
 			ScreenElements.Disable ("play");
 		}
+
+		if (namesCount >= 4) {
+			ScreenElements.Disable ("invite");
+		} else {
+			if (MultiplayerManager.instance.Hosting && !MultiplayerManager.instance.UsingWifi) {
+				ScreenElements.Enable ("invite");
+			}
+		}
 		ScreenElements.EnableUpdating ();
 	}
 
