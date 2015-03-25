@@ -16,6 +16,7 @@ public class BeanPotManager : MonoBehaviour {
 			instance = this;
 
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
+		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
 	}
 
 	public void OnRoundStart () {
@@ -39,12 +40,18 @@ public class BeanPotManager : MonoBehaviour {
 	}
 
 	void SendSetBeanPotMessage () {
-		MessageSender.instance.SendMessageToAll ("SetBeanPot", "", "", beanPot.BeanCount);
+		MessageSender.instance.ScheduleMessage (new NetworkMessage ("SetBeanPot", "", "", beanPot.BeanCount));
 	}
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		if (e.id == "SetBeanPot") {
 			SetBeanPot (e.val);
+		}
+	}
+
+	void OnHostSendMessageEvent (HostSendMessageEvent e) {
+		if (e.name == "SetBeanPot") {
+			MessageSender.instance.SendMessageToAll (e.name, "", "", e.val);
 		}
 	}
 

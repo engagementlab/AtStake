@@ -401,6 +401,7 @@ public class ScoreboardPotManager : ElementManager {
 		scoreboardPotContainer.SetActive (true);
 		scoreboardPotContainer.transform.SetSiblingIndex (scoreboardPotElement.Position);
 		text.text = scoreboardPotElement.Content;
+		scoreboardPotElement.SetText (text);
 	}
 
 	public void Hide () {

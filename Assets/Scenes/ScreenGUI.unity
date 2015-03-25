@@ -2536,12 +2536,12 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 447654009}
   m_TextComponent: {fileID: 354985626}
   m_Placeholder: {fileID: 1098309985}
-  m_ContentType: 0
+  m_ContentType: 5
   m_InputType: 0
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 4
   m_CharacterLimit: 15
   m_EndEdit:
     m_PersistentCalls:
@@ -7563,6 +7563,14 @@ Prefab:
       propertyPath: m_CharacterLimit
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_ContentType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_CharacterValidation
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 262574080}
@@ -8774,6 +8782,14 @@ Prefab:
       propertyPath: m_CharacterLimit
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_ContentType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485156, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_CharacterValidation
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
   m_RootGameObject: {fileID: 289160805}
@@ -9587,12 +9603,12 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2032181842}
   m_TextComponent: {fileID: 790038545}
   m_Placeholder: {fileID: 779176549}
-  m_ContentType: 0
+  m_ContentType: 5
   m_InputType: 0
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 4
   m_CharacterLimit: 15
   m_EndEdit:
     m_PersistentCalls:

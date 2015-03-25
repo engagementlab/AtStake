@@ -68,6 +68,7 @@ public class StageScreen : GameScreen {
 	}
 
 	protected void InitPlayerScreen () {
+		players = round.Players;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("next");
 		ScreenElements.Disable ("timesUp");

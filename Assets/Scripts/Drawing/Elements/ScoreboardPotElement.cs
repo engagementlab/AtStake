@@ -8,7 +8,7 @@ public class ScoreboardPotElement : ScreenElement {
 	public string Content {
 		get { return content; }
 		set { 
-			content = string.Format ("In the pot: {0}", value); 
+			content = value;
 			if (text != null) {
 				text.color = Palette.Grey;
 				text.text = content;
@@ -30,6 +30,6 @@ public class ScoreboardPotElement : ScreenElement {
 	}
 
 	void OnUpdateBeanPotEvent (UpdateBeanPotEvent e) {
-		Content = e.beanCount.ToString ();
+		Content = string.Format ("In the pot: {0}", e.beanCount); 
 	}
 }

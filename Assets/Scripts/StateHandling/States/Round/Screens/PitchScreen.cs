@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class PitchScreen : StageScreen {
 	
 	int currentPlayer = -1;
-	LabelElement currentPitcher;
-	LabelElement nextPitcher;
 	bool pitching = false;
 	
 	string CurrentPlayer {
@@ -50,25 +48,30 @@ public class PitchScreen : StageScreen {
 		get { return "Pitch!"; }
 	}
 
+	LabelElement pitcherLabel;
+
 	public PitchScreen (GameState state, string name = "Pitch") : base (state, name) {
-		currentPitcher = new LabelElement ("", 5, new WhiteTextStyle ());
-		nextPitcher = new LabelElement ("", 6, new WhiteTextStyle ());
-		//ScreenElements.AddEnabled ("currentPitcher", currentPitcher);
-		//ScreenElements.AddEnabled ("nextPitcher", nextPitcher);
+		pitcherLabel = new LabelElement ("", 5, new WhiteTextStyle ());
+		ScreenElements.AddEnabled ("pitcher", pitcherLabel);
 		InitStageScreen (TimerValues.pitch);
 	}
 
-	/*protected override void OnScreenStartPlayer () {
+	protected override void OnScreenStartPlayer () {
 		base.OnScreenStartPlayer ();
-		if (players[currentPlayer] == Player.instance.Name) {
-			ScreenElements.Get<LabelElement> ("timesUp").Content = "Your turn!";
+		if (currentPlayer > -1) return;
+		if (players[0] == Player.instance.Name) {
+			pitcherLabel.Content = "Your turn!";
+		} else {
+			pitcherLabel.Content = string.Format ("{0}'s turn", players[0]);
 		}
-	}*/
+		ScreenElements.Enable ("pitcher");
+	}
 
 	protected override void OnScreenStartDecider () {
 		base.OnScreenStartDecider ();
 		UpdatePitcherLabels ();
 		ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (players[0]);
+		ScreenElements.Disable ("pitcher");
 	}
 
 	protected override bool StartTimer () {
@@ -90,16 +93,12 @@ public class PitchScreen : StageScreen {
 			GotoScreen ("Add Time");
 		}
 		if (Player.instance.IsDecider) {
-			//ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (NextPlayer);
-			//ScreenElements.Enable ("timesUp");
 			ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchTimeInstructions (CurrentPlayer);
-		}
+		} 
 	}
 
 	void UpdatePitcherLabels () {
-		currentPitcher.Content = CurrentLabel;
-		nextPitcher.Content = NextLabel;
-		MessageSender.instance.SendMessageToAll ("UpdatePitcher", CurrentPlayer, NextLabel);
+		MessageSender.instance.SendMessageToAll ("UpdatePitcher", CurrentPlayer, NextLabel, currentPlayer);
 	}
 
 	protected override void OnPressNext () {
@@ -116,12 +115,7 @@ public class PitchScreen : StageScreen {
 		if (!ThisScreen) return;
 
 		if (e.id == "UpdatePitcher") {
-			currentPitcher.Content = e.message1;
-			nextPitcher.Content = e.message2;
 			pitching = (e.message1 == Player.instance.Name);
-			/*if (pitching) {
-				ScreenElements.Get<LabelElement> ("timesUp").Content = "Your turn!";
-			}*/
 		}
 
 		if (e.id == "YesAddTime" && !Timer.instance.CountingDown) {
@@ -138,17 +132,34 @@ public class PitchScreen : StageScreen {
 					ScreenElements.Enable ("next");
 					ScreenElements.Enable ("timesUp");
 					ScreenElements.Get<LabelElement> ("timesUp").Content = Copy.PitchTimeDecider2;
+					MessageSender.instance.SendMessageToAll ("FinishedPitchingPlayers");
 				} else {
 					ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.PitchInstructions (NextPlayer);
 					timer.Interactable = true;
+					MessageSender.instance.SendMessageToAll ("NextPitchingPlayer", NextPlayer);
 				}
-			}
+			} 
 		}
 
 		if (e.id == "AcceptAddTime") {
 			if (e.message1 == Player.instance.Name) {
 				Player.instance.MyBeanPool.OnAddTime ();
 			}
+		}
+
+		if (e.id == "NextPitchingPlayer") {
+			if (Player.instance.IsDecider) return;
+			string nextPlayer = e.message1;
+			if (nextPlayer == Player.instance.Name) {
+				pitcherLabel.Content = "Your turn!";
+			} else {
+				pitcherLabel.Content = string.Format ("{0}'s turn", nextPlayer);
+			}
+		}
+
+		if (e.id == "FinishedPitchingPlayers") {
+			if (Player.instance.IsDecider) return;
+			pitcherLabel.Content = "";
 		}
 	}
 }
