@@ -21,6 +21,7 @@ public class BrainstormScreen : StageScreen {
 		} else {
 			timesUp.Content = Copy.BrainstormTimePlayer;
 		}
+		ScreenElements.EnableUpdating ();
 	}
 
 	protected override void OnPressNext () {

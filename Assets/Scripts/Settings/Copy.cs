@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class Copy {
+public class Copy {
 
 	static public readonly string About = 
 		"@Stake is a game that fosters democracy, empathy, " + 

@@ -22,6 +22,41 @@ public class CoroutineManager : MonoBehaviour {
 		}
 	}
 
+	public void StartInvoke (float time, System.Action action) {
+		StartCoroutine (CoInvoke (time, action));
+	}
+
+	IEnumerator CoInvoke (float time, System.Action action) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			yield return null;
+		}
+
+		action ();
+	}
+
+	public void StartCoroutine (float time, System.Action<float> action) {
+		StartCoroutine (CoCoroutine (time, action));
+	}
+
+	public void StopCoroutine () {
+		StopCoroutine ("CoCoroutine");
+	}
+
+	IEnumerator CoCoroutine (float time, System.Action<float> action) {
+		
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			action (eTime / time);
+			yield return null;
+		}
+	}
+
 	public void FloatLerp (float from, float to, float time, System.Action<float> action) {
 		StartCoroutine (CoFloatLerp (from, to, time, action));
 	}

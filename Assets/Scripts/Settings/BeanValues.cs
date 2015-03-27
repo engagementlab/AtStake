@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class BeanValues {
+public class BeanValues {
 
 	public static readonly int deciderStart = 500;
 	public static readonly int playerStart = 300;

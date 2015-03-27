@@ -40,6 +40,7 @@ public class StageScreen : GameScreen {
 		
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		Events.instance.AddListener<HostReceiveMessageEvent> (OnHostReceiveMessageEvent);
+		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 
 		this.timerDuration = timerDuration;
 		timer = CreateTimer ("Timer", 1, name);
@@ -71,7 +72,6 @@ public class StageScreen : GameScreen {
 		players = round.Players;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("next");
-		ScreenElements.Disable ("timesUp");
 		ScreenElements.Get<LabelElement> ("topLabel").Content = round.Question;
 		ScreenElements.Enable ("roleCard");
 		timer.Interactable = false;
@@ -83,7 +83,6 @@ public class StageScreen : GameScreen {
 		players = round.Players;
 		ScreenElements.SuspendUpdating ();
 		ScreenElements.Disable ("roleCard");
-		ScreenElements.Disable ("timesUp");
 		ScreenElements.Get<LabelElement> ("topLabel").Content = Copy.GetInstructions (name);
 		timer.Content = TimerText;
 		timer.Interactable = true;
@@ -102,6 +101,10 @@ public class StageScreen : GameScreen {
 	protected virtual void OnPressNext () {
 		if (!Timer.instance.CountingDown)
 			GameStateController.instance.AllPlayersGotoNextScreen ();
+	}
+
+	void OnRoundStartEvent (RoundStartEvent e) {
+		ScreenElements.Disable ("timesUp");
 	}
 
 	void HandleTimerPress () {

@@ -8,6 +8,7 @@ public class MiddleCanvas : MonoBehaviour {
 
 	public Scrollbar scrollbar;
 	public ScrollRect scrollRect;
+	public RectTransform scrollView;
 	public VerticalLayoutGroup buttonGroup;
 	public RectTransform buttonGroupTransform;
 	public MiddleButtonManager buttonManager;
@@ -31,7 +32,8 @@ public class MiddleCanvas : MonoBehaviour {
 	}
 
 	public void AlignMiddle () {
-		buttonGroup.padding.top = 0; // 100
+		//buttonGroup.padding.top = 0; // 100
+		buttonGroup.padding.top = 10;
 		buttonGroup.childAlignment = TextAnchor.MiddleCenter;
 		buttonGroupTransform.pivot = new Vector2 (0.5f, 0.5f);
 		buttonGroupTransform.anchorMin = new Vector2 (0.5f, 0.5f);
@@ -66,6 +68,7 @@ public class MiddleCanvas : MonoBehaviour {
 		if (timerManager.Enabled) {
 			timerManager.UpdateProgress ();
 		}
+		//Debug.Log (scrollbar.value);
 	}
 
 	void UpdateScreen () {
@@ -115,9 +118,22 @@ public class MiddleCanvas : MonoBehaviour {
 	}
 
 	void OnWaitForFrame () {
-		if (buttonGroupTransform.sizeDelta.y > 750) {
+		if (buttonGroupTransform.sizeDelta.y > Mathf.Abs (scrollView.sizeDelta.y)) {
+		//if (buttonGroupTransform.sizeDelta.y > 700) {
 			SetScrollbarActive (true);
 			ResetScrollbar ();
+		}
+	}
+
+	IEnumerator CoResetScrollbar () {
+		
+		float time = 0.5f;
+		float eTime = 0f;
+	
+		while (eTime < time) {
+			eTime += Time.deltaTime;
+			scrollbar.value = 1;
+			yield return null;
 		}
 	}
 
@@ -145,14 +161,14 @@ public class MiddleCanvas : MonoBehaviour {
 	}
 
 	void ResetScrollbar () {
-		scrollbar.value = 1;
+		StartCoroutine (CoResetScrollbar ());
 	}
 
 	void SetScrollbarActive (bool active) {
 		if (active) {
 			buttonGroup.padding.top = 100; 
 		} else {
-			buttonGroup.padding.top = 0;
+			buttonGroup.padding.top = 10;
 		}
 		scrollRect.enabled = active;
 		scrollbar.gameObject.SetActive (active);

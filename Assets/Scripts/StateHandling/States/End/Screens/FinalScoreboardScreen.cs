@@ -6,7 +6,7 @@ public class FinalScoreboardScreen : GameScreen {
 	public FinalScoreboardScreen (GameState state, string name = "Final Scoreboard") : base (state, name) {
 		Events.instance.AddListener<UpdatedPlayerScoresEvent> (OnUpdatedPlayerScoresEvent);
 		ScreenElements.AddEnabled ("title", new LabelElement ("Scores", 0, new HeaderTextStyle ()));
-		ScreenElements.AddEnabled ("menu", CreateButton ("Main Menu", 6));
+		ScreenElements.AddEnabled ("home", CreateBottomButton ("Home", "", "bottomPink", Side.Right));
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {}
@@ -25,7 +25,7 @@ public class FinalScoreboardScreen : GameScreen {
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		if (e.id == "Main Menu") {
+		if (e.id == "Home") {
 			MultiplayerManager.instance.Disconnect ();
 			GotoScreen ("Start", "Start");
 			Events.instance.Raise (new GameEndEvent ());

@@ -54,6 +54,7 @@ public class PitchScreen : StageScreen {
 		pitcherLabel = new LabelElement ("", 5, new WhiteTextStyle ());
 		ScreenElements.AddEnabled ("pitcher", pitcherLabel);
 		InitStageScreen (TimerValues.pitch);
+		Events.instance.AddListener<RoundStartEvent> (OnRoundStartEvent);
 	}
 
 	protected override void OnScreenStartPlayer () {
@@ -106,7 +107,7 @@ public class PitchScreen : StageScreen {
 			GameStateController.instance.AllPlayersGotoScreen ("Deliberate");
 	}
 
-	public override void OnScreenEnd () {
+	void OnRoundStartEvent (RoundStartEvent e) {
 		currentPlayer = -1;
 	}
 
@@ -116,6 +117,9 @@ public class PitchScreen : StageScreen {
 
 		if (e.id == "UpdatePitcher") {
 			pitching = (e.message1 == Player.instance.Name);
+			if (!Player.instance.IsDecider) {
+				currentPlayer = e.val;
+			}
 		}
 
 		if (e.id == "YesAddTime" && !Timer.instance.CountingDown) {

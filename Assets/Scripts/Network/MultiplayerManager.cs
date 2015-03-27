@@ -45,6 +45,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public void Disconnect () {
+		if (!Connected) return;
 		if (Hosting) {
 			DisconnectHost ();
 		} else {

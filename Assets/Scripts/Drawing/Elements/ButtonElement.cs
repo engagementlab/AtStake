@@ -27,7 +27,7 @@ public class ButtonElement : ScreenElement {
 		}
 	}
 
-	MiddleButton middleButton;
+	protected MiddleButton middleButton;
 	public MiddleButton MiddleButton {
 		set {
 			middleButton = value;

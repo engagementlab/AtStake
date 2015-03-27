@@ -36,10 +36,10 @@ public class ServerManager : MonoBehaviour {
 
 		settings = new Settings (4, false, 3f, 3);
 
-		/*MasterServer.ipAddress = ServerSettings.IP;
+		MasterServer.ipAddress = ServerSettings.IP;
 		MasterServer.port = ServerSettings.MasterServerPort;
 		Network.natFacilitatorIP = ServerSettings.IP;
-		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;*/
+		Network.natFacilitatorPort = ServerSettings.FacilitatorPort;
 
 		TestConnection ();
 	}
