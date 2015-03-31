@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 1
-  m_AspectRatio: 1
+  m_AspectRatio: 1.07000005
 --- !u!1001 &72420740
 Prefab:
   m_ObjectHideFlags: 0
@@ -1854,7 +1854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: .501960814}
+  m_Color: {r: 0, g: 0, b: 0, a: .235294119}
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -4714,7 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 1
-  m_AspectRatio: 1
+  m_AspectRatio: 1.07000005
 --- !u!114 &993292823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4835,6 +4835,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 146256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22300000, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5679,7 +5683,36 @@ Prefab:
       objectReference: {fileID: 1213801871}
     - target: {fileID: 146256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 363f2c8e8c9d644aa829d0e50b96771e,
+        type: 3}
+    - target: {fileID: 11446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_AnchorMin.x
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_AnchorMax.x
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_Pivot.x
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22446256, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 900
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20b9ac2bb1b9490089b65b473db3049, type: 2}
@@ -6887,7 +6920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1399240595
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6901,11 +6934,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2087085378}
   m_RootOrder: 1
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 125}
-  m_SizeDelta: {x: 455, y: 0}
-  m_Pivot: {x: 1, y: 0}
+  m_AnchorMin: {x: .5, y: 0}
+  m_AnchorMax: {x: .5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 900, y: 0}
+  m_Pivot: {x: .5, y: 0}
 --- !u!114 &1399240596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6920,9 +6953,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: .627451003}
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 363f2c8e8c9d644aa829d0e50b96771e, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -7667,7 +7700,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11477212, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
       propertyPath: m_AspectRatio
-      value: 1
+      value: 1.07000005
       objectReference: {fileID: 0}
     - target: {fileID: 11485150, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
       propertyPath: scrollView
@@ -7696,6 +7729,18 @@ Prefab:
     - target: {fileID: 11477212, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477224, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_Inertia
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477220, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_Color.a
+      value: .784313738
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477222, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
+      propertyPath: m_Color.a
+      value: .235294119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
@@ -9001,7 +9046,7 @@ Prefab:
       objectReference: {fileID: 993292821}
     - target: {fileID: 11477212, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
       propertyPath: m_AspectRatio
-      value: 1
+      value: 1.07000005
       objectReference: {fileID: 0}
     - target: {fileID: 11477212, guid: 39ec8c93a6bef4bc5b54cfa979bc34fc, type: 2}
       propertyPath: m_Enabled
@@ -9441,7 +9486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: .784313738}
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0

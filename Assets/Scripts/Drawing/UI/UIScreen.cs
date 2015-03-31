@@ -69,7 +69,6 @@ public class UIScreen : MonoBehaviour {
 
 		transform.SetXPosition (end);
 		scrollView.SetXLocalPosition (scrollEnd);
-		yield return null;
 	}
 
 	float Map (float s, float a1, float a2, float b1, float b2) {
