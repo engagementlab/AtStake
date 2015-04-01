@@ -5,6 +5,7 @@ using System.Collections;
 public class ImageManager : MonoBehaviour {
 
 	public Sprite[] sprites;
+	public Sprite[] backgrounds;
 
 	public static ImageManager instance;
 
@@ -20,6 +21,16 @@ public class ImageManager : MonoBehaviour {
 			}
 		}
 		Debug.LogError (string.Format ("No sprite named {0} exists", spriteName));
+		return null;
+	}
+
+	public Sprite GetBackground (string backgroundName) {
+		for (int i = 0; i < backgrounds.Length; i ++) {
+			if (backgrounds[i].name == backgroundName) {
+				return backgrounds[i];
+			}
+		}
+		Debug.LogError (string.Format ("No background named {0} exists", backgroundName));
 		return null;
 	}
 }

@@ -36,7 +36,7 @@ public class BeanPoolElement : ScreenElement {
 	void UpdateContent (int beanCount) {
 		float animTime = 0.5f;
 		Content = beanCount.ToString ();
-		CoroutineManager.Instance.IntLerp (Count, beanCount, 0.5f, (x) => Count = x);
+		CoroutineManager.Instance.IntLerp (Count, beanCount, animTime, (x) => Count = x);
 		//CoroutineManager.Instance.StartCoroutine (animTime, PulseText);
 	}
 

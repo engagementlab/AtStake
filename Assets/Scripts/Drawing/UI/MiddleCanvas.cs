@@ -68,7 +68,6 @@ public class MiddleCanvas : MonoBehaviour {
 		if (timerManager.Enabled) {
 			timerManager.UpdateProgress ();
 		}
-		//Debug.Log (scrollbar.value);
 	}
 
 	void UpdateScreen () {

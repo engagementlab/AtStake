@@ -7,6 +7,7 @@ public class BackgroundCanvas : MonoBehaviour {
 	public Image topBar;
 	public Image bottomBar;
 	public Image background;
+	public Image backgroundImage;
 
 	void Awake () {
 		SetTheme (new StartTheme ());
@@ -45,6 +46,24 @@ public class BackgroundCanvas : MonoBehaviour {
 			case "Win": theme = new WaitTheme (); break;
 		}
 		SetTheme (theme);
+		SetBackground (e.screen.Elements);
+	}
+
+	void SetBackground (ScreenElement[] elements) {
+		bool hasBackground = false;
+		foreach (ScreenElement element in elements) {
+			if (element is BackgroundElement) {
+				BackgroundElement b = element as BackgroundElement;
+				backgroundImage.gameObject.SetActive (true);
+				backgroundImage.sprite = b.Sprite;
+				backgroundImage.color = b.Color;
+				hasBackground = true;
+				break;
+			}
+		}
+		if (!hasBackground) {
+			backgroundImage.gameObject.SetActive (false);
+		}
 	}
 }
 
