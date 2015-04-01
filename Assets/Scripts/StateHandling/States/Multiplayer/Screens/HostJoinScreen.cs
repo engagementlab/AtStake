@@ -4,6 +4,7 @@ using System.Collections;
 public class HostJoinScreen : GameScreen {
 
 	public HostJoinScreen (GameState state, string name = "Host or Join") : base (state, name) {
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("logo", Color.black));
 		ScreenElements.AddEnabled ("copy", new LabelElement ("Select host or join", 0));
 		ScreenElements.AddEnabled ("host", CreateButton ("Host", 2));
 		ScreenElements.AddEnabled ("join", CreateButton ("Join", 3, "", "green"));

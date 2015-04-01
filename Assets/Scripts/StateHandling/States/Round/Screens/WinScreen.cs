@@ -7,8 +7,8 @@ public class WinScreen : GameScreen {
 
 	public WinScreen (GameState state, string name = "Win") : base (state, name) {
 		winner = new LabelElement ("", 0, new WhiteTextStyle ());
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("applause", Color.white));
 		ScreenElements.AddEnabled ("winner", winner);
-		ScreenElements.AddEnabled ("applause", new ImageElement ("applause", 1, Color.white));
 		ScreenElements.AddEnabled ("next", CreateNextButton ());
 	}
 

@@ -8,6 +8,7 @@ public class ScoreboardScreen : GameScreen {
 
 	public ScoreboardScreen (GameState state, string name = "Scoreboard") : base (state, name) {
 		Events.instance.AddListener<UpdatedPlayerScoresEvent> (OnUpdatedPlayerScoresEvent);
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("trophy", Color.black));
 		ScreenElements.AddEnabled ("title", new LabelElement ("Scores", 0, new HeaderTextStyle ()));
 		ScreenElements.AddEnabled ("loading", new LabelElement ("Loading...", 1));
 		ScreenElements.AddEnabled ("pot", new ScoreboardPotElement (6));

@@ -13,8 +13,8 @@ public class AgendaScreen : GameScreen {
 
 		progress = new LabelElement ("", 0);
 		description = new LabelElement ("", 1);
-		yesButton = CreateButton ("Yes", 2);
-		noButton = CreateButton ("No", 3);
+		yesButton = CreateButton ("Yes", 2, "", "green");
+		noButton = CreateButton ("No", 3, "", "pink");
 
 		ScreenElements.AddEnabled ("progress", progress);
 		ScreenElements.AddEnabled ("description", description);

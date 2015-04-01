@@ -27,6 +27,7 @@ public class ButtonManager : MonoBehaviour {
 			case "blue": return blue;
 			case "green": return green;
 			case "orange": return orange;
+			case "pink": return pink;
 			case "bottomOrange": return bottomOrange;
 			case "bottomPink": return bottomPink;
 		}

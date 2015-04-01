@@ -50,6 +50,7 @@ public class BackgroundCanvas : MonoBehaviour {
 	}
 
 	void SetBackground (ScreenElement[] elements) {
+		RectTransform rectTransform = backgroundImage.rectTransform;
 		bool hasBackground = false;
 		foreach (ScreenElement element in elements) {
 			if (element is BackgroundElement) {
@@ -57,6 +58,18 @@ public class BackgroundCanvas : MonoBehaviour {
 				backgroundImage.gameObject.SetActive (true);
 				backgroundImage.sprite = b.Sprite;
 				backgroundImage.color = b.Color;
+				if (b.Anchor == "bottom") {
+					rectTransform.anchoredPosition = new Vector2 (0, 125);
+					rectTransform.anchorMin = new Vector2 (0.5f, 0);
+					rectTransform.anchorMax = new Vector2 (0.5f, 0);
+					rectTransform.pivot = new Vector3 (0.5f, 0);
+				}
+				if (b.Anchor == "middle") {
+					rectTransform.anchoredPosition = new Vector2 (0, 0);
+					rectTransform.anchorMin = new Vector3 (0.5f, 0.5f);
+					rectTransform.anchorMax = new Vector3 (0.5f, 0.5f);
+					rectTransform.pivot = new Vector3 (0.5f, 0.5f);
+				}
 				hasBackground = true;
 				break;
 			}

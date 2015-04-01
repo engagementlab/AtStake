@@ -14,17 +14,23 @@ public class BackgroundElement : ScreenElement {
 		get { return color; }
 		private set {
 			if (value == Color.black) {
-				value.a = 0.25f;
+				value.a = 0.05f;
 			}
 			if (value == Color.white) {
-				value.a = 0.5f;
+				value.a = 0.2f;
 			}
 			color = value;
 		}
 	}
 
-	public BackgroundElement (string backgroundName, Color color) {
+	string anchor = "bottom";
+	public string Anchor {
+		get { return anchor; }
+	}
+
+	public BackgroundElement (string backgroundName, Color color, string anchor="bottom") {
 		BackgroundName = backgroundName;
 		Color = color;
+		this.anchor = anchor;
 	}
 }

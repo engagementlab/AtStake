@@ -10,9 +10,9 @@ public class DecideScreen : GameScreen {
 
 	public DecideScreen (GameState state, string name = "Decide") : base (state, name) {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("hourglass", Color.white, "middle"));
 		ScreenElements.AddDisabled ("instructionsDecider", new LabelElement (Copy.DecideScreenDecider, 0, new WhiteTextStyle ()));
 		ScreenElements.AddDisabled ("instructionsPlayer", new LabelElement (Copy.DecideScreenPlayer, 0, new WhiteTextStyle ()));
-		ScreenElements.AddDisabled ("wait", new ImageElement ("wait", 1, Color.white));
 		ScreenElements.AddDisabled ("confirm", CreateBottomButton ("Next", "", "bottomPink", Side.Right));
 	}
 
@@ -23,7 +23,7 @@ public class DecideScreen : GameScreen {
 
 		buttons.Clear ();
 		ScreenElements.Enable ("instructionsDecider");
-		ScreenElements.Disable ("wait");
+		ScreenElements.Disable ("background");
 
 		for (int i = 0; i < players.Count; i ++) {
 			string name = players[i];
@@ -35,8 +35,8 @@ public class DecideScreen : GameScreen {
 
 	protected override void OnScreenStartPlayer () {
 		ScreenElements.DisableAll ();
+		ScreenElements.Enable ("background");
 		ScreenElements.Enable ("instructionsPlayer");
-		ScreenElements.Enable ("wait");
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {

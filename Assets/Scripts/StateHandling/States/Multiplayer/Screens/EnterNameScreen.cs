@@ -4,6 +4,7 @@ using System.Collections;
 public class EnterNameScreen : GameScreen {
 	
 	public EnterNameScreen (GameState state, string name = "Enter Name") : base (state, name) {
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("logo", Color.black));
 		ScreenElements.AddEnabled ("copy", new LabelElement (Copy.EnterName, 0));
 		ScreenElements.AddEnabled ("textfield", new TextFieldElement (1));
 		ScreenElements.AddEnabled ("enter", CreateButton ("Enter", 2));

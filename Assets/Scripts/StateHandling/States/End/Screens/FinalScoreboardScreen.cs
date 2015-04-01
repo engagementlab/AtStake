@@ -5,6 +5,7 @@ public class FinalScoreboardScreen : GameScreen {
 	
 	public FinalScoreboardScreen (GameState state, string name = "Final Scoreboard") : base (state, name) {
 		Events.instance.AddListener<UpdatedPlayerScoresEvent> (OnUpdatedPlayerScoresEvent);
+		ScreenElements.AddEnabled ("background", new BackgroundElement ("trophy", Color.black));
 		ScreenElements.AddEnabled ("title", new LabelElement ("Scores", 0, new HeaderTextStyle ()));
 		ScreenElements.AddEnabled ("home", CreateBottomButton ("Home", "", "bottomPink", Side.Right));
 	}
