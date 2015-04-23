@@ -93,6 +93,11 @@ public class LobbyScreen : GameScreen {
 
 	void PlayGame () {
 		MultiplayerManager.instance.StartGame ();
+
+		// New - Decider selection
+		if (DeciderSelectionStyle.Host) {
+			Player.instance.deciderManager.SetDecider (Player.instance.Name);
+		}
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
 	}
 

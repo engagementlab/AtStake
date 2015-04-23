@@ -10,6 +10,10 @@ public class DeciderManager : System.Object {
 		get { return deciderName == Player.instance.Name; }
 	}
 
+	public void SetDecider (string deciderName) {
+		MessageSender.instance.ScheduleMessage (new NetworkMessage ("New Decider", deciderName));
+	}
+
 	public DeciderManager () {
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 	}
