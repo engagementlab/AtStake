@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .250980407, g: .250980407, b: .250980407, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: ed3c9f48bc10549f3b5e69075486fdfd, type: 3}
     m_FontSize: 42
@@ -627,7 +627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 1
-  m_AspectRatio: 1.25
+  m_AspectRatio: 1.07000005
 --- !u!114 &11477214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -712,7 +712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: .784313738}
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: .501960814}
+  m_Color: {r: 0, g: 0, b: 0, a: .235294119}
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -783,7 +783,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FontData:
     m_Font: {fileID: 12800000, guid: ed3c9f48bc10549f3b5e69075486fdfd, type: 3}
-    m_FontSize: 48
+    m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -844,6 +844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollbar: {fileID: 11477218}
   scrollRect: {fileID: 11477224}
+  scrollView: {fileID: 22477218}
   buttonGroup: {fileID: 11485170}
   buttonGroupTransform: {fileID: 22485158}
   buttonManager:
@@ -868,11 +869,11 @@ MonoBehaviour:
     buttonGroupTransform: {fileID: 22485158}
     image: {fileID: 185154}
   scoreboardPoolManager:
-    buttonGroupTransform: {fileID: 0}
+    buttonGroupTransform: {fileID: 22485158}
     scoreboardPoolContainer: {fileID: 131734, guid: 782e0651465984ff0a15195de0cfb802,
       type: 2}
   scoreboardPotManager:
-    buttonGroupTransform: {fileID: 0}
+    buttonGroupTransform: {fileID: 22485158}
     scoreboardPotContainer: {fileID: 107940}
     text: {fileID: 11407938}
 --- !u!114 &11485152
@@ -957,13 +958,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11485158}
   m_TextComponent: {fileID: 11485152}
   m_Placeholder: {fileID: 11485168}
-  m_ContentType: 0
+  m_ContentType: 5
   m_InputType: 0
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 4
+  m_CharacterLimit: 15
   m_EndEdit:
     m_PersistentCalls:
       m_Calls:

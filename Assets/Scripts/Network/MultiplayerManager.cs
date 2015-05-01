@@ -40,9 +40,9 @@ public class MultiplayerManager : MonoBehaviour {
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
-	void GotoScreen (string screenName) {
+	/*void GotoScreen (string screenName) {
 		GameStateController.instance.GotoScreen (screenName);
-	}
+	}*/
 
 	public void Disconnect () {
 		if (!Connected) return;
@@ -177,7 +177,7 @@ public class MultiplayerManager : MonoBehaviour {
 		if (GameStateController.instance.Screen.name == "Games List") {
 			Events.instance.Raise (new UpdateDrawerEvent ());
 		} else {
-			GotoScreen ("Games List");
+			// GotoScreen ("Games List");
 		}
 	}
 

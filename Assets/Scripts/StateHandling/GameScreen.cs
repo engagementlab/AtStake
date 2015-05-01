@@ -119,22 +119,36 @@ public class GameScreen {
 		Events.instance.RemoveListener<MessagesMatchEvent> (OnMessagesMatchEvent);
 	}
 
+	protected virtual bool CanGotoScreen (string id) {
+		return true;
+	}
+
 	/**
 	 *	Messages
 	 */
 
 	protected virtual void OnButtonPressEvent (ButtonPressEvent e) {
+		
 		if (SlideController.Sliding) return;
+		
+		string id = e.id;
 		if (e.screen == this) {
-			if (e.id == lastPressedId) {
+			if (id == lastPressedId) {
 				return;
 			}
-			if (e.id == "Next" && HasNext) {
+			if (id == "Next" && HasNext) {
 				nextButton.Content = "Wait";
 				MessageMatcher.instance.SetMessage (name + " next", "next screen");
 			}
-			lastPressedId = e.id;
-			OnButtonPress (e);
+			lastPressedId = id;
+
+			bool directorHasButton = false;
+			if (CanGotoScreen (id)) {
+				directorHasButton = GameScreenDirector.instance.ButtonPress (this, id);
+			}
+			if (!directorHasButton) {
+				OnButtonPress (e);
+			}
 		}
 	}
 

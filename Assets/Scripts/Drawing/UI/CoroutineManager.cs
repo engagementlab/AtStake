@@ -57,6 +57,19 @@ public class CoroutineManager : MonoBehaviour {
 		}
 	}
 
+	public void StartCoroutineWhileTrue (System.Func<bool> action) {
+		StartCoroutine (CoCoroutineWhileTrue (action));
+	}
+
+	IEnumerator CoCoroutineWhileTrue (System.Func<bool> action) {
+		
+		bool check = true;
+		while (check) {
+			check = action ();		
+			yield return null;
+		}
+	}
+
 	public void FloatLerp (float from, float to, float time, System.Action<float> action) {
 		StartCoroutine (CoFloatLerp (from, to, time, action));
 	}

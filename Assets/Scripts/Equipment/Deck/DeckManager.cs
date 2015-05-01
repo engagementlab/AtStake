@@ -199,7 +199,11 @@ public class DeckManager : MonoBehaviour {
 				MessageSender.instance.SendMessageToAll ("OnServerLoadDeck", deckFilename, "", deckLocal ? 1 : 0);
 			}
 		}
-		GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
+		if (DeciderSelectionStyle.Host) {
+			GameStateController.instance.GotoScreen ("Scoreboard", "Round");
+		} else {
+			GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
+		}
 	}
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {

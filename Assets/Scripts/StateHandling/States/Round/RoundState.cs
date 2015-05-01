@@ -43,7 +43,8 @@ public class RoundState : GameState {
 		// Reset the player list and assign a new Decider
 		players.Clear ();
 		if (Player.instance.Won) {
-			DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
+			// DeciderSelectionManager.instance.SetDecider (Player.instance.Name);
+			Player.instance.deciderManager.SetDecider (Player.instance.Name);
 		} else if (roundNumber == 0) {
 			OnSelectDeciderEvent (null);
 		}

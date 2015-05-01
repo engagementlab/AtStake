@@ -20,7 +20,7 @@ public class LobbyScreen : GameScreen {
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
-		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+		// Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
 		if (!MultiplayerManager.instance.UsingWifi) {
 			if (MultiplayerManager.instance.Hosting) {
 				ScreenElements.Enable ("invite");
@@ -32,7 +32,7 @@ public class LobbyScreen : GameScreen {
 
 	public override void OnScreenEnd () {
 		base.OnScreenEnd ();
-		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+		// Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
 		if (!MultiplayerManager.instance.UsingWifi && MultiplayerManager.instance.Hosting) {
 			ScreenElements.Disable ("invite");
 		}
@@ -73,25 +73,41 @@ public class LobbyScreen : GameScreen {
 		ScreenElements.EnableUpdating ();
 	}
 
+	protected override bool CanGotoScreen (string id) {
+		if (id == "Play") {
+			MultiplayerManager.instance.StartGame ();
+
+			// New - Decider selection
+			if (DeciderSelectionStyle.Host) {
+				Player.instance.deciderManager.SetDecider (Player.instance.Name);
+			}
+		}
+		return true;
+	}
+
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		switch (e.id) {
+		/*switch (e.id) {
 			case "Back": GoBack (); break;
 			case "Play": PlayGame (); break;
 			case "Invite More": MultiplayerManager.instance.InviteMore (); break;
+		}*/
+
+		if (e.id == "Invite More") {
+			MultiplayerManager.instance.InviteMore ();
 		}
 	}
 
-	void GoBack () {
-		Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
+	/*void GoBack () {
+		// Events.instance.RemoveListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
 		MultiplayerManager.instance.Disconnect ();
 		if (MultiplayerManager.instance.UsingWifi) {
 			GoBackScreen (hosting ? "Host or Join" : "Games List");
 		} else {
 			GoBackScreen ("Host or Join");
 		}
-	}
+	}*/
 
-	void PlayGame () {
+	/*void PlayGame () {
 		MultiplayerManager.instance.StartGame ();
 
 		// New - Decider selection
@@ -99,9 +115,9 @@ public class LobbyScreen : GameScreen {
 			Player.instance.deciderManager.SetDecider (Player.instance.Name);
 		}
 		GameStateController.instance.AllPlayersGotoScreen ("Choose Deck", "Decider");
-	}
+	}*/
 
-	void OnDisconnectedFromServerEvent (DisconnectedFromServerEvent e) {
+	/*void OnDisconnectedFromServerEvent (DisconnectedFromServerEvent e) {
 		GotoScreen ("Host or Join");
-	}
+	}*/
 }

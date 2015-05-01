@@ -14,7 +14,7 @@ public class NameTakenScreen : GameScreen {
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back"));
 	}
 
-	public override void OnScreenStart (bool hosting, bool isDecider) {
+	/*public override void OnScreenStart (bool hosting, bool isDecider) {
 		base.OnScreenStart (hosting, isDecider);
 		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 	}
@@ -25,13 +25,20 @@ public class NameTakenScreen : GameScreen {
 	}
 
 	void OnRegisterEvent (RegisterEvent e) {
-		GotoScreen ("Lobby");
-	}
+		// TODO: Move this to GameScreenDirector
+		// GotoScreen ("Lobby");
+	}*/
 
 	void OnNameTakenEvent (NameTakenEvent e) {
 		string nameTaken = string.Format ("There's already someone named {0} in this game. Please enter a new name:", e.name);
 		ScreenElements.Get<LabelElement> ("copy").Content = nameTaken;
 		ScreenElements.EnableUpdating ();
+	}
+
+	protected override void CanGotoScreen (string id) {
+		if (id == "Back") {
+			MultiplayerManager.instance.Disconnect ();
+		}
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
@@ -43,10 +50,10 @@ public class NameTakenScreen : GameScreen {
 					MultiplayerManager.instance.NewNameEntered ();
 				}
 				break;
-			case "Back": 
+			/*case "Back": 
 				MultiplayerManager.instance.Disconnect ();
-				GotoScreen ("Games List"); 
-				break;
+				// GotoScreen ("Games List"); 
+				break;*/
 		}
 	}
 }

@@ -82,8 +82,9 @@ public class ScreenElements {
 	}
 
 	public void Disable (string id) {
-		visibleElements.Remove (id);
-		RaiseUpdate ();
+		if (visibleElements.Remove (id)) {
+			RaiseUpdate ();
+		}
 	}
 
 	public void DisableAll () {

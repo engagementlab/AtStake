@@ -15,14 +15,3 @@ public static class AgendaVotingStyle {
 		get { return (Type == VotingStyle.Decider); }
 	}
 }
-
-public enum FirstDecider {
-	Host,
-	Vote
-}
-
-public static class DeciderSelectionStyle {
-	public static FirstDecider FirstDecider = FirstDecider.Host;
-	public static bool Host { get { return FirstDecider == FirstDecider.Host; } }
-	public static bool Vote { get { return FirstDecider == FirstDecider.Vote; } }
-}

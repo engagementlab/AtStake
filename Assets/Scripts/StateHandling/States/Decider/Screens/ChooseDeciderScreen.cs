@@ -34,7 +34,8 @@ public class ChooseDeciderScreen : GameScreen {
 		ResetButtonColors ();
 		if (e.id.Substring (0, 13) == "Name-Decider-") {
 			decider = e.id.Substring (13);
-			DeciderSelectionManager.instance.SelectDecider (decider);
+			// DeciderSelectionManager.instance.SelectDecider (decider);
+			Player.instance.deciderManager.SelectDecider (decider);
 			e.element.Color = "green";
 		}
 	}

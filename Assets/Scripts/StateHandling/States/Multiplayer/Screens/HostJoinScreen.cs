@@ -25,29 +25,21 @@ public class HostJoinScreen : GameScreen {
 			searching.Content = "Searching for games...";
 		} else {
 			searching.Content = "Waiting for invite...";
-			Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
 		}
 	}
 
-	public override void OnScreenEnd () {
-		base.OnScreenEnd ();
-		Events.instance.RemoveListener<RegisterEvent> (OnRegisterEvent);
+	protected override bool CanGotoScreen (string id) {
+		if (id == "Host") {
+			MultiplayerManager.instance.HostGame (); 
+		}
+		return true;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
-		switch (e.id) {
-			case "Host": 
-				MultiplayerManager.instance.HostGame (); 
-				GotoScreen ("Lobby");
-				break;
-			case "Join": 
-				MultiplayerManager.instance.JoinGame (); 
-				ScreenElements.Enable ("searching");
-				ScreenElements.Disable ("nogames");
-				break;
-			case "Back": 
-				GoBackScreen ("Enter Name"); 
-				break;
+		if (e.id == "Join") {
+			MultiplayerManager.instance.JoinGame ();
+			ScreenElements.Enable ("searching");
+			ScreenElements.Disable ("nogames");
 		}
 	}
 
@@ -59,9 +51,5 @@ public class HostJoinScreen : GameScreen {
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		ScreenElements.Disable ("searching");
 		ScreenElements.Disable ("nogames");
-	}
-
-	void OnRegisterEvent (RegisterEvent e) {
-		GotoScreen ("Lobby");
 	}
 }

@@ -8,10 +8,4 @@ public class AboutScreen : GameScreen {
 		ScreenElements.AddEnabled ("copy", new LabelElement (Copy.About, 1, new WhiteTextLeftStyle ()));
 		ScreenElements.AddEnabled ("back", CreateBottomButton ("Back", "", "bottomOrange", Side.Left));
 	}
-
-	protected override void OnButtonPress (ButtonPressEvent e) {
-		if (e.id == "Back") {
-			GoBackScreen ("Start");
-		}
-	}
 }

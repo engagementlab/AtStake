@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+/*
 public class DeciderSelectionManager : MonoBehaviour {
 
 	public static DeciderSelectionManager instance;
@@ -43,3 +43,4 @@ public class DeciderSelectionManager : MonoBehaviour {
 		}
 	}
 }
+*/
