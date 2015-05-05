@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -52,10 +52,11 @@ public class GameScreenDirector : MonoBehaviour {
 			instance = this;
 		}
 		
+		Events.instance.AddListener<ForceDisconnectEvent> (OnForceDisconnectEvent);
 		Events.instance.AddListener<DisconnectedFromServerEvent> (OnDisconnectedFromServerEvent);
-		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
-		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
+		// Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 		Events.instance.AddListener<RegisterEvent> (OnRegisterEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 		
 		screenOrders.Add ("Start", new Dictionary<string, GotoButton> () {
 			{ "Play",  new GotoButton ("Enter Name", "Multiplayer") },
@@ -73,7 +74,8 @@ public class GameScreenDirector : MonoBehaviour {
 
 		screenOrders.Add ("Host or Join", new Dictionary<string, GotoButton> () {
 			{ "Back",  new GotoButton ("Enter Name", true) },
-			{ "Host",  new GotoButton ("Lobby") }
+			{ "Host",  new GotoButton ("Lobby") },
+			{ "Join",  new GotoButton ("Games List") }
 		});
 
 		screenOrders.Add ("Games List", new Dictionary<string, GotoButton> () {
@@ -168,36 +170,94 @@ public class GameScreenDirector : MonoBehaviour {
 		}
 	}
 
-	void GotoScreen (string screenName, string stateName="") {
-		GameStateController.instance.GotoScreen (screenName, stateName);
+	// Keep these private!!
+	void GotoScreen (string screenName, string stateName="", bool back=false) {
+		GameStateController.instance.GotoScreen (screenName, stateName, back);
+	}
+
+	void AllGotoScreen (string screenName, string stateName="") {
+		GameStateController.instance.AllPlayersGotoScreen (screenName, stateName);
 	}
 
 	/**
 	 *	Events
 	 */
 
-	void OnDisconnectedFromServerEvent (DisconnectedFromServerEvent e) {
-		Debug.Log ("disconnect");
-		if (State != "Start")
-			GotoScreen ("Host or Join", "Multiplayer");
+	void OnForceDisconnectEvent (ForceDisconnectEvent e) {
+		if (Screen == "Lobby") {
+			if (e.wasHost) {
+				GotoScreen ("Host or Join", "", true);
+			} else {
+				GotoScreen ("Games List", "", true);
+			}
+		}
 	}
 
-	void OnFoundGamesEvent (FoundGamesEvent e) {
+	void OnDisconnectedFromServerEvent (DisconnectedFromServerEvent e) {
+		/*Debug.Log ("disconnect");
+		if (State != "Start")
+			GotoScreen ("Host or Join", "Multiplayer");*/
+		/*switch (Screen) {
+			case "Start":
+			case "About": return;
+			case "Name Taken": 
+			case "Lobby": GotoScreen ("Games List", "Multiplayer"); break;
+			default: GotoScreen ("Host or Join", "Multiplayer"); break;
+		}*/
+		
+		if (Screen == "Lobby") {
+			if (e.wasHost) {
+				GotoScreen ("Host or Join", "", true);
+			} else {
+				GotoScreen ("Games List", "", true);
+			}
+		}
+
+		if (Screen == "Name Taken") {
+			if (!MultiplayerManager.instance.RequestingConnect) {
+				GotoScreen ("Games List", "", true);
+			}
+		}
+	}
+
+	/*void OnFoundGamesEvent (FoundGamesEvent e) {
 		// TODO: Check the hosts length and if it's 1, go straight to the lobby
 		if (Screen == "Host or Join") {
 			GotoScreen ("Games List");
 		}
-	}
+	}*/
 
-	void OnNameTakenEvent (NameTakenEvent e) {
+	public void NameTaken () {
 		if (Screen == "Games List") {
 			GotoScreen ("Name Taken");
 		}
 	}
 
+	public void DeciderSelected () {
+		GotoScreen ("Scoreboard", "Round");
+	}
+
+	/*public void DecksLoaded () {
+		if (DeciderSelectionStyle.Host) {
+			GotoScreen ("Scoreboard", "Round");
+		} else {
+			GotoScreen ("Choose Decider", "Decider");
+		}
+	}*/
+
 	void OnRegisterEvent (RegisterEvent e) {
 		if (Screen == "Games List" || Screen == "Name Taken") {
 			GotoScreen ("Lobby");
 		}
+	}
+
+	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
+		/*if (e.id == "OnServerLoadDeck") {
+			if (DeciderSelectionStyle.Host) {
+				GotoScreen ("Scoreboard", "Round");
+			} else {
+				GotoScreen ("Choose Decider", "Decider");
+			}
+		}*/
 	}
 }

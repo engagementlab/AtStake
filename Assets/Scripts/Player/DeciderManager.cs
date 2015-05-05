@@ -13,6 +13,7 @@ public class DeciderManager : System.Object {
 	public DeciderManager () {
 		Events.instance.AddListener<SelectDeciderEvent> (OnSelectDeciderEvent);
 		Events.instance.AddListener<MessagesMatchEvent> (OnMessagesMatchEvent);
+		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
 	public void SetDecider (string deciderName) {
@@ -38,7 +39,8 @@ public class DeciderManager : System.Object {
 	void OnMessagesMatchEvent (MessagesMatchEvent e) {
 		if (e.id == "SelectDecider") {
 			Events.instance.Raise (new SelectDeciderEvent (e.message));
-			GameStateController.instance.GotoScreen ("Scoreboard", "Round");
+			GameScreenDirector.instance.DeciderSelected ();
+			// GameStateController.instance.GotoScreen ("Scoreboard", "Round");
 		}
 	}
 }
@@ -49,7 +51,7 @@ public enum FirstDecider {
 }
 
 public static class DeciderSelectionStyle {
-	public static FirstDecider FirstDecider = FirstDecider.Vote;
+	public static FirstDecider FirstDecider = FirstDecider.Host;
 	public static bool Host { get { return FirstDecider == FirstDecider.Host; } }
 	public static bool Vote { get { return FirstDecider == FirstDecider.Vote; } }
 }

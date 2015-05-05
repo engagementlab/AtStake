@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class DisconnectedFromServerEvent : GameEvent {
-
-	public DisconnectedFromServerEvent () {}
+	
+	public readonly bool wasHost = false;
+	
+	public DisconnectedFromServerEvent (bool wasHost) {
+		this.wasHost = wasHost;
+	}
 }

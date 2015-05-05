@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Deprecate
 public class NameTakenEvent : GameEvent {
 
 	public readonly string name;

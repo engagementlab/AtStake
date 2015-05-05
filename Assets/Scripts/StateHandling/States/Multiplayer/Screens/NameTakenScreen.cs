@@ -37,7 +37,7 @@ public class NameTakenScreen : GameScreen {
 
 	protected override bool CanGotoScreen (string id) {
 		if (id == "Back") {
-			MultiplayerManager.instance.Disconnect ();
+			MultiplayerManager.instance.ForceDisconnect ();
 		}
 		return true;
 	}
@@ -47,7 +47,8 @@ public class NameTakenScreen : GameScreen {
 			case "Enter": 
 				TextFieldElement tfe = ScreenElements.Get<TextFieldElement> ("textfield");
 				if (tfe.Content != "") {
-					Events.instance.Raise (new EnterNameEvent (tfe.Content));
+					// Events.instance.Raise (new EnterNameEvent (tfe.Content));
+					Player.instance.Name = tfe.Content;
 					MultiplayerManager.instance.NewNameEntered ();
 				}
 				break;

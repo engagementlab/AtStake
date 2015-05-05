@@ -50,7 +50,7 @@ public class DeckManager : MonoBehaviour {
 		if (instance == null) instance = this;
 
 		Events.instance.AddListener<HostSendMessageEvent> (OnHostSendMessageEvent);
-		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
+		// Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 
 		GetLocalDeckNames ();
@@ -199,11 +199,11 @@ public class DeckManager : MonoBehaviour {
 				MessageSender.instance.SendMessageToAll ("OnServerLoadDeck", deckFilename, "", deckLocal ? 1 : 0);
 			}
 		}
-		if (DeciderSelectionStyle.Host) {
+		/*if (DeciderSelectionStyle.Host) {
 			GameStateController.instance.GotoScreen ("Scoreboard", "Round");
 		} else {
 			GameStateController.instance.GotoScreen ("Choose Decider", "Decider");
-		}
+		}*/
 	}
 
 	void OnHostSendMessageEvent (HostSendMessageEvent e) {
@@ -212,13 +212,14 @@ public class DeckManager : MonoBehaviour {
 		}
 	}
 
-	void OnEnterNameEvent (EnterNameEvent e) {
+	// TODO: call this w/o using the event
+	/*void OnEnterNameEvent (EnterNameEvent e) {
 		if (e.name == "#Wade") {
 			cakeUnlocked = true;
 			GetLocalDeckNames ();
 			GetHostedDeckNames ();
 		}
-	}
+	}*/
 
 	void OnAllReceiveMessageEvent (AllReceiveMessageEvent e) {
 		if (e.id == "OnServerLoadDeck" && 

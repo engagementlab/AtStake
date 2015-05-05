@@ -16,6 +16,8 @@ public class RoundStartManager : MonoBehaviour {
 			RoleManager.instance.SetRandomRoles ();
 			MessageSender.instance.ScheduleMessage ("UpdateAgendaItems");
 			MessageSender.instance.ScheduleMessage ("SendVotableItems");
+			// TODO: fire this for the first round -- RoundState raises RoundStartEvent when a Decider is selected, so this won't work here
+			// Player.instance.deciderManager.SetDecider (Player.instance.Name);
 		}
 	}
 
@@ -32,7 +34,7 @@ public class RoundStartManager : MonoBehaviour {
 			UpdateAgendaItems ();
 		} else if (e.id == "SendVotableItems") {
 			SendVotableItems ();
-		}
+		} 
 	}
 
 	void UpdateAgendaItems () {

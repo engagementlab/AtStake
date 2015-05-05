@@ -63,6 +63,7 @@ public class ServerManager : MonoBehaviour {
 		Network.maxConnections = settings.maxConnections;
 		MasterServer.UnregisterHost ();
 		ResetHosts ();
+		hosting = false;
 	}
 
 	public void StartGame () {
@@ -151,7 +152,7 @@ public class ServerManager : MonoBehaviour {
 	void OnDisconnectedFromServer (NetworkDisconnection info) {
 		if (!hosting) {
 			DisconnectFromHost ();
-			Events.instance.Raise (new DisconnectedFromServerEvent ());
+			Events.instance.Raise (new DisconnectedFromServerEvent (false));
 		}
 	}
 

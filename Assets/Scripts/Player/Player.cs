@@ -3,9 +3,10 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	new string name;
+	new string name = "";
 	public string Name {
 		get { return name; }
+		set { name = value; }
 	}
 
 	public bool IsDecider {
@@ -46,22 +47,22 @@ public class Player : MonoBehaviour {
 		if (instance == null)
 			instance = this;
 
-		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
+		// Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<SetRoleEvent> (OnSetRoleEvent);
-		Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
+		// Events.instance.AddListener<NameTakenEvent> (OnNameTakenEvent);
 	}
 
 	public void OnRoundStart () {
 		beanPool.OnRoundStart (IsDecider);
 	}
 
-	void OnEnterNameEvent (EnterNameEvent e) {
+	/*void OnEnterNameEvent (EnterNameEvent e) {
 		name = e.name;
-	}
+	}*/
 
-	void OnNameTakenEvent (NameTakenEvent e) {
+	/*void OnNameTakenEvent (NameTakenEvent e) {
 		name = "";
-	}
+	}*/
 
 	void OnSetRoleEvent (SetRoleEvent e) {
 		role = e.role;

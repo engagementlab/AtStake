@@ -74,13 +74,17 @@ public class LobbyScreen : GameScreen {
 	}
 
 	protected override bool CanGotoScreen (string id) {
+		if (id == "Back") {
+			MultiplayerManager.instance.ForceDisconnect ();
+			return false;
+		}
 		if (id == "Play") {
 			MultiplayerManager.instance.StartGame ();
 
 			// New - Decider selection
-			if (DeciderSelectionStyle.Host) {
+			/*if (DeciderSelectionStyle.Host) {
 				Player.instance.deciderManager.SetDecider (Player.instance.Name);
-			}
+			}*/
 		}
 		return true;
 	}

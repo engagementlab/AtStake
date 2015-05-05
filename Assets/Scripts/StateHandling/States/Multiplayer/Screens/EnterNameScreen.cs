@@ -31,7 +31,8 @@ public class EnterNameScreen : GameScreen {
 				lastPressedId = "";
 				return false;
 			} else {
-				Events.instance.Raise (new EnterNameEvent (textField.Content));
+				// Events.instance.Raise (new EnterNameEvent (textField.Content));
+				Player.instance.Name = textField.Content;
 			}
 		}
 		return true;

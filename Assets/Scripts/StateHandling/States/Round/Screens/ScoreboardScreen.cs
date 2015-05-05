@@ -16,6 +16,9 @@ public class ScoreboardScreen : GameScreen {
 	}
 
 	public override void OnScreenStart (bool hosting, bool isDecider) {
+		if (DeciderSelectionStyle.Host) {
+			Player.instance.deciderManager.SetDecider (Player.instance.Name);
+		}
 		base.OnScreenStart (hosting, isDecider);
 		UpdateScreen ();
 	}

@@ -65,6 +65,7 @@ public class BluetoothManager : MonoBehaviour {
 
 	void OnDisconnectedFromServer () {
 		DisconnectFromHost ();
-		Events.instance.Raise (new DisconnectedFromServerEvent ());		
+		Events.instance.Raise (new DisconnectedFromServerEvent (hosting));		
+		hosting = false;
 	}
 }

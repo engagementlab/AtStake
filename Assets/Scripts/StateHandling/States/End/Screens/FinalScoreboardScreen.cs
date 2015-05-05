@@ -27,7 +27,7 @@ public class FinalScoreboardScreen : GameScreen {
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		if (e.id == "Home") {
-			MultiplayerManager.instance.Disconnect ();
+			MultiplayerManager.instance.ForceDisconnect ();
 			GotoScreen ("Start", "Start");
 			Events.instance.Raise (new GameEndEvent ());
 		}

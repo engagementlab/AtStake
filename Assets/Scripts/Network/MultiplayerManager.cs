@@ -8,12 +8,17 @@ public class MultiplayerManager : MonoBehaviour {
 	public NetworkingManager networkingManager;
 	public static MultiplayerManager instance;
 	
-	string playerName = "";
+	// string playerName = "";
+	string PlayerName {
+		get { return Player.instance.Name; }
+	}
 	PlayerList playerList = new PlayerList ();
 	HostData hostAttempt = null; // TODO: Move this to NetworkingManager
 
 	public bool Hosting { get; private set; }
 	public bool Connected { get; private set; }
+	public bool RequestingConnect { get; private set; }
+
 	public int PlayerCount {
 		get { return playerList.Count; }
 	}
@@ -33,23 +38,20 @@ public class MultiplayerManager : MonoBehaviour {
 		Hosting = false;
 		Connected = false;
 		
-		Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
+		// Events.instance.AddListener<EnterNameEvent> (OnEnterNameEvent);
 		Events.instance.AddListener<FoundGamesEvent> (OnFoundGamesEvent);
 		Events.instance.AddListener<ConnectedToServerEvent> (OnConnectedToServerEvent);
 		Events.instance.AddListener<HostReceiveMessageEvent> (OnHostReceiveMessageEvent);
 		Events.instance.AddListener<AllReceiveMessageEvent> (OnAllReceiveMessageEvent);
 	}
 
-	/*void GotoScreen (string screenName) {
-		GameStateController.instance.GotoScreen (screenName);
-	}*/
-
-	public void Disconnect () {
+	public void ForceDisconnect () {
+		Events.instance.Raise (new ForceDisconnectEvent (Hosting));
 		if (!Connected) return;
 		if (Hosting) {
 			DisconnectHost ();
 		} else {
-			MessageSender.instance.SendMessageToHost ("UnregisterPlayer", playerName);
+			MessageSender.instance.SendMessageToHost ("UnregisterPlayer", PlayerName);
 			DisconnectFromHost ();
 		}
 		MessageSender.instance.ResetHost ();
@@ -65,8 +67,9 @@ public class MultiplayerManager : MonoBehaviour {
 
 	public void HostGame () {
 		Hosting = true;
-		networkingManager.HostGame (playerName);
-		playerList.Init (playerName);
+		Connected = true;
+		networkingManager.HostGame (PlayerName);
+		playerList.Init (PlayerName);
 		RaiseRefreshPlayerList ();
 	}
 
@@ -113,6 +116,7 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public void ConnectToHost (HostData hostAttempt) {
+		RequestingConnect = true;
 		this.hostAttempt = hostAttempt;
 		networkingManager.ConnectToHost (hostAttempt);
 	}
@@ -120,10 +124,11 @@ public class MultiplayerManager : MonoBehaviour {
 	public void NewNameEntered () {
 		if (UsingWifi) {
 			if (hostAttempt != null) {
+				RequestingConnect = true;
 				networkingManager.ConnectToHost (hostAttempt);
 			}
 		} else {
-			MessageSender.instance.SendMessageToHost ("RequestRegistration", playerName);
+			MessageSender.instance.SendMessageToHost ("RequestRegistration", PlayerName);
 		}
 	}
 
@@ -133,20 +138,23 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void AcceptPlayer (string clientName) {
-		if (playerName == clientName) {
+		if (PlayerName == clientName) {
 			Connected = true;
 			Events.instance.Raise (new RegisterEvent ());
 		}
+		RequestingConnect = false;
 	}
 
 	void RejectPlayer (string clientName) {
-		if (!Connected && !Hosting && playerName == clientName) {
+		if (!Connected && !Hosting && PlayerName == clientName) {
 			if (UsingWifi) {
 				DisconnectFromHost ();
 			}
-			Events.instance.Raise (new NameTakenEvent (playerName));
-			playerName = "";
+			GameScreenDirector.instance.NameTaken ();
+			// Events.instance.Raise (new NameTakenEvent (PlayerName));
+			// PlayerName = "";
 		}
+		RequestingConnect = false;
 	}
 
 	void ClearPlayerList () {
@@ -155,9 +163,9 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 
-	void AddPlayer (string playerName) {
+	void AddPlayer (string name) {
 		if (!Hosting) {
-			playerList.Add (playerName);
+			playerList.Add (name);
 		}
 	}
 
@@ -169,20 +177,18 @@ public class MultiplayerManager : MonoBehaviour {
 		Events.instance.Raise (new RefreshPlayerListEvent (playerList.Names));
 	}
 
-	void OnEnterNameEvent (EnterNameEvent e) {
-		playerName = e.name;
-	}
+	/*void OnEnterNameEvent (EnterNameEvent e) {
+		PlayerName = e.name;
+	}*/
 
 	void OnFoundGamesEvent (FoundGamesEvent e) {
 		if (GameStateController.instance.Screen.name == "Games List") {
 			Events.instance.Raise (new UpdateDrawerEvent ());
-		} else {
-			// GotoScreen ("Games List");
 		}
 	}
 
 	void OnConnectedToServerEvent (ConnectedToServerEvent e) {
-		MessageSender.instance.SendMessageToHost ("RequestRegistration", playerName);
+		MessageSender.instance.SendMessageToHost ("RequestRegistration", PlayerName);
 	}
 
 	void OnHostReceiveMessageEvent (HostReceiveMessageEvent e) {
@@ -203,6 +209,6 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	void OnApplicationQuit () {
-		Disconnect ();
+		ForceDisconnect ();
 	}
 }

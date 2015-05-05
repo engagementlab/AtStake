@@ -40,6 +40,7 @@ public class ButtonElement : ScreenElement {
 
 	bool interactable = true;
 	public bool Interactable {
+		get { return interactable; }
 		set {
 			interactable = value;
 			if (middleButton != null)
