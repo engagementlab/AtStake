@@ -29,10 +29,21 @@ public class ButtonElement : ScreenElement {
 
 	protected MiddleButton middleButton;
 	public MiddleButton MiddleButton {
+		get { return middleButton; }
 		set {
 			middleButton = value;
 			middleButton.text.text = Content;
 			middleButton.SetColor (color);
+			middleButton.button.interactable = interactable;
+		}
+	}
+
+	bool interactable = true;
+	public bool Interactable {
+		set {
+			interactable = value;
+			if (middleButton != null)
+				MiddleButton.button.interactable = value;
 		}
 	}
 
@@ -42,6 +53,7 @@ public class ButtonElement : ScreenElement {
 		this.content = content;
 		this.Position = position;
 		this.color = color;
+		interactable = true;
 	}
 
 	void StyleText () {

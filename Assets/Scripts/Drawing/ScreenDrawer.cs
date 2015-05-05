@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScreenDrawer : MonoBehaviour {
 
-	GameScreen screen;
+	/*GameScreen screen;
 	ScreenElement[] elements;
 
 	void Awake () {
@@ -51,5 +51,5 @@ public class ScreenDrawer : MonoBehaviour {
 
 	void OnUpdateDrawerEvent (UpdateDrawerEvent e) {
 		elements = screen.Elements;
-	}
+	}*/
 }

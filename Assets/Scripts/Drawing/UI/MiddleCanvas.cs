@@ -172,6 +172,12 @@ public class MiddleCanvas : MonoBehaviour {
 		scrollRect.enabled = active;
 		scrollbar.gameObject.SetActive (active);
 	}
+
+	public void OnEndSlide () {
+		if (GameStateController.instance.Screen == screen) {
+			textFieldManager.Activate ();
+		} 
+	}
 }
 
 [System.Serializable]
@@ -285,6 +291,8 @@ public class MiddleTextFieldManager : ElementManager {
 	public InputField inputField;
 	public Text placeholder;
 	public Text text;
+	bool enabled = false;
+	public bool Enabled { get { return enabled; } }
 
 	public void SetPlaceholder (string content) {
 		placeholder.text = content;
@@ -294,15 +302,24 @@ public class MiddleTextFieldManager : ElementManager {
 		this.textField = textField;
 		inputField.gameObject.SetActive (true);
 		inputField.transform.SetSiblingIndex (textField.Position);
-		text.text = textField.content;
+		text.text = textField.Content;
+		enabled = true;
 	}
 
 	public void OnEndEdit (string content) {
-		textField.content = content;
+		textField.Content = content;
 	}
 
 	public void Hide () {
+		enabled = false;
 		inputField.gameObject.SetActive (false);
+	}
+
+	public void Activate () {
+		if (enabled && inputField.gameObject.activeSelf) {
+			inputField.ActivateInputField ();
+			EventSystem.current.SetSelectedGameObject (inputField.gameObject);
+		}
 	}
 }
 

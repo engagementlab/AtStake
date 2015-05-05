@@ -18,7 +18,7 @@ public class TimerElement : ButtonElement {
 		}
 	}
 
-	bool interactable = true;
+	new bool interactable = true;
 	public bool Interactable {
 		get { return interactable; }
 		set { 

@@ -39,10 +39,11 @@ public class GameScreen {
 	 *	Protected functions
 	 */
 
+	// TODO: Deprecate
 	protected void GoBackScreen (string screenName) {
 		GameStateController.instance.GotoScreen (screenName, "", true);
 	}
-
+	// TODO: Deprecate	
 	protected void GotoScreen (string screenName, string stateName="", bool back=false) {
 		GameStateController.instance.GotoScreen (screenName, stateName, back);
 	}

@@ -35,18 +35,19 @@ public class NameTakenScreen : GameScreen {
 		ScreenElements.EnableUpdating ();
 	}
 
-	protected override void CanGotoScreen (string id) {
+	protected override bool CanGotoScreen (string id) {
 		if (id == "Back") {
 			MultiplayerManager.instance.Disconnect ();
 		}
+		return true;
 	}
 
 	protected override void OnButtonPress (ButtonPressEvent e) {
 		switch (e.id) {
 			case "Enter": 
 				TextFieldElement tfe = ScreenElements.Get<TextFieldElement> ("textfield");
-				if (tfe.content != "") {
-					Events.instance.Raise (new EnterNameEvent (tfe.content));
+				if (tfe.Content != "") {
+					Events.instance.Raise (new EnterNameEvent (tfe.Content));
 					MultiplayerManager.instance.NewNameEntered ();
 				}
 				break;
